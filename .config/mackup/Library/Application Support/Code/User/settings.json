@@ -3,12 +3,13 @@
     "editor.minimap.enabled": false,
     "workbench.activityBar.visible": false,
     "breadcrumbs.enabled": false,
-    "workbench.colorTheme": "Monokai Dimmed",
     "editor.lineNumbers": "off",
     "editor.renderWhitespace": "none",
     "workbench.editor.showTabs": true,
     "editor.tabCompletion": "on",
     "editor.renderIndentGuides": false,
     "editor.wordWrapColumn": 100,
-    "editor.wordWrap": "bounded"
+    "editor.wordWrap": "bounded",
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "Monokai Dimmed"
 }
