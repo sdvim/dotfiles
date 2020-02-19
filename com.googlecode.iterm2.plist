@@ -426,7 +426,7 @@
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1311 1134 1218 444 0 0 3840 1577 </string>
+	<string>1515 678 810 900 0 0 3840 1577 </string>
 	<key>NeverWarnAboutShortLivedSessions_9AA5EC53-8B2A-4FDD-9C9F-F561D891F57B</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_9AA5EC53-8B2A-4FDD-9C9F-F561D891F57B_selection</key>
@@ -718,7 +718,7 @@
 			<key>HotKey Window Animates</key>
 			<true/>
 			<key>HotKey Window AutoHides</key>
-			<true/>
+			<false/>
 			<key>HotKey Window Dock Click Action</key>
 			<integer>0</integer>
 			<key>HotKey Window Floats</key>
@@ -1107,7 +1107,7 @@
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>9</integer>
+			<integer>8</integer>
 			<key>Working Directory</key>
 			<string>/Users/essential</string>
 		</dict>
@@ -1126,11 +1126,17 @@
 	<key>NoSyncInstallationId</key>
 	<string>C091532E-BA7F-4E5D-9055-73EEB21CBAE1</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>2</integer>
+	<integer>5</integer>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
+	<true/>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
+	<integer>0</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
-	<real>600818262.96942496</real>
+	<real>601091125.89569294</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
 	<true/>
+	<key>NoSyncPermissionToShowTip</key>
+	<false/>
 	<key>NoSyncRecordedVariables</key>
 	<dict>
 		<key>0</key>
@@ -1913,7 +1919,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-01-16T22:32:53Z</date>
+	<date>2020-01-27T22:50:37Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
