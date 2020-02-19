@@ -8,6 +8,7 @@
     "workbench.editor.showTabs": true,
     "editor.tabCompletion": "on",
     "editor.renderIndentGuides": false,
+    "editor.fontLigatures": true,
     "editor.wordWrapColumn": 100,
     "editor.wordWrap": "bounded",
     "workbench.iconTheme": "vscode-icons",
@@ -24,5 +25,7 @@
         "**/.temp": true,
         "**/node_modules": true
     },
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
+    "window.zoomLevel": 0
 }
