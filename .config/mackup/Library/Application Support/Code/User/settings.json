@@ -27,5 +27,6 @@
     },
     "editor.tabSize": 2,
     "editor.fontFamily": "Fira Code, Menlo, Monaco, 'Courier New', monospace",
-    "window.zoomLevel": 0
+    "window.zoomLevel": 0,
+    "explorer.confirmDelete": false
 }
