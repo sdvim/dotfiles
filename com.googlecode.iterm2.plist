@@ -430,7 +430,7 @@
 	<key>NSWindow Frame NSColorPanel</key>
 	<string>0 163 224 275 0 0 3440 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1315 0 810 1024 0 0 3440 1417 </string>
+	<string>1263 0 914 1048 0 0 3440 1417 </string>
 	<key>NeverWarnAboutShortLivedSessions_9AA5EC53-8B2A-4FDD-9C9F-F561D891F57B</key>
 	<true/>
 	<key>NeverWarnAboutShortLivedSessions_9AA5EC53-8B2A-4FDD-9C9F-F561D891F57B_selection</key>
@@ -722,7 +722,7 @@
 			<key>HotKey Window Animates</key>
 			<true/>
 			<key>HotKey Window AutoHides</key>
-			<false/>
+			<true/>
 			<key>HotKey Window Dock Click Action</key>
 			<integer>0</integer>
 			<key>HotKey Window Floats</key>
@@ -1137,7 +1137,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>EA0D7064-9984-4D48-A7D1-9ECF652F8B28</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>13</integer>
+	<integer>15</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1930,7 +1930,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-03-01T22:55:07Z</date>
+	<date>2020-03-02T22:55:08Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
