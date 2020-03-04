@@ -10,7 +10,7 @@ config remote add origin git@github.com:sdvim/dotfiles.git
 ```sh
 git clone --separate-git-dir=$HOME/.dotfiles https://github.com/sdvim/dotfiles.git dotfiles-setup
 rsync --recursive --verbose --exclude '.git' dotfiles-setup/ $HOME/
-rm --recursive dotfiles-setup
+rm -r dotfiles-setup
 ```
 
 ### Usage
