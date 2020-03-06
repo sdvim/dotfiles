@@ -1,4 +1,5 @@
 @gridsome/cli
+@sanity/cli
 @vue/cli
 gatsby-cli
 npm
