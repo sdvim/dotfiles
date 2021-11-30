@@ -15,10 +15,8 @@ brew "tree"
 cask "amethyst"
 cask "font-jetbrains-mono"
 cask "iterm2"
-cask "rescuetime"
 cask "spotify"
 cask "visual-studio-code"
-cask "whatsapp"
 mas "1Password 7", id: 1333542190
 mas "ColorSlurp", id: 1287239339
 mas "Mini Calendar", id: 1088779979
