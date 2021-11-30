@@ -18,6 +18,11 @@ ln -s ~/.config/amethyst/com.amethyst.Amethyst.plist ~/Library/Preferences/com.a
 # Make a symlink for VS Code settings
 ln -s ~/.config/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
 
+# Install oh-my-zsh plugins
+git clone git://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone git://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+git clone git://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
 #
 # Overrides for sensible hacker defaults
 # --------------------------------------
