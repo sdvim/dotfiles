@@ -27,6 +27,6 @@ git clone git://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh
 # Overrides for sensible hacker defaults
 # --------------------------------------
 
-# Hide Spotlight tray-icon
-sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search
-
+# Set a reasonable keyboard repeat rate
+defaults write NSGlobalDomain KeyRepeat -int 3
+defaults write NSGlobalDomain InitialKeyRepeat -int 300
