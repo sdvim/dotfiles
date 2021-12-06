@@ -3,3 +3,5 @@
 	email = s.dellavalentina@gmail.com
 [core]
 	editor = micro
+[init]
+	defaultBranch = main
