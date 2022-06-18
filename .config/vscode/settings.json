@@ -1,14 +1,22 @@
 {
     "workbench.activityBar.visible": false,
-    "workbench.colorTheme": "Monokai Dimmed",
+    "workbench.colorTheme": "Material Theme Ocean High Contrast",
     "editor.minimap.enabled": false,
     "workbench.sideBar.location": "right",
     "workbench.startupEditor": "none",
     "editor.fontFamily": "Jetbrains Mono, Menlo, Monaco, 'Courier New', monospace",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "explorer.confirmDelete": false,
-    "editor.wordWrap": "on",
-    "editor.wordWrapColumn": 100,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": ["javascript"],
     "editor.tabSize": 2,
     "breadcrumbs.enabled": false,
-    "gitlens.currentLine.enabled": false
+    "gitlens.currentLine.enabled": false,
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "explorer.confirmDragAndDrop": false,
+    "search.useGlobalIgnoreFiles": true,
+    "workbench.iconTheme": "eq-material-theme-icons-ocean"
 }
