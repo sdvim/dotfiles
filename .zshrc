@@ -5,8 +5,6 @@ alias df=dotfiles
 eval "$(`which brew` shellenv)"
 eval "$(nodenv init -)"
 
-export ZSH="$HOME/.oh-my-zsh"
-
 ZSH_CUSTOM="$HOME/.config/oh-my-zsh"
 ZSH_THEME="robbyrussell"
 PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
@@ -18,5 +16,5 @@ plugins=(
   zsh-syntax-highlighting
 )
 
+export ZSH="$HOME/.oh-my-zsh"
 source $ZSH/oh-my-zsh.sh
-
