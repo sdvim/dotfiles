@@ -1,4 +1,6 @@
-alias dotfiles='/usr/local/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfiles='/usr/local/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+alias ls='ls -a'
+alias df=dotfiles
 
 eval "$(`which brew` shellenv)"
 eval "$(nodenv init -)"
