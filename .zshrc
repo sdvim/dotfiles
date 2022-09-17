@@ -1,13 +1,13 @@
-alias dotfiles='/usr/local/bin/git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
+alias dotfiles='git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
 alias ls='ls -a'
 alias df=dotfiles
+alias reload='source ~/.zshrc'
 
-eval "$(`which brew` shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv)"
 eval "$(nodenv init -)"
 
-ZSH_CUSTOM="$HOME/.config/oh-my-zsh"
 ZSH_THEME="robbyrussell"
-PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+# PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
   
 plugins=(
   git
