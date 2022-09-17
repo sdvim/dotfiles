@@ -43,10 +43,10 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.
 defaults write com.googlecode.iterm2 PrefsCustomFolder -string "~/.config/iterm2"
 
 # Make a symlink for Amethyst settings
-ln -s ~/.config/amethyst/com.amethyst.Amethyst.plist ~/Library/Preferences/com.amethyst.Amethyst.plist
+ln -Fs ~/.config/amethyst/com.amethyst.Amethyst.plist ~/Library/Preferences/com.amethyst.Amethyst.plist
 
 # Make a symlink for VS Code settings
-ln -s ~/.config/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
+ln -Fs ~/.config/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
 
 ############
 # Keyboard #
@@ -164,10 +164,10 @@ defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock expose-animation-duration -float 0.1
 
 # Wipe all (default) app icons from the Dock
-defaults write com.apple.dock persistent-apps -array
+# defaults write com.apple.dock persistent-apps -array
 
 # Show only open applications in the Dock
-defaults write com.apple.dock static-only -bool true
+# defaults write com.apple.dock static-only -bool true
 
 # Don’t animate opening applications from the Dock
 defaults write com.apple.dock launchanim -bool false
