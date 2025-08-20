@@ -1,0 +1,146 @@
+2025-07-21 16:06:49,438 DEBUG    root            Loaded Command Group: ['gcloud', 'init']
+2025-07-21 16:06:49,439 DEBUG    root            Running [gcloud.init] with arguments: []
+2025-07-21 16:06:49,439 INFO     ___FILE_ONLY___ Welcome! This command will take you through the configuration of gcloud.
+
+
+2025-07-21 16:06:49,439 INFO     ___FILE_ONLY___ Your current configuration has been set to: [default]
+
+
+2025-07-21 16:06:49,439 INFO     ___FILE_ONLY___ You can skip diagnostics next time by using the following flag:
+
+2025-07-21 16:06:49,439 INFO     ___FILE_ONLY___   gcloud init --skip-diagnostics
+
+
+2025-07-21 16:06:49,440 INFO     ___FILE_ONLY___ Network diagnostic detects and fixes local network connection issues.
+
+2025-07-21 16:06:49,440 INFO     ___FILE_ONLY___ Checking network connection...
+2025-07-21 16:06:50,360 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): accounts.google.com:443
+2025-07-21 16:06:50,472 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "GET / HTTP/11" 302 365
+2025-07-21 16:06:50,533 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "GET /ServiceLogin?passive=1209600&continue=https%3A%2F%2Faccounts.google.com%2F&followup=https%3A%2F%2Faccounts.google.com%2F HTTP/11" 302 0
+2025-07-21 16:06:50,604 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "GET /InteractiveLogin?continue=https://accounts.google.com/&followup=https://accounts.google.com/&passive=1209600&ifkv=AdBytiNRznNM1GbSDPWfoN0Gb6JNRKuAfxHRj1m4YKy4Qvp_B5dSPJo_08eXw6T9x9ohr6qaYnZjcQ HTTP/11" 302 554
+2025-07-21 16:06:50,680 DEBUG    urllib3.connectionpool https://accounts.google.com:443 "GET /v3/signin/identifier?continue=https%3A%2F%2Faccounts.google.com%2F&followup=https%3A%2F%2Faccounts.google.com%2F&ifkv=AdBytiP62uN9ytAeab3SmP_s3TkJfsW8Z9iyRCQpL-fSPcp7u2GZds5lc2w2YbWxeQfYGuaBQn21Nw&passive=1209600&flowName=WebLiteSignIn&flowEntry=ServiceLogin&dsh=S2099065385%3A1753135610589341 HTTP/11" 200 None
+2025-07-21 16:06:50,755 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): cloudresourcemanager.googleapis.com:443
+2025-07-21 16:06:50,943 DEBUG    urllib3.connectionpool https://cloudresourcemanager.googleapis.com:443 "GET /v1beta1/projects HTTP/11" 401 None
+2025-07-21 16:06:50,949 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): www.googleapis.com:443
+2025-07-21 16:06:51,003 DEBUG    urllib3.connectionpool https://www.googleapis.com:443 "GET /auth/cloud-platform HTTP/11" 200 14
+2025-07-21 16:06:51,009 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): dl.google.com:443
+2025-07-21 16:06:51,196 DEBUG    urllib3.connectionpool https://dl.google.com:443 "GET /dl/cloudsdk/channels/rapid/components-2.json HTTP/11" 200 239798
+2025-07-21 16:06:51,273 INFO     ___FILE_ONLY___ Reachability Check passed.
+
+2025-07-21 16:06:51,273 INFO     ___FILE_ONLY___ Network diagnostic passed (1/1 checks passed).
+
+
+2025-07-21 16:06:53,382 DEBUG    root            Loaded Command Group: ['gcloud', 'auth']
+2025-07-21 16:06:53,414 DEBUG    root            Loaded Command Group: ['gcloud', 'auth', 'login']
+2025-07-21 16:06:53,415 INFO     root            Executing: [gcloud auth login --force --brief]
+2025-07-21 16:06:53,416 DEBUG    root            Running [gcloud.auth.login] with arguments: [--brief: "True", --force: "True"]
+2025-07-21 16:06:53,521 DEBUG    requests_oauthlib.oauth2_session Generated new state HSJR5SeLh0NkWCCu98yMyTkdvZMXfe.
+2025-07-21 16:06:53,641 INFO     ___FILE_ONLY___ Your browser has been opened to visit:
+
+    https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=32555940559.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A8085%2F&scope=openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fsqlservice.login+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&state=HSJR5SeLh0NkWCCu98yMyTkdvZMXfe&access_type=offline&code_challenge=atHJmV9l_HJqc3QG-ZC0EnhHxjafFqKPt4WMVjivYHE&code_challenge_method=S256
+
+
+2025-07-21 16:07:02,407 INFO     google_auth_oauthlib.flow "GET /?state=HSJR5SeLh0NkWCCu98yMyTkdvZMXfe&code=4/0AVMBsJgveyY-YE5gq18uVssfq6Mte7IZlHOiV-rzXhvzr34wYDy_Ee60oonX4C5BCt4BWA&scope=email%20openid%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/cloud-platform%20https://www.googleapis.com/auth/appengine.admin%20https://www.googleapis.com/auth/sqlservice.login%20https://www.googleapis.com/auth/compute%20https://www.googleapis.com/auth/accounts.reauth&authuser=1&hd=courtyard.io&prompt=consent HTTP/1.1" 200 937
+2025-07-21 16:07:02,407 DEBUG    requests_oauthlib.oauth2_session Requesting url https://oauth2.googleapis.com/token using method POST.
+2025-07-21 16:07:02,408 DEBUG    requests_oauthlib.oauth2_session Supplying headers {b'Accept': b'application/json', b'Content-Type': b'application/x-www-form-urlencoded;charset=UTF-8', b'user-agent': b'google-cloud-sdk gcloud/530.0.0 command/gcloud.auth.login invocation-id/a620ae5a7f2b4a88b4431fe26fd26365 environment/None environment-version/None client-os/MACOSX client-os-ver/24.5.0 client-pltf-arch/arm interactive/True from-script/False python/3.13.5 term/xterm-ghostty (Macintosh; Intel Mac OS X 24.5.0)'} and data {'grant_type': 'authorization_code', 'client_id': '32555940559.apps.googleusercontent.com', 'client_secret': 'ZmssLNjJy2998hD4CTg2ejr2', 'code': '4/0AVMBsJgveyY-YE5gq18uVssfq6Mte7IZlHOiV-rzXhvzr34wYDy_Ee60oonX4C5BCt4BWA', 'redirect_uri': 'http://localhost:8085/', 'code_verifier': 'VbKwDUnhdotyWhrPW6Poo1bcNtZgi5B_gR-k7di49J-6uyVzittTJZGm7jGFAI6ccN23R_RryaXiJ6noHoB9pepZjqp6X_e1eILs4GMs3ZNiE6vTAOyVMnSHkXwlvTuu'}
+2025-07-21 16:07:02,408 DEBUG    requests_oauthlib.oauth2_session Passing through key word arguments {'json': None, 'timeout': None, 'auth': None, 'verify': None, 'proxies': None}.
+2025-07-21 16:07:02,409 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): oauth2.googleapis.com:443
+2025-07-21 16:07:02,607 DEBUG    urllib3.connectionpool https://oauth2.googleapis.com:443 "POST /token HTTP/11" 200 None
+2025-07-21 16:07:02,608 DEBUG    requests_oauthlib.oauth2_session Prepared fetch token request body grant_type=authorization_code&client_id=32555940559.apps.googleusercontent.com&client_secret=ZmssLNjJy2998hD4CTg2ejr2&code=4%2F0AVMBsJgveyY-YE5gq18uVssfq6Mte7IZlHOiV-rzXhvzr34wYDy_Ee60oonX4C5BCt4BWA&redirect_uri=http%3A%2F%2Flocalhost%3A8085%2F&code_verifier=VbKwDUnhdotyWhrPW6Poo1bcNtZgi5B_gR-k7di49J-6uyVzittTJZGm7jGFAI6ccN23R_RryaXiJ6noHoB9pepZjqp6X_e1eILs4GMs3ZNiE6vTAOyVMnSHkXwlvTuu
+2025-07-21 16:07:02,608 DEBUG    requests_oauthlib.oauth2_session Request to fetch token completed with status 200.
+2025-07-21 16:07:02,609 DEBUG    requests_oauthlib.oauth2_session Request headers were {'user-agent': b'google-cloud-sdk gcloud/530.0.0 command/gcloud.auth.login invocation-id/a620ae5a7f2b4a88b4431fe26fd26365 environment/None environment-version/None client-os/MACOSX client-os-ver/24.5.0 client-pltf-arch/arm interactive/True from-script/False python/3.13.5 term/xterm-ghostty (Macintosh; Intel Mac OS X 24.5.0)', 'Accept-Encoding': 'gzip, deflate', 'Accept': b'application/json', 'Connection': 'keep-alive', 'Content-Type': b'application/x-www-form-urlencoded;charset=UTF-8', 'Content-Length': '387'}
+2025-07-21 16:07:02,609 DEBUG    requests_oauthlib.oauth2_session Request body was grant_type=authorization_code&client_id=32555940559.apps.googleusercontent.com&client_secret=ZmssLNjJy2998hD4CTg2ejr2&code=4%2F0AVMBsJgveyY-YE5gq18uVssfq6Mte7IZlHOiV-rzXhvzr34wYDy_Ee60oonX4C5BCt4BWA&redirect_uri=http%3A%2F%2Flocalhost%3A8085%2F&code_verifier=VbKwDUnhdotyWhrPW6Poo1bcNtZgi5B_gR-k7di49J-6uyVzittTJZGm7jGFAI6ccN23R_RryaXiJ6noHoB9pepZjqp6X_e1eILs4GMs3ZNiE6vTAOyVMnSHkXwlvTuu
+2025-07-21 16:07:02,609 DEBUG    requests_oauthlib.oauth2_session Response headers were {'Date': 'Mon, 21 Jul 2025 22:07:02 GMT', 'Pragma': 'no-cache', 'Expires': 'Mon, 01 Jan 1990 00:00:00 GMT', 'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate', 'Content-Type': 'application/json; charset=utf-8', 'Vary': 'Origin, X-Origin, Referer', 'Content-Encoding': 'gzip', 'Server': 'scaffolding on HTTPServer2', 'X-XSS-Protection': '0', 'X-Frame-Options': 'SAMEORIGIN', 'X-Content-Type-Options': 'nosniff', 'Alt-Svc': 'h3=":443"; ma=2592000,h3-29=":443"; ma=2592000', 'Transfer-Encoding': 'chunked'} and content {
+  "access_token": "ya29.a0AS3H6NzETljumfM-XI9etjmdDg-QHiktaGgq1kr7aSPyp8UHw2hpOUEZvrOR2eQgtjILIQIa2MdXofhvls2c_vIOD8CsJFDZ576Ia4tWyEVIBV4v3pNQMfQxibO49F42hK66w_UJ62jXERqKUdf8b4wALZXqLNnNERZeaf1LVlFPOQaCgYKAZoSARcSFQHGX2MiULEpH2DKBLXCVDgZHoaezg0181",
+  "expires_in": 3599,
+  "refresh_token": "1//06LPqETDC_44rCgYIARAAGAYSNwF-L9IreOKLPvaEpamkCRkcq3whLWhALXJLAxZZoeqSegRtdhIRdIIuIobAY_l_BjPS8aS9F1U",
+  "scope": "https://www.googleapis.com/auth/appengine.admin https://www.googleapis.com/auth/compute https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/sqlservice.login openid https://www.googleapis.com/auth/accounts.reauth",
+  "token_type": "Bearer",
+  "id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImI1MDljNTEzODc2OGY3Y2YyZTgyN2UwNGIyN2U3ZTRjYmM3YmI5MTkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzMjU1NTk0MDU1OS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjMyNTU1OTQwNTU5LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTEwNTkwODgwNDU5NTc4Mzc5NzgzIiwiaGQiOiJjb3VydHlhcmQuaW8iLCJlbWFpbCI6InN0ZXZlQGNvdXJ0eWFyZC5pbyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiUXppeWFDcGJKa2JMRkVjcUhZT283dyIsImlhdCI6MTc1MzEzNTYyMiwiZXhwIjoxNzUzMTM5MjIyfQ.PCtc5f1gDWgANwQthqS8a0cJOESarU6b0NI_arlDPyTZrjtTrQb2-_MrZviL4RPt8B-IsGZnsskFrhchHq2L5ES_Of91StVCA6ApReJjjTbZC4hHnFCXvT0ZSN3y28o-tr9kHe5u8zwhyMqGa4e6g8O02iFiglhU76J1TeWWXW8C3QCy9h6ZYq5ICu-IXcX6MSVHUd-SuCWuNl92vYz0uMHUJECgMw609QJlr45nsTBFQ4JCW1DCLoGTNJya-ju4An7rdjv8_sWqYUwt1ipppDVPH8pCg8ZMUSU-CONGH5N9aeU3zl7cJpdZxaRDQuDveEAhMvjKdbF4u_yyeINHKw"
+}.
+2025-07-21 16:07:02,609 DEBUG    requests_oauthlib.oauth2_session Invoking 0 token response hooks.
+2025-07-21 16:07:02,610 DEBUG    requests_oauthlib.oauth2_session Obtained token {'access_token': 'ya29.a0AS3H6NzETljumfM-XI9etjmdDg-QHiktaGgq1kr7aSPyp8UHw2hpOUEZvrOR2eQgtjILIQIa2MdXofhvls2c_vIOD8CsJFDZ576Ia4tWyEVIBV4v3pNQMfQxibO49F42hK66w_UJ62jXERqKUdf8b4wALZXqLNnNERZeaf1LVlFPOQaCgYKAZoSARcSFQHGX2MiULEpH2DKBLXCVDgZHoaezg0181', 'expires_in': 3599, 'refresh_token': '1//06LPqETDC_44rCgYIARAAGAYSNwF-L9IreOKLPvaEpamkCRkcq3whLWhALXJLAxZZoeqSegRtdhIRdIIuIobAY_l_BjPS8aS9F1U', 'scope': ['https://www.googleapis.com/auth/appengine.admin', 'https://www.googleapis.com/auth/compute', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/cloud-platform', 'https://www.googleapis.com/auth/sqlservice.login', 'openid', 'https://www.googleapis.com/auth/accounts.reauth'], 'token_type': 'Bearer', 'id_token': 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImI1MDljNTEzODc2OGY3Y2YyZTgyN2UwNGIyN2U3ZTRjYmM3YmI5MTkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIzMjU1NTk0MDU1OS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsImF1ZCI6IjMyNTU1OTQwNTU5LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTEwNTkwODgwNDU5NTc4Mzc5NzgzIiwiaGQiOiJjb3VydHlhcmQuaW8iLCJlbWFpbCI6InN0ZXZlQGNvdXJ0eWFyZC5pbyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiUXppeWFDcGJKa2JMRkVjcUhZT283dyIsImlhdCI6MTc1MzEzNTYyMiwiZXhwIjoxNzUzMTM5MjIyfQ.PCtc5f1gDWgANwQthqS8a0cJOESarU6b0NI_arlDPyTZrjtTrQb2-_MrZviL4RPt8B-IsGZnsskFrhchHq2L5ES_Of91StVCA6ApReJjjTbZC4hHnFCXvT0ZSN3y28o-tr9kHe5u8zwhyMqGa4e6g8O02iFiglhU76J1TeWWXW8C3QCy9h6ZYq5ICu-IXcX6MSVHUd-SuCWuNl92vYz0uMHUJECgMw609QJlr45nsTBFQ4JCW1DCLoGTNJya-ju4An7rdjv8_sWqYUwt1ipppDVPH8pCg8ZMUSU-CONGH5N9aeU3zl7cJpdZxaRDQuDveEAhMvjKdbF4u_yyeINHKw', 'expires_at': 1753139221.610074}.
+2025-07-21 16:07:02,625 DEBUG    root            Chosen display Format:none
+2025-07-21 16:07:02,625 INFO     root            Display format: "none"
+2025-07-21 16:07:02,644 INFO     ___FILE_ONLY___ You are signed in as: [steve@courtyard.io].
+
+
+2025-07-21 16:07:02,671 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): cloudresourcemanager.googleapis.com:443
+2025-07-21 16:07:02,979 DEBUG    urllib3.connectionpool https://cloudresourcemanager.googleapis.com:443 "GET /v1/projects?alt=json&filter=lifecycleState%3AACTIVE&pageSize=201 HTTP/11" 200 None
+2025-07-21 16:07:22,149 INFO     ___FILE_ONLY___ Your current project has been set to: [courtyard-frontend].
+
+
+2025-07-21 16:07:22,265 DEBUG    root            Loaded Command Group: ['gcloud', 'compute']
+2025-07-21 16:07:22,266 DEBUG    root            Loaded Command Group: ['gcloud', 'compute', 'project_info']
+2025-07-21 16:07:22,281 DEBUG    root            Loaded Command Group: ['gcloud', 'compute', 'project-info', 'describe']
+2025-07-21 16:07:22,281 INFO     root            Executing: [gcloud compute project-info describe --quiet]
+2025-07-21 16:07:22,282 DEBUG    root            Running [gcloud.compute.project-info.describe] with arguments: [--no-user-output-enabled: "false", --quiet: "True", --verbosity: "none"]
+2025-07-21 16:07:22,500 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): compute.googleapis.com:443
+2025-07-21 16:07:22,822 DEBUG    urllib3.connectionpool https://compute.googleapis.com:443 "GET /compute/v1/projects/courtyard-frontend?alt=json HTTP/11" 200 None
+2025-07-21 16:07:22,831 INFO     root            Display disabled.
+2025-07-21 16:07:26,582 DEBUG    root            Loaded Command Group: ['gcloud', 'compute', 'zones']
+2025-07-21 16:07:26,587 DEBUG    root            Loaded Command Group: ['gcloud', 'compute', 'zones', 'list']
+2025-07-21 16:07:26,590 INFO     root            Executing: [gcloud compute zones list]
+2025-07-21 16:07:26,593 DEBUG    root            Running [gcloud.compute.zones.list] with arguments: [--no-user-output-enabled: "false", --verbosity: "none"]
+2025-07-21 16:07:26,611 INFO     root            Display disabled.
+2025-07-21 16:07:26,612 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): compute.googleapis.com:443
+2025-07-21 16:07:26,810 DEBUG    urllib3.connectionpool https://compute.googleapis.com:443 "GET /compute/v1/projects/courtyard-frontend/zones?alt=json&maxResults=500 HTTP/11" 200 None
+2025-07-21 16:07:37,965 INFO     ___FILE_ONLY___ Your project default Compute Engine zone has been set to [us-central1-c].
+You can change it by running [gcloud config set compute/zone NAME].
+
+
+2025-07-21 16:07:37,969 DEBUG    root            Loaded Command Group: ['gcloud', 'compute', 'regions']
+2025-07-21 16:07:37,977 DEBUG    root            Loaded Command Group: ['gcloud', 'compute', 'regions', 'describe']
+2025-07-21 16:07:37,979 INFO     root            Executing: [gcloud compute regions describe https://www.googleapis.com/compute/v1/projects/courtyard-frontend/regions/us-central1]
+2025-07-21 16:07:37,981 DEBUG    root            Running [gcloud.compute.regions.describe] with arguments: [--no-user-output-enabled: "false", --verbosity: "none", NAME: "https://www.googleapis.com/compute/v1/projects/courtyard-frontend/regions/us-central1"]
+2025-07-21 16:07:37,992 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): compute.googleapis.com:443
+2025-07-21 16:07:38,374 DEBUG    urllib3.connectionpool https://compute.googleapis.com:443 "GET /compute/v1/projects/courtyard-frontend/regions/us-central1?alt=json HTTP/11" 200 None
+2025-07-21 16:07:38,386 INFO     root            Display disabled.
+2025-07-21 16:07:38,397 INFO     ___FILE_ONLY___ Your project default Compute Engine region has been set to [us-central1].
+You can change it by running [gcloud config set compute/region NAME].
+
+
+2025-07-21 16:07:38,397 DEBUG    root            Executing command: ['/opt/homebrew/share/google-cloud-sdk/bin/gsutil', 'config', '-n', '-o', '/Users/steve/.boto']
+2025-07-21 16:07:39,891 DEBUG    ___FILE_ONLY___ 
+2025-07-21 16:07:39,891 DEBUG    ___FILE_ONLY___ This command will create a boto config file at /Users/steve/.boto
+containing your credentials, based on your responses to the following
+questions.
+
+Boto config file "/Users/steve/.boto" created. If you need to use a
+proxy to access the Internet please see the instructions in that file.
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ Created a default .boto configuration file at [/Users/steve/.boto]. See this file and
+[https://cloud.google.com/storage/docs/gsutil/commands/config] for more
+information about configuring Google Cloud Storage.
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ The Google Cloud CLI is configured and ready to use!
+
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ * Commands that require authentication will use steve@courtyard.io by default
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ * Commands will reference project `courtyard-frontend` by default
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ * Compute Engine commands will use region `us-central1` by default
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ * Compute Engine commands will use zone `us-central1-c` by default
+
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ Run `gcloud help config` to learn how to change individual settings
+
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ This gcloud configuration is called [default]. You can create additional configurations if you work with multiple accounts and/or projects.
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ Run `gcloud topic configurations` to learn more.
+
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ Some things to try next:
+
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ * Run `gcloud --help` to see the Cloud Platform services you can interact with. And run `gcloud help COMMAND` to get help on any gcloud command.
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ * Run `gcloud topic --help` to learn about advanced features of the CLI like arg files and output formatting
+
+2025-07-21 16:07:39,892 INFO     ___FILE_ONLY___ * Run `gcloud cheat-sheet` to see a roster of go-to `gcloud` commands.
+
+2025-07-21 16:07:39,892 DEBUG    root            Chosen display Format:default
+2025-07-21 16:07:39,893 INFO     root            Display format: "default"

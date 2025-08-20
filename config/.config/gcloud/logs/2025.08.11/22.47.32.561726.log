@@ -1,0 +1,178 @@
+2025-08-11 22:47:32,585 DEBUG    root            Loaded Command Group: ['gcloud', 'compute']
+2025-08-11 22:47:32,681 DEBUG    root            Loaded Command Group: ['gcloud', 'compute', 'ssh']
+2025-08-11 22:47:32,729 DEBUG    root            Running [gcloud.compute.ssh] with arguments: [--project: "courtyard-dev", --tunnel-through-iap: "True", --zone: "us-central1-a", [USER@]INSTANCE: "instance-redis-adm"]
+2025-08-11 22:47:32,739 DEBUG    google.auth.transport.requests Making request: POST https://oauth2.googleapis.com/token
+2025-08-11 22:47:32,743 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): oauth2.googleapis.com:443
+2025-08-11 22:47:32,940 DEBUG    urllib3.connectionpool https://oauth2.googleapis.com:443 "POST /token HTTP/11" 200 None
+2025-08-11 22:47:33,025 WARNING  root            The private SSH key file for gcloud does not exist.
+2025-08-11 22:47:33,025 WARNING  root            The public SSH key file for gcloud does not exist.
+2025-08-11 22:47:33,025 WARNING  root            You do not have an SSH key for gcloud.
+2025-08-11 22:47:33,025 WARNING  root            SSH keygen will be executed to generate a key.
+2025-08-11 22:47:33,025 DEBUG    root            Running command [/usr/bin/ssh-keygen -N  -t rsa -f /Users/steve/.ssh/google_compute_engine].
+2025-08-11 22:47:33,025 DEBUG    root            Executing command: ['/usr/bin/ssh-keygen', '-N', '', '-t', 'rsa', '-f', '/Users/steve/.ssh/google_compute_engine']
+2025-08-11 22:47:33,700 DEBUG    urllib3.connectionpool Starting new HTTPS connection (1): compute.googleapis.com:443
+2025-08-11 22:47:33,988 DEBUG    urllib3.connectionpool https://compute.googleapis.com:443 "GET /compute/v1/projects/courtyard-dev/zones/us-central1-a/instances/instance-redis-adm?alt=json HTTP/11" 200 None
+2025-08-11 22:47:34,256 DEBUG    urllib3.connectionpool https://compute.googleapis.com:443 "GET /compute/v1/projects/courtyard-dev?alt=json HTTP/11" 200 None
+2025-08-11 22:47:34,263 DEBUG    root            OS Login Enabled: False
+2FA Enabled: False
+Security Keys Enabled: False
+Username: steve
+Third Party User: False
+SSH Security Key Support: None
+Environment: None
+Security Keys:
+
+Signed SSH Key: False
+Require Certificates: False
+
+2025-08-11 22:47:34,263 DEBUG    root            SSH Known Hosts File [/Users/steve/.ssh/google_compute_known_hosts] could not be opened: Unable to read file [/Users/steve/.ssh/google_compute_known_hosts]: [Errno 2] No such file or directory: '/Users/steve/.ssh/google_compute_known_hosts'
+2025-08-11 22:47:34,264 DEBUG    root            Current SSH keys in project: ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5L0Na6YxrE23aB6EjaQARrkaiIqb02wACldPQ0QllW+GlzpGUgzqUQwUndIYw8PhR/URxN6QPbQFZUYgLHTmu29M2lguuR4/Vh9jySzUY0e+31+LVYVzJFOXgZXVqiYuxPfVpMt+lXhfenHi0FIEbZ0FmH+Y6vvtEC6a9KmyyFyz7oGD9liq9kZLRD8SK/Vq0wVi0swk3WyXY6S7tVbK8sDAcXd1y7LAaOWH4A/+NL+GxhH9eYxxqnwQhTSOttlvK9ISWutrAcSmkqCxp7JiMBUQERlrTVS3p7cq2ZvEjIBE8+gpHaCjkqztP9lDGE6J+VA7Fvf8ooG9t2T8FbJf7 nathan@courtyard.io', 'root:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9GSST92dxJyWct8BJj1ybCgrNR4K9Dr0OsaStCVKh7GYLvwZltBEfGGOZ9kqsK7LnS/4kfmPAbkGBn4Y3jAG9VIdeVsqLRsM8hCIr3aSzld/ww3e1oXIPl3WFqC16i3MOXUVHEpQ542EClIwrgCfdHCBPQDZEdVaVy2DqP8bCfJUeEY81WsIMlWrobvxxXR5OedOg+xGPD/rSq1SwmLtXHQAfQnMt0oXtdurSHEjpdpsjfIfSpz7jCq3kIVDeWgsA93guvvwP0ZMF85O2urF2NtSwTVQZWxCB1+9kPDzfmErptL9v7fTntet882VPYcedw7d1xM9JPTTiNAFbtQJxhiJRz8TW6v916Syl2gQ7/Rpc4nNqgU9B2/zRf34zxWJzp2JIxxDHVeAlggxyCVgui+/5EKCXHOjPGuuQfzTYCs2v0++EEzUOKePZmWt4E1luGC1j7GAT3MP+3e5MvsDid/e6olc2bhf0nULoRbkIovRnF3WkS1AjeZVLbK3JHYk= root@courtyard', 'gabrielmachado:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDOT5glCR2ZXKAJNDSdJB0pVajw1/1V+K/57rXcubSDBYkLB3Wyy+lA+GrTcXVSZY3qW0DffyddQdRdoUrREVQ939JUj5R9qc4arPywKs/SZpDr356vx88OAqyT9xInsOapueHFC8evo1AxqinkMRv1R32vuX7mocNCcfQtKzjkfcrQym6MzeZQYFbui5cOTLINnlsVyGzUwi9bbQWIjI6jFh+PWywuD9vKLfybX2M/em9D+UEotF8XWPofD2/BCHQXQAnNpl6YTq/qSMUJwHyW/lnvtcLpqGetAevUUyuJjvdeKEcYCq1jbKWWTT6cEZDlqmd1N5F7L1miu0RePd7ZiY0ijKBvv5z7vlFohcLoz434Fi254GbWTSYADWTgAmMHkQ0hnO4X9XMoROXcctRhQUsGbGU9O/9aZ/cGqsbJMB1nqfYP/hFTa6PxpmBVNIfmeRQ+bnk07y1KJglohVp6v6S2yMdrxWooJ+izS3+AWgI855t75cAChTEOW+0wBJU= gabrielmachado@MacBook-Pro-de-Gabriel.local', 'natedogg:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCzELYxDC8dn6RQAXo5Uns1xaysOQJwzSY9Dx4S4+uqOMf/654g6uoYmqci4anGTiPjZEZzgi2sEMxbDYmv8CfpQLzQlRzUCdlAM6CwaxRryUmJ4lWARXAYS6cQ1VOxNFuM48JJy2F7uqK1XSQfGPCxHIFeQIsGcyTuew0Fm67JSxJAKWrNOWIuByucFcr3eBoprAOo6dw8i3xGSdUuqYDAKnTZvh4bMLTFORg9SjFldSlcYczU5JOlaNiry6r9laowdFwbeFqcZFxi4R907jSRxEdIMMFguWj4txsDJfvhoPzjFv7oAsrPBbfX7vTM0pCofxMYJCazmnSi5pOPAaIA1BRoFnuK6w0cRH+d/MUoS6fHtDMGqLfr0WC6Wn9qPS1HQYSc7gZO9pamqDpvRu+5BDF9LTE5GRrdmuhmSDcLxHZIn5QyMtaTWnlnLdSL0DGg2a5rLI+mg1i525RN1rAeQKSvYDfmw25v7LaE+1PDYWQb34/PnjAVhKkqaWxvzK0= natedogg@courtyard', 'jpetrich:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDuJhkMkM5S/5wBE5ncmUgSR783bLBarT9LMNjifF9bAQZcRG6SfUIkPG0LXW8uABE6foBUKLSKT6Wzkb8WDcc9BOBvfpfS1Ke9utv+ANKbX8hJXepOKTl8EtibLbg0KUCVM6g3bULsGFNOb06oqDCLUjNDP88Dz4e57hYgXCApEGnLuQQC56T+nWrRGLY5Jsto2pyUVDQmEAlbRLvUd71JF1fjwrqSYM6b7eyaKh6ylC8iOyHUxXmk/vWtJljkh0yCu4AlWAZWgGUFZbIfKgjK0wGR2TcxMOCjI1RUL5npiMNyg2vHacKOOvOKb6odtrKIsTiMyt9fCgG9jcbVzFHzma7dvqBiX6ZoNTfklbpipDX0QIHzEdhNY/jq4zhGq0SduRs2XZdS7zY+OOm0Ha6j7frVDntuf7heUXq+cJDOtUO6jbcq5ZEkvBLexKmvBph6RZJsL+srdpMOYEO8rgMrUo179/i/UFZNHdBbAE0T9ivlGHAjonOgNHLkCsXOiZ0= jpetrich@Joes-MacBook-Pro-2.local', 'joe:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDMYXqAM69g4bzQX/fNCjDC8eofj9uGM3YETQQ2JAaN0yt+p5b6t/KJOxcXbDyYB0F8J5jiIWzjm6kY5nvQdqCMZTpbQgOs/EEHONqmd+DMdrTe3XPmajch2zL6z9fPur5bNMj0kN9q5Rz9e0QRP57O9dBaBr4GbBmeIVOYLi+RupRwwMSwimvr8rPKY5lJFyN5xx0AOqy1QJwIlDwKVxu/OX5FUMUOgLWj3Jg01uet23u6ZUqwXsrbtpsvZ9oUY4O9psYbycwWKOp0gcMOVquwsZBKBu2WimfMchy1wFN6n0cJIqz1JqlctyUoIXMLJuGrj4xbswfJkNwA7eQpp41D4poVGwTnv3ubiN1q72pUKRx6cohmYFc6G4/eZXZIowKsjwqiJaLpo9FzhTEDVXCIuCzSjKCPb8uQwB3UzSL4K+PD/wreqZEhIY0EGFqDPDawUGJUzcc55TGeZTFJkuQiBNZZThCfX+JJCZxkNcEZsW4RmXfXkeplG6TjZ4B3/mM= joe@jt-m3.local', 'kevin:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC4WjbkiWYY6mkj2PQTTPWAuXZVpAbxlsHBouiy/m3EHGTZ9M3bEH8MmsOoSFDT9SDPz5ylghk3yn2f5BmEBIw2WubyF2lbi7o1KwXWMKkIXKD1K57D5P2FOIJFiKI1wBCVBmfGPnl7gt1Fksd6Ddj9bEoZj6Y8ZBdPuk0liaL50Zv1s4IX28CBiwzwXpnkJH+ovI54HX4tXcsYFh62Ri2npUXy530mlIuQ1KK+jQPWZI9KyvTqA38jSeMRKspTyXaBRZMEBLKdOjcAzhzINXPKIL6fnHvkFgWU0kz4pptTUiemBZVle7ANGdH+sOQolE8yWmLyfLUXnG+oVObKBIz16BJWMCxvYN2f+MNPQXrgnBOLpGm9b+p3QyJ+uZo9Y25qZGcnYcOQH8LNafZW8hLJgwUM0CLBgSJdrryZceNbC0txBLtKUwaDu5QY8JODJznN3IL2UNPJF52ePBneO1O1WHhNLZcxm6bfFhdoiDh4HYXYRpajctk/tW7W6ZGQ9Vs= kevin@KevinW-MacBook-Pro.local', 'max:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1TZM9XOLC84T1EODhW8bvL7b/0zH4KZ99PCdR5FFV/req1sMITFCQ1uIGfZVrGT7laq3BN3LFTa8YSkIAE2OJFTETnHzPInu7lCLMBkZANahOLX1nbCTMry+S4AB6DecnqVOsZRLBp2mDH7CY9mO9xPT2oD9A6IuYlFVKsv/1rJmuBMANTJxuRwtwoH3QBfN3a4/xSK6Yk8o/yB6yPteB4V75UAjmFE2rb4/JI8JkPQu8ZkkdeaG6tsyDkA6vGftQGf+wsKwgYDWX9SBOHDIeVTypDLxBntWjh/cSUXZ+4w7Q2bYW8OoUGMGC5G9vGrolY3h7Q/wLVmIGEylZOdCfuk5m1ED4bx7wUYqMq4v9q38yhw3sHmO9g/EkFo16ZVeCBeZ1cknS9bGv+Do7XNbjKueA9XzYCfA+duGny3ZqrLg3LBT9xFZASS8QAFWq61SK1MrjX9L8BrqRhrn3KSGmLBqyWUHvvra+xK+PKLrdZkfhLeeP9TRK3/XczfWlhF0= max@Maxs-MacBook-Pro.local', 'drew:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmQMXCDeagJn+PCFizEUVs1ftjNFjOnnc2aW/ds4LDjOrlMRIe/WJeCYEM2pnSgY+aCAMbzTZ2xZNXJ9NgB5Kz/86Q/T39gXQZ7c85cuWQ9IetCErZPxQzy8rd6xL88ZQe1cmu7uPAkJ3+Q1/lA6XpayfHMxRmQ26se7on25RmR9eFt+h83/D90NSaWxxnYmB2EBiLXjsBXjvHBXr14HqzeMRClTQHhG4zSWc6+OvyYIi02SGPHqL74W3cDsXeBkz12EUItT/nzebgl3tfzOvwyR5fVXYQkPci5Ypqw+H/3pbR2Suz0huGEYakx5Kstxus7TFT4vKJuR5ZCufWdz+Bu1UoRynZoFLg0Df9gMWaJ7VFNvu2NNeDtksAqAm/Goueg5b+uJW+JNpwRH3XqL8+Vt+HAsaDbqJCu3JHIVyB7I6EMhFghNej2gM42Md4rmP6O1thTBv7F08cR2aFF4fGJG7wCvLJiA+DeDuMEHB0UI4a3h/ZIhzUSxD7qLrzgxs= drew@courtyard.local', 'pdubbs:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDMYD1QQw8qMgRjQ+BhXTXA2FxlIhdUd0lRYkQp10x3yo3WsVNqzZc+dqkzmMzsl6lzpBzws13gG0EsY9QL7jNSmvfBIT2TV2nyHe53FAYTcx9qUWsABXVWUL58ufnYDc7z5RwO4sqPiA69xXWV41BuKFs24tBUrqQ8cbhGYxbvhWF8SKZnYU2Zzd8EcAiztCgkzx2+AP/3hwc/5W4SB2wi/m3gW9ak6FBMCxOp5kuwH5MskMPIQD6SvoCaMMUrPsauwFEBq0lWxzNAfeuhUPyUn3cLYxaldrvGma08Xc7AY2CQoR8qxd0LAiVSQn0GRlgjprCm98i0sBi0rtqPiWQBfBvAHLArxVe3lePwcSJW/MjkkqWq8FJFgMYZ36sEyJijiDb8P6Q0/rz8fRZ1REIiitNY0OtP2dqZUnRq7Wr79yH1r+kTQBCnIrDG9zaMV0ypm7BZQrUPlLgBjXfvurjPf4mNvzNet5DmFunpeauDSzHJIZtzyX+BiHVz0XddLk8= pdubbs@Pauls-MacBook-Pro.local', 'pdubbs:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCvIv48bZPK22J4SS1tKYu/asDx/+qkNeBZfDMHSsJGwNf+A8xQBFX9SNmoaGGHTie5ek1LRKN+puuHdfhDGsvEbS0aZcfbYFxz8qf+wAJxyyvLk6YfuAXjICRYaZLvTA0M4hs+zY5r7AZIW4IkTpguNcWi/NvwZrsqygwdBy21FJ8Rt8+3qfU0YjjuZRvt7jTMLqUE3BQqtPVPCyfRnlooX6fwHaNcMKIucutoJRxevbjW7s7wPPDClkxsxxEmP9eHyxRh7ajbN7dm1lvyu1kD1NlLptUBAR4RdW6eKJTZWFRP9vyzO27UF0Gpg4YQqJTNsqGIINgJS6GVj0pCntypTHEGeBV0KZToLC8QuuMtCMArcJhv/zdl5oSKrs1N5zN9TQ0Og3RLGXjzcLf0OMppoUm23y26ij+Cqe791URQVI22/F4fSsasDMvjY9WnghJtDKg6SozwtW2VFkTpw4x3VA1I8Mgleou2HMgGFZIyHK6iyM01H/X77Wu1G+oTabM= pdubbs@instance-redis-adm', 'saeed:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDAHhrBh8YYAi6mo0QH0qmafMXWviyYXhVPcj7w1B0qX8tUDNIBZ/RSrc9o+Jvt/0A2OokE4buxFs0+wagTEpPp4bASveuFV+rhGsfLHA16cce7VFM8ho8pJPR51dfJ9yR8FYMcOoNtunSXanislBplDxhZFRtjhEosIRt8bBKFWw7qd3YGF8GpPOqGEGZovDiEcMvLMSTXH6liIntTCPzTJbxmNFNRyaGFJJVumLonDocUfsXIJ3elM/70OwU/OJZeMvALFQeFSLPN6N+d+PL4EmmFumYdMNbyDT8Iq82pc8H6SK48/UTE2qZxLpAHfgkiKSrR6aSxiYEbeaTU0ao1OTAzRbE269gXRNWesvrRrELEmLqaNCyvFGvTqkRBtH9z3IvyOREY1GaQGF8a+JLfP67qmlXmsLaClShk/NHh5gQViR1xHFLtUGY+fiYyM2EBqFt1DPmp7ZCZ87IZqdZuRmTPzVwV8rhXAYC5XLsNdwjQVe+LB3Qq0GbJphvySpk= saeed@Mac.fritz.box', 'thdev:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCfRzRTCdHoqhuO3FSleK4MMzeGvIOhV66ItIETRawRg+3MWTjPVQyOzCWkZJHRL36Jy1dkJ4StA08f2hgdDhCIjd1KBZhHN/mXOumiJpl5TvvfJzn+JzElC96KhPPIWMAn7gKvd3ekxCAZUs3KA8hMo7hAPa+If+5W5JbLE02ODsH+OotylnijpYBuhRckrkLHTLdK+snQnJkl36IxM9DMQ1exsH/81XWGkMgyB/OJ26AVoHpGsg8sL1ruONMejcUfPvH+z65ZoOUvvyi64JYJ1tKXrJCqVn/dyGm4xFroRJrKN1ywCv56x54K85g/0+unHxJ2sdNHflMdPjUhXVLJUwB/v5g+iBv7iW0AFcdWc7xUulJsq+C7dkSwLLDH0XSqXThpyfluGvXq8/dMiLCc9D0jWjTC/xXg/re1WYPxLwYstv46gfjBlnBO4GnxkpxQQQ7MxfXdnfns2S+xir2UI6Xt8wD0VOStVz8MC2B7AEbBS0fMzzJqEN6kriCf7WM= thdev@thdev']
+2025-08-11 22:47:34,264 WARNING  root            The following key(s) are missing the <username> at the front
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5L0Na6YxrE23aB6EjaQARrkaiIqb02wACldPQ0QllW+GlzpGUgzqUQwUndIYw8PhR/URxN6QPbQFZUYgLHTmu29M2lguuR4/Vh9jySzUY0e+31+LVYVzJFOXgZXVqiYuxPfVpMt+lXhfenHi0FIEbZ0FmH+Y6vvtEC6a9KmyyFyz7oGD9liq9kZLRD8SK/Vq0wVi0swk3WyXY6S7tVbK8sDAcXd1y7LAaOWH4A/+NL+GxhH9eYxxqnwQhTSOttlvK9ISWutrAcSmkqCxp7JiMBUQERlrTVS3p7cq2ZvEjIBE8+gpHaCjkqztP9lDGE6J+VA7Fvf8ooG9t2T8FbJf7 nathan@courtyard.io
+
+Format ssh keys following https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys
+2025-08-11 22:47:34,284 INFO     ___FILE_ONLY___ Updating project ssh metadata...
+2025-08-11 22:47:34,571 DEBUG    urllib3.connectionpool https://compute.googleapis.com:443 "POST /compute/v1/projects/courtyard-dev/setCommonInstanceMetadata?alt=json HTTP/11" 403 None
+2025-08-11 22:47:34,572 DEBUG    root            Chosen display Format:list[title="Could not add SSH key to project metadata:",always-display-title]
+2025-08-11 22:47:34,694 INFO     root            Could not set project metadata:
+Traceback (most recent call last):
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 822, in EnsureSSHKeyExists
+    keys_newly_added = self.EnsureSSHKeyIsInProject(
+        compute_client, user, project, expiration)
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 753, in EnsureSSHKeyIsInProject
+    self.SetProjectMetadata(client, new_metadata)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 668, in SetProjectMetadata
+    self._SetProjectMetadata(client, new_metadata)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 660, in _SetProjectMetadata
+    utils.RaiseException(
+    ~~~~~~~~~~~~~~~~~~~~^
+        errors,
+        ^^^^^^^
+        SetProjectMetadataError,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+        error_message='Could not add SSH key to project metadata:')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/api_lib/compute/utils.py", line 148, in RaiseException
+    raise exception(
+        ConstructList(error_message or 'Some requests did not succeed:',
+                      ParseErrors(errors)))
+googlecloudsdk.command_lib.compute.ssh_utils.SetProjectMetadataError: Could not add SSH key to project metadata:
+ - Required 'iam.serviceAccounts.actAs' permission for 'projects/courtyard-dev'
+
+2025-08-11 22:47:34,700 INFO     root            Attempting to set instance metadata.
+2025-08-11 22:47:34,701 DEBUG    root            Current SSH keys in project: ['drew:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCmQMXCDeagJn+PCFizEUVs1ftjNFjOnnc2aW/ds4LDjOrlMRIe/WJeCYEM2pnSgY+aCAMbzTZ2xZNXJ9NgB5Kz/86Q/T39gXQZ7c85cuWQ9IetCErZPxQzy8rd6xL88ZQe1cmu7uPAkJ3+Q1/lA6XpayfHMxRmQ26se7on25RmR9eFt+h83/D90NSaWxxnYmB2EBiLXjsBXjvHBXr14HqzeMRClTQHhG4zSWc6+OvyYIi02SGPHqL74W3cDsXeBkz12EUItT/nzebgl3tfzOvwyR5fVXYQkPci5Ypqw+H/3pbR2Suz0huGEYakx5Kstxus7TFT4vKJuR5ZCufWdz+Bu1UoRynZoFLg0Df9gMWaJ7VFNvu2NNeDtksAqAm/Goueg5b+uJW+JNpwRH3XqL8+Vt+HAsaDbqJCu3JHIVyB7I6EMhFghNej2gM42Md4rmP6O1thTBv7F08cR2aFF4fGJG7wCvLJiA+DeDuMEHB0UI4a3h/ZIhzUSxD7qLrzgxs= drew@courtyard.local', 'max:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC1TZM9XOLC84T1EODhW8bvL7b/0zH4KZ99PCdR5FFV/req1sMITFCQ1uIGfZVrGT7laq3BN3LFTa8YSkIAE2OJFTETnHzPInu7lCLMBkZANahOLX1nbCTMry+S4AB6DecnqVOsZRLBp2mDH7CY9mO9xPT2oD9A6IuYlFVKsv/1rJmuBMANTJxuRwtwoH3QBfN3a4/xSK6Yk8o/yB6yPteB4V75UAjmFE2rb4/JI8JkPQu8ZkkdeaG6tsyDkA6vGftQGf+wsKwgYDWX9SBOHDIeVTypDLxBntWjh/cSUXZ+4w7Q2bYW8OoUGMGC5G9vGrolY3h7Q/wLVmIGEylZOdCfuk5m1ED4bx7wUYqMq4v9q38yhw3sHmO9g/EkFo16ZVeCBeZ1cknS9bGv+Do7XNbjKueA9XzYCfA+duGny3ZqrLg3LBT9xFZASS8QAFWq61SK1MrjX9L8BrqRhrn3KSGmLBqyWUHvvra+xK+PKLrdZkfhLeeP9TRK3/XczfWlhF0= max@Maxs-MacBook-Pro.local', 'jacobbrenneman:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNdySDb3Wi6Fvz2YgtmyrSUhGLYzfuPQmqnudfc1CT1rd1YFFr+EZ/Wocw5Y8yZGkDogxhc0xaxPx+sLdQqUO3Xrg1NAZnDrESkbd2ffH3n/yZIsGtVT0qMwBa7jWFevJ2KKGRQFEVyHaZnxEYBYgXY7Qn0j3Kf08rrjqjyQLz9Fq6ODBuDsLgWTlnDaZTbCL4BV2acbY4JPoloONIP9aEPFiv09ZTYdMDRk7EJ6rFT5wIaYnyPoUR+het3T2aYzRndu1L5dXAo4/JhtbveiuD5eld96Q32Mf0vwQq5HCN8XfkEKCev9cpSRF+bn2Mmtvm2xFPueiO/rXTikVaJGtWuZxpSRZMoNrzc+CTvYtxhG4W7HN7lE6PkSjYvSYW3lrIm1Jh27HoRz/2GAkHudNEovJXkGvMyQ4ntLOpXMUQVLJwvCI6eP4vzvKgZPoWzM3bFJcp6yWiNTrLvhloNDZgkIeUA/KxwPQCbTtMIWYdki/2shhXSINYq33KkkVO5gM= jacobbrenneman@Mac-124.lan', 'stephenchen:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDLNsg2QGcpTowAzPOLLDeDVG9tSL8jMyNDt+yo/+uLyu1Jz0fKLDZOfFpGRB+SvM7z7QvkeJ8ORz2NoTg7asQ3AJM/W/FZMsHcLLXhafM0c5uiZEtbQuJrK3NIj0nx3V6o0+qU+cKyjIfJGEUDmSpa/M0GQI+3pVIx4/vwYKXelC4uDpmwyCc/fwFxVDT+lcd9+LslxcNLQ4K64GUkZRGRDGcoMsBle68Re39RsWIdU0jCnGdxOwFgGMNYAglWj2572RaxjP8t5TLHZ9J3/b8KMKnDn4wgy6VCwJxp7tpAJY2evesTNCdTAj1SpeFwWuz2GBHjExHyS11S1HvN+POOBFOhsfiAiTMhEqcKFgc/eo2bhDbXfo7Dviv2n/2Y0vGuYsxJnX5pKsKRaXUMpx7c6Av9cRWBAOsylbfGNWngi1Ngwsc1kH38rZt6D25hly/0PfONmlnSquuz8Y8DEiz01VANMDiF/5RBrsMt2C/CiBKXSCK3U7A9jt1oZgibFys= stephenchen@Stephens-MacBook-Pro.local']
+2025-08-11 22:47:34,725 INFO     ___FILE_ONLY___ Updating instance ssh metadata...
+2025-08-11 22:47:35,777 DEBUG    urllib3.connectionpool https://compute.googleapis.com:443 "POST /compute/v1/projects/courtyard-dev/zones/us-central1-a/instances/instance-redis-adm/setMetadata?alt=json HTTP/11" 200 None
+2025-08-11 22:47:35,780 DEBUG    root            Operations to inspect: [(<Operation
+ id: 3157053995025398152
+ insertTime: '2025-08-11T21:47:35.695-07:00'
+ kind: 'compute#operation'
+ name: 'operation-1754974055270-63c23bd2787d0-8b085e9d-14e4d82f'
+ operationType: 'setMetadata'
+ progress: 0
+ selfLink: 'https://www.googleapis.com/compute/v1/projects/courtyard-dev/zones/us-central1-a/operations/operation-1754974055270-63c23bd2787d0-8b085e9d-14e4d82f'
+ startTime: '2025-08-11T21:47:35.703-07:00'
+ status: StatusValueValuesEnum(RUNNING, 2)
+ targetId: 2161940446615035003
+ targetLink: 'https://www.googleapis.com/compute/v1/projects/courtyard-dev/zones/us-central1-a/instances/instance-redis-adm'
+ user: 'steve@courtyard.io'
+ warnings: []
+ zone: 'https://www.googleapis.com/compute/v1/projects/courtyard-dev/zones/us-central1-a'>, 3)]
+2025-08-11 22:47:36,355 DEBUG    urllib3.connectionpool https://compute.googleapis.com:443 "POST /compute/v1/projects/courtyard-dev/zones/us-central1-a/operations/operation-1754974055270-63c23bd2787d0-8b085e9d-14e4d82f/wait?alt=json HTTP/11" 200 None
+2025-08-11 22:47:36,358 DEBUG    root            Operations to inspect: [(<Operation
+ endTime: '2025-08-11T21:47:36.002-07:00'
+ error: <ErrorValue
+ errors: [<ErrorsValueListEntry
+ code: 'SERVICE_ACCOUNT_ACCESS_DENIED'
+ errorDetails: []
+ message: "The user does not have access to service account '539429552737-compute@developer.gserviceaccount.com'.  User: 'steve@courtyard.io'.  Ask a project owner to grant you the iam.serviceAccountUser role on the service account">]>
+ httpErrorMessage: 'BAD REQUEST'
+ httpErrorStatusCode: 400
+ id: 3157053995025398152
+ insertTime: '2025-08-11T21:47:35.695-07:00'
+ kind: 'compute#operation'
+ name: 'operation-1754974055270-63c23bd2787d0-8b085e9d-14e4d82f'
+ operationType: 'setMetadata'
+ progress: 100
+ selfLink: 'https://www.googleapis.com/compute/v1/projects/courtyard-dev/zones/us-central1-a/operations/operation-1754974055270-63c23bd2787d0-8b085e9d-14e4d82f'
+ startTime: '2025-08-11T21:47:35.703-07:00'
+ status: StatusValueValuesEnum(DONE, 0)
+ targetId: 2161940446615035003
+ targetLink: 'https://www.googleapis.com/compute/v1/projects/courtyard-dev/zones/us-central1-a/instances/instance-redis-adm'
+ user: 'steve@courtyard.io'
+ warnings: []
+ zone: 'https://www.googleapis.com/compute/v1/projects/courtyard-dev/zones/us-central1-a'>, 3)]
+2025-08-11 22:47:36,359 DEBUG    root            Chosen display Format:list[title="Could not add SSH key to instance metadata, refer https://cloud.google.com/compute/docs/access#granting_users_ssh_access_to_vm_instances for granting users SSH access to VM instances:",always-display-title]
+2025-08-11 22:47:36,564 DEBUG    root            (gcloud.compute.ssh) Could not add SSH key to instance metadata, refer https://cloud.google.com/compute/docs/access#granting_users_ssh_access_to_vm_instances for granting users SSH access to VM instances:
+ - The user does not have access to service account '539429552737-compute@developer.gserviceaccount.com'.  User: 'steve@courtyard.io'.  Ask a project owner to grant you the iam.serviceAccountUser role on the service account
+Traceback (most recent call last):
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 822, in EnsureSSHKeyExists
+    keys_newly_added = self.EnsureSSHKeyIsInProject(
+        compute_client, user, project, expiration)
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 753, in EnsureSSHKeyIsInProject
+    self.SetProjectMetadata(client, new_metadata)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 668, in SetProjectMetadata
+    self._SetProjectMetadata(client, new_metadata)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 660, in _SetProjectMetadata
+    utils.RaiseException(
+    ~~~~~~~~~~~~~~~~~~~~^
+        errors,
+        ^^^^^^^
+        SetProjectMetadataError,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+        error_message='Could not add SSH key to project metadata:')
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/api_lib/compute/utils.py", line 148, in RaiseException
+    raise exception(
+        ConstructList(error_message or 'Some requests did not succeed:',
+                      ParseErrors(errors)))
+googlecloudsdk.command_lib.compute.ssh_utils.SetProjectMetadataError: Could not add SSH key to project metadata:
+ - Required 'iam.serviceAccounts.actAs' permission for 'projects/courtyard-dev'
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/calliope/cli.py", line 985, in Execute
+    resources = calliope_command.Run(cli=self, args=args)
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/calliope/backend.py", line 945, in Run
+    resources = command_instance.Run(args)
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/surface/compute/ssh.py", line 475, in Run
+    keys_newly_added = ssh_helper.EnsureSSHKeyExists(
+        client, remote.user, instance, project, expiration=expiration)
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 833, in EnsureSSHKeyExists
+    keys_newly_added = self.EnsureSSHKeyIsInInstance(
+        compute_client, user, instance, expiration)
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 726, in EnsureSSHKeyIsInInstance
+    self.SetInstanceMetadata(client, instance, new_metadata)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 700, in SetInstanceMetadata
+    self._SetInstanceMetadata(client, instance, new_metadata)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/command_lib/compute/ssh_utils.py", line 688, in _SetInstanceMetadata
+    utils.RaiseToolException(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        errors,
+        ^^^^^^^
+    ...<4 lines>...
+        ),
+        ^^
+    )
+    ^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/api_lib/compute/utils.py", line 139, in RaiseToolException
+    RaiseException(problems, calliope_exceptions.ToolException, error_message)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Caskroom/gcloud-cli/530.0.0/google-cloud-sdk/lib/googlecloudsdk/api_lib/compute/utils.py", line 148, in RaiseException
+    raise exception(
+        ConstructList(error_message or 'Some requests did not succeed:',
+                      ParseErrors(errors)))
+googlecloudsdk.calliope.exceptions.ToolException: Could not add SSH key to instance metadata, refer https://cloud.google.com/compute/docs/access#granting_users_ssh_access_to_vm_instances for granting users SSH access to VM instances:
+ - The user does not have access to service account '539429552737-compute@developer.gserviceaccount.com'.  User: 'steve@courtyard.io'.  Ask a project owner to grant you the iam.serviceAccountUser role on the service account
+
+2025-08-11 22:47:36,575 ERROR    root            (gcloud.compute.ssh) Could not add SSH key to instance metadata, refer https://cloud.google.com/compute/docs/access#granting_users_ssh_access_to_vm_instances for granting users SSH access to VM instances:
+ - The user does not have access to service account '539429552737-compute@developer.gserviceaccount.com'.  User: 'steve@courtyard.io'.  Ask a project owner to grant you the iam.serviceAccountUser role on the service account
+

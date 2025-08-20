@@ -1,0 +1,25 @@
+2025-07-21 16:07:44,622 DEBUG    root            Loaded Command Group: ['gcloud', 'auth']
+2025-07-21 16:07:44,623 DEBUG    root            Loaded Command Group: ['gcloud', 'auth', 'configure_docker']
+2025-07-21 16:07:44,623 DEBUG    root            Running [gcloud.auth.configure-docker] with arguments: []
+2025-07-21 16:07:44,624 WARNING  root            `docker` not in system PATH.
+`docker` and `docker-credential-gcloud` need to be in the same PATH in order to work correctly together.
+gcloud's Docker credential helper can be configured but it will not work until this is corrected.
+2025-07-21 16:07:44,624 WARNING  root            Your config file at [/Users/steve/.docker/config.json] contains these credential helper entries:
+
+{
+  "credHelpers": {
+    "gcr.io": "gcloud",
+    "us.gcr.io": "gcloud",
+    "eu.gcr.io": "gcloud",
+    "asia.gcr.io": "gcloud",
+    "staging-k8s.gcr.io": "gcloud",
+    "marketplace.gcr.io": "gcloud"
+  }
+}
+2025-07-21 16:07:44,624 INFO     ___FILE_ONLY___ Adding credentials for all GCR repositories.
+
+2025-07-21 16:07:44,624 WARNING  root            A long list of credential helpers may cause delays running 'docker build'. We recommend passing the registry name to configure only the registry you are using.
+2025-07-21 16:07:44,624 INFO     ___FILE_ONLY___ gcloud credential helpers already registered correctly.
+
+2025-07-21 16:07:44,624 DEBUG    root            Chosen display Format:default
+2025-07-21 16:07:44,624 INFO     root            Display format: "default"
