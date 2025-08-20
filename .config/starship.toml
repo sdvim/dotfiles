@@ -4,6 +4,11 @@
 # Inserts a blank line between shell prompts
 add_newline = true
 
+[git_status]
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇡${ahead_count}⇣${behind_count}"
+
 # Google Cloud module - only show in specific folders
 [gcloud]
 disabled = true
