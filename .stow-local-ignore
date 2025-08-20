@@ -14,3 +14,8 @@ rclone\.conf
 code/user/globalStorage
 code/user/workspaceStorage
 code/user/History
+
+# API keys and secrets (add to .zshrc.local instead)
+.*API_KEY.*
+.*_TOKEN.*
+.*SECRET.*

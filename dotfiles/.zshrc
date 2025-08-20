@@ -56,7 +56,6 @@ export FNM_COREPACK_ENABLED="false"
 export FNM_RESOLVE_ENGINES="true"
 export FNM_ARCH="arm64"
 rehash
-export DEVIN_API_KEY="apk_user_Z29vZ2xlLW9hdXRoMnwxMTA1OTA4ODA0NTk1NzgzNzk3ODNfb3JnXzNVS05uODVTU0tVSW9jVkk6ZTUyZTIwMjllZmQ4NGJhOTgzNGM2MjBmZTYwMDc1MjA="
 
 # Claude tmux integration
 source ~/.bashrc_claude_tmux
