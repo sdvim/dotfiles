@@ -1,0 +1,24 @@
+# Claude tmux integration
+# Source this file in your .bashrc or .zshrc
+
+# Function to set up Claude tmux title
+claude_tmux_init() {
+    if [[ -n "$TMUX" ]]; then
+        # Set initial title when starting Claude
+        ~/.claude-tmux-wrapper.sh start
+        
+        # Set up trap to restore title on exit
+        trap '~/.claude-tmux-wrapper.sh complete' EXIT
+    fi
+}
+
+# Auto-initialize if in tmux and Claude environment detected
+# Disabled automatic initialization to prevent all windows being named "Claude"
+# if [[ -n "$TMUX" && (-n "$CLAUDE_PROJECT_NAME" || "$0" =~ "claude" || "$_" =~ "claude") ]]; then
+#     claude_tmux_init
+# fi
+
+# Convenience functions
+claude_waiting() { ~/.claude-tmux-wrapper.sh waiting; }
+claude_complete() { ~/.claude-tmux-wrapper.sh complete; }
+claude_thinking() { ~/.claude-tmux-wrapper.sh thinking; }
