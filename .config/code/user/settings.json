@@ -1,0 +1,13 @@
+{
+    "editor.accessibilitySupport": "off",
+    "editor.scrollBeyondLastLine": false,
+    "editor.stickyScroll.enabled": false,
+    "explorer.confirmDelete": false,
+    "breadcrumbs.enabled": false,
+    "editor.fontFamily": "Berkeley Mono, Menlo, Monaco, 'Courier New', monospace",
+    "workbench.startupEditor": "none",
+    "diffEditor.renderSideBySide": false,
+    "git.autofetch": true,
+    "git.ignoreRebaseWarning": true,
+    "diffEditor.ignoreTrimWhitespace": true
+}
