@@ -29,6 +29,7 @@ if [[ $- == *i* ]] && [[ -z "$CLAUDE_CODE" ]]; then
     alias o='claude -p "$(cat "/Users/steve/Library/Mobile Documents/iCloud~md~obsidian/Documents/core/$(date +%Y-%m).md")"'
     alias find="fd"
     alias grep="rg"
+    alias claude="claude --mcp-config ~/.config/claude/mcp.json"
 fi
 
 # Exports
@@ -57,8 +58,6 @@ export FNM_RESOLVE_ENGINES="true"
 export FNM_ARCH="arm64"
 rehash
 
-# Claude tmux integration
-source ~/.bashrc_claude_tmux
 
 # Auto-attach tmux for SSH sessions
 if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]] || [[ "$SSH_CONNECTION" ]]; then
