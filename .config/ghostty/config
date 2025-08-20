@@ -73,17 +73,24 @@ keybind = super+p=text:\x02\x77
 # tmux: Rename Window (Cmd+R : Ctrl+B+,)
 keybind = super+r=text:\x02\x2c
 
-# tmux: Previous Window (Cmd+H : Ctrl+B+P)
-keybind = super+h=text:\x02\x70
 
-# tmux: Next Window (Cmd+L : Ctrl+B+N)
-keybind = super+l=text:\x02\x6e
+# tmux: Previous Window (Cmd+Shift+[ : Ctrl+B+P) - Browser-style
+keybind = super+shift+left_bracket=text:\x02\x70
 
-# tmux: Split Horizontally (Cmd+[ : Ctrl+B+")
-keybind = super+left_bracket=text:\x02\x22
+# tmux: Next Window (Cmd+Shift+] : Ctrl+B+N) - Browser-style
+keybind = super+shift+right_bracket=text:\x02\x6e
 
-# tmux: Split Vertically (Cmd+] : Ctrl+B+%)
-keybind = super+right_bracket=text:\x02\x25
+# tmux: Previous Pane (Cmd+[ : Ctrl+B+;) - Last pane
+keybind = super+left_bracket=text:\x02\x3b
+
+# tmux: Next Pane (Cmd+] : Ctrl+B+o) - Cycle panes
+keybind = super+right_bracket=text:\x02\x6f
+
+# tmux: Split Down (Cmd+Shift+D : Ctrl+B+")
+keybind = super+shift+d=text:\x02\x22
+
+# tmux: Split Right (Cmd+Shift+R : Ctrl+B+%)
+keybind = super+shift+r=text:\x02\x25
 
 # tmux: Toggle Pane Zoom (Cmd+Z : Ctrl+B+Z)
 keybind = super+z=text:\x02\x7a
