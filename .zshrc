@@ -69,3 +69,20 @@ if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]] || [[ "$SSH_CONNECTION" ]]; the
 fi
 
 export GOPATH="$HOME/go"; export GOROOT="$HOME/.go"; export PATH="$GOPATH/bin:$PATH"; # g-install: do NOT edit, see https://github.com/stefanmaric/g
+
+# Auto-apply dotfiles on login and change to dotfiles directory
+if [[ $- == *i* ]] && [[ -z "$CLAUDE_CODE" ]]; then
+    # Change to dotfiles directory on login
+    if [[ "$PWD" == "$HOME" ]] && [[ -d "$HOME/dotfiles" ]]; then
+        cd "$HOME/dotfiles"
+    fi
+    
+    # Auto-apply dotfiles with change detection
+    if [[ -d "$HOME/dotfiles" ]]; then
+        dotfiles_output=$(cd "$HOME/dotfiles" && stow . 2>&1)
+        if [[ -n "$dotfiles_output" ]]; then
+            echo "Dotfiles updated:"
+            echo "$dotfiles_output" | grep -E "(LINK|UNLINK)" | sed 's/^/  /'
+        fi
+    fi
+fi
