@@ -1,32 +1,59 @@
-## Quick install of dotfiles and scripts
+# Dotfiles
 
-```console
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/sdvim/dotfiles/HEAD/.config/macos/install.sh)"
+This repository manages configuration files using GNU Stow for symlink management.
+
+## Setup
+
+1. Clone this repository to `~/dotfiles`
+2. Install dependencies via Homebrew (see `.config/homebrew/Brewfile`)
+3. Apply configurations: `stow .`
+
+## Structure
+
+- **Root level**: Direct home directory dotfiles (`.zshrc`, `.gitconfig`, etc.)
+- **`.config/`**: XDG Base Directory compliant configurations
+- **`.stow-local-ignore`**: Files to exclude from stow management
+
+## Key Features
+
+### Shell (zsh)
+- History management with sharing and deduplication
+- Autosuggestions and syntax highlighting via Homebrew packages
+- Aliases for modern CLI tools (eza, fd, rg, bat)
+- Auto-directory change to dotfiles on login
+- Auto-apply dotfiles with change detection on login
+
+### Tmux
+- 1-based window/pane numbering with auto-renumbering
+- Mouse support with proper scrolling behavior
+- Custom status line styling
+- UTF-8 and 256-color support
+
+### Claude AI Integration
+- Global MCP server configuration at `.config/claude/mcp.json`
+- Context7 MCP server available across all directories
+- Claude alias automatically loads MCP configuration
+
+### Git
+- Shared configuration and ignore patterns
+- User-specific settings
+
+### Terminal Tools
+- Ghostty terminal emulator configuration
+- Starship prompt with conditional Unicode support for Terminus
+- Zoxide for smart directory jumping
+
+## Usage
+
+```bash
+# Apply all configurations
+stow .
+
+# Apply specific configuration
+stow --target=$HOME .config/git
+
+# Remove configurations
+stow -D .
 ```
 
-## Using dotfiles
-
-### Setup
-```console
-git init --bare $HOME/.dotfiles.git
-alias dotfiles='git --git-dir=$HOME/.dotfiles.git/ --work-tree=$HOME'
-dotfiles config status.showUntrackedFiles no
-dotfiles remote add origin git@github.com:sdvim/dotfiles.git
-```
-
-### Load
-```console
-git clone --separate-git-dir=$HOME/.dotfiles.git https://github.com/sdvim/dotfiles.git dotfiles-setup
-rsync --recursive --verbose --exclude '.git' dotfiles-setup/ $HOME/
-rm -r dotfiles-setup
-```
-
-### Usage example
-```console
-dotfiles status
-dotfiles add .gitconfig
-dotfiles commit -m 'Add gitconfig'
-dotfiles push
-```
-
-via [A simpler way to manage your dotfiles](https://www.anand-iyer.com/blog/2018/a-simpler-way-to-manage-your-dotfiles.html)
+The system automatically applies dotfiles on shell startup and reports any changes.
