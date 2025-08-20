@@ -79,11 +79,11 @@ keybind = super+h=text:\x02\x70
 # tmux: Next Window (Cmd+L : Ctrl+B+N)
 keybind = super+l=text:\x02\x6e
 
-# tmux: Split Horizontally (Cmd+- : Ctrl+B+")
-# keybind = super+minus=text:\x02\x22
+# tmux: Split Horizontally (Cmd+[ : Ctrl+B+")
+keybind = super+left_bracket=text:\x02\x22
 
-# tmux: Split Vertically (Cmd+\ : Ctrl+B+%)
-keybind = super+backslash=text:\x02\x25
+# tmux: Split Vertically (Cmd+] : Ctrl+B+%)
+keybind = super+right_bracket=text:\x02\x25
 
 # tmux: Toggle Pane Zoom (Cmd+Z : Ctrl+B+Z)
 keybind = super+z=text:\x02\x7a
