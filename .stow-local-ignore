@@ -4,3 +4,13 @@ README\.md
 LICENSE
 \.DS_Store
 \.stow-local-ignore
+
+# Sensitive config files
+gcloud/credentials\.db
+gcloud/access_tokens\.db
+gcloud/legacy_credentials
+gcloud/logs
+rclone\.conf
+code/user/globalStorage
+code/user/workspaceStorage
+code/user/History
