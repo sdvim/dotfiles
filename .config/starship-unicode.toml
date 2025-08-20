@@ -1,0 +1,52 @@
+[character]
+success_symbol = "[>](bold green)"
+error_symbol = "[>](bold red)"
+
+[git_branch]
+symbol = "* "
+
+[git_status]
+ahead = "^"
+behind = "v"
+diverged = "<>"
+renamed = ">"
+deleted = "x"
+modified = "!"
+staged = "+"
+untracked = "?"
+
+[directory]
+read_only = " [RO]"
+
+[package]
+symbol = "pkg "
+
+[nodejs]
+symbol = "node "
+
+[python]
+symbol = "py "
+
+[rust]
+symbol = "rs "
+
+[docker_context]
+symbol = "docker "
+
+[aws]
+symbol = "aws "
+
+[gcloud]
+symbol = "gcp "
+
+[golang]
+symbol = "go "
+
+[java]
+symbol = "java "
+
+[kubernetes]
+symbol = "k8s "
+
+[terraform]
+symbol = "tf "
