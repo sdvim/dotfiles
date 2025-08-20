@@ -83,7 +83,7 @@ if [[ $- == *i* ]] && [[ -z "$CLAUDE_CODE" ]]; then
         dotfiles_output=$(cd "$HOME/dotfiles" && stow . 2>&1)
         if [[ -n "$dotfiles_output" ]]; then
             echo "Dotfiles updated:"
-            echo "$dotfiles_output" | grep -E "(LINK|UNLINK)" | sed 's/^/  /'
+            echo "$dotfiles_output" | /usr/bin/grep -E "(LINK|UNLINK)" | sed 's/^/  /'
         fi
     fi
 fi
