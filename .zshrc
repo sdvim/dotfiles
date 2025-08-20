@@ -24,7 +24,7 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 if [[ $- == *i* ]] && [[ -z "$CLAUDE_CODE" ]]; then
     alias cd="z"
     alias ls="eza --icons=always"
-    alias tree='eza -T -L 4 -a'
+    alias tree='eza -T -L 4 -a --git-ignore'
     alias ai="aichat"
     alias o='claude -p "$(cat "/Users/steve/Library/Mobile Documents/iCloud~md~obsidian/Documents/core/$(date +%Y-%m).md")"'
     alias find="fd"
