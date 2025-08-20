@@ -46,7 +46,9 @@
       "Bash(git push:*)",
       "Bash(gh repo edit:*)",
       "Bash(rm:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(git log:*)",
+      "Bash(git filter-branch:*)"
     ],
     "deny": []
   }
