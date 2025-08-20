@@ -14,5 +14,5 @@ These instructions apply to all Claude sessions for user Steve.
 ## Important Notes
 - These are user-level preferences that should persist across all Claude sessions
 - Project-specific instructions in project CLAUDE.md files take precedence over these
-- only use `rm` in git directories. otherwise, use `trash`
+- Only use `rm` in git directories. Otherwise, use `trash`
 - Use context7 mcp and other available docs when possible
