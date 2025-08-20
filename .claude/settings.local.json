@@ -49,7 +49,13 @@
       "Bash(git rm:*)",
       "Bash(git log:*)",
       "Bash(git filter-branch:*)",
-      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch .viminfo' --prune-empty --tag-name-filter cat -- --all)"
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch .viminfo' --prune-empty --tag-name-filter cat -- --all)",
+      "Bash(osascript:*)",
+      "Bash(printf \"\\a\")",
+      "Bash(tmux display:*)",
+      "Bash(git gc:*)",
+      "Bash(tmux set-hook:*)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch .viminfo dotfiles/.viminfo vim/.viminfo' --prune-empty --tag-name-filter cat -- --all)"
     ],
     "deny": []
   }
