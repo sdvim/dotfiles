@@ -27,10 +27,11 @@ window-decoration = false
 window-theme = system
 window-colorspace = display-p3
 
-# Bell configuration for Claude notifications
-visual-bell = true
-audible-bell = true
-bell-surface-flash = true
+# Desktop notifications for Claude
+desktop-notifications = true
+
+# Link detection and clicking
+link-url = true
 
 # Show quick terminal
 keybind = global:ctrl+'=toggle_quick_terminal
