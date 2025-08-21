@@ -1,25 +1,18 @@
 
+# Claude settings
 **/.claude/settings.local.json
 
 # Vim files
 .viminfo
 
-**/.claude/settings.local.json
+# VS Code history and tracking files
+**/.config/code/user/History/
+**/.config/code/user/globalStorage/github.copilot-chat/
+**/.config/code/user/workspaceStorage/
+**/globalStorage/storage.json
+**/History/
+**/workspaceStorage/
 
-**/.claude/settings.local.json
-
-**/.claude/settings.local.json
-
-**/.claude/settings.local.json
-
-**/.claude/settings.local.json
-
-**/.claude/settings.local.json
-
-**/.claude/settings.local.json
-
-**/.claude/settings.local.json
-
-**/.claude/settings.local.json
-
-**/.claude/settings.local.json
+# Other editor history files
+**/.vscode/
+**/.idea/
