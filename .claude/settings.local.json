@@ -59,7 +59,8 @@
       "Bash(git branch:*)",
       "Bash(sudo pmset:*)",
       "Bash(pmset:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch .config/code/user/globalStorage/storage.json config/.config/code/user/globalStorage/storage.json **/globalStorage/** **/History/** **/workspaceStorage/** **/*storage.json' --prune-empty --tag-name-filter cat -- --all)"
     ],
     "deny": []
   }
