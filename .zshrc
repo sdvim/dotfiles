@@ -29,7 +29,6 @@ if [[ $- == *i* ]] && [[ -z "$CLAUDE_CODE" ]]; then
     alias o='claude -p "$(cat "/Users/steve/Library/Mobile Documents/iCloud~md~obsidian/Documents/core/$(date +%Y-%m).md")"'
     alias find="fd"
     alias grep="rg"
-    alias claude="claude --mcp-config ~/.config/claude/mcp.json"
 fi
 
 # Exports
