@@ -16,3 +16,5 @@
 # Other editor history files
 **/.vscode/
 **/.idea/
+
+**/.claude/settings.local.json
