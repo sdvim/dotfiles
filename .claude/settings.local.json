@@ -60,7 +60,13 @@
       "Bash(sudo pmset:*)",
       "Bash(pmset:*)",
       "WebSearch",
-      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch .config/code/user/globalStorage/storage.json config/.config/code/user/globalStorage/storage.json **/globalStorage/** **/History/** **/workspaceStorage/** **/*storage.json' --prune-empty --tag-name-filter cat -- --all)"
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch .config/code/user/globalStorage/storage.json config/.config/code/user/globalStorage/storage.json **/globalStorage/** **/History/** **/workspaceStorage/** **/*storage.json' --prune-empty --tag-name-filter cat -- --all)",
+      "Bash(compaudit)",
+      "Bash(bindkey)",
+      "Bash(tmux list-keys:*)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch .config/micro/buffers/history config/.config/micro/buffers/history micro/.config/micro/buffers/history **/.config/micro/buffers/history' --prune-empty --tag-name-filter cat -- --all)",
+      "Bash(git reset:*)",
+      "Bash(git stash:*)"
     ],
     "deny": []
   }

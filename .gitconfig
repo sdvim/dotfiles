@@ -4,3 +4,5 @@
 	email = s.dellavalentina@gmail.com
 	name = Steve Della Valentina
 	signingkey = 798604F521F0B2F8
+[pull]
+	rebase = true
