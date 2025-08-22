@@ -15,9 +15,21 @@ bindkey '^[[B' history-search-forward
 bindkey '^k' history-search-backward
 bindkey '^j' history-search-forward
 
+# Initialize zsh completion system
+autoload -Uz compinit
+compinit
+
 # Source zsh plugins
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Configure zsh-autosuggestions to accept with Tab
+bindkey '^I' autosuggest-accept
+
+# Ghostty shell integration for proper completion support
+if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
+    source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
+fi
 
 # Alias / keyboard shortcuts
 # Only set aliases in interactive shells (not for Claude)
