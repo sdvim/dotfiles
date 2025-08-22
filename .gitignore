@@ -7,14 +7,22 @@
 
 # VS Code history and tracking files
 **/.config/code/user/History/
-**/.config/code/user/globalStorage/github.copilot-chat/
+**/.config/code/user/globalStorage/
 **/.config/code/user/workspaceStorage/
 **/globalStorage/storage.json
 **/History/
 **/workspaceStorage/
 
+# Micro editor buffers
+**/.config/micro/buffers/
+
 # Other editor history files
 **/.vscode/
 **/.idea/
+
+
+**/.claude/settings.local.json
+
+**/.claude/settings.local.json
 
 **/.claude/settings.local.json
