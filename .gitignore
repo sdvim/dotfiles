@@ -16,6 +16,9 @@
 # Micro editor buffers
 **/.config/micro/buffers/
 
+# Config store
+**/.config/configstore/
+
 # Other editor history files
 **/.vscode/
 **/.idea/
