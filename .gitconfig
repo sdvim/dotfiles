@@ -6,3 +6,7 @@
 	signingkey = 798604F521F0B2F8
 [pull]
 	rebase = true
+[core]
+	editor = micro
+[init]
+	defaultBranch = main
