@@ -33,6 +33,13 @@ desktop-notifications = true
 # Link detection and clicking
 link-url = true
 
+# Mouse support for clicking links
+mouse-hide-while-typing = true
+mouse-shift-capture = false
+
+# OSC sequences support
+osc-color-report-format = 8-bit
+
 # Show quick terminal
 keybind = global:ctrl+'=toggle_quick_terminal
 
