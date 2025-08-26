@@ -1,0 +1,32 @@
+# Global filesystem access permissions
+sandbox_mode = "off"
+approval_policy = "minimal"
+
+# Trusted projects with full access
+projects = { 
+  "/Users/steve/dotfiles" = { trust_level = "trusted" },
+  "/Users/steve/Git/courtyard-frontend" = { trust_level = "trusted" },
+  "/" = { trust_level = "read_only" }
+}
+
+[mcp_servers]
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@context7/mcp-server"]
+
+[mcp_servers.linear]
+command = "npx"
+args = ["-y", "@linear/mcp-server"]
+
+[mcp_servers.deepwiki]
+command = "npx"
+args = ["-y", "@deepwiki/mcp-server"]
+
+# full-auto mode
+approval_policy = "on-request"
+sandbox_mode    = "workspace-write"
+
+# Optional: allow network in workspace-write mode
+[sandbox_workspace_write]
+network_access = true
