@@ -87,13 +87,7 @@ if [[ $- == *i* ]] && [[ -z "$CLAUDE_CODE" ]]; then
     fi
 fi
 
-# Auto-apply dotfiles on login with change detection
-if [[ $- == *i* ]] && [[ -z "$CLAUDE_CODE" ]]; then
-    if [[ -d "$HOME/dotfiles" ]]; then
-        dotfiles_output=$(cd "$HOME/dotfiles" && stow . 2>&1)
-        if [[ -n "$dotfiles_output" ]]; then
-            echo "Dotfiles updated:"
-            echo "$dotfiles_output" | /usr/bin/grep -E "(LINK|UNLINK)" | sed 's/^/  /'
-        fi
-    fi
-fi
+# Codex CLI defaults
+export CODEX_NETWORK=enabled
+export CODEX_APPROVAL=on-request
+export CODEX_FILESYSTEM=workspace-write
