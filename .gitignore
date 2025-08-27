@@ -5,6 +5,9 @@
 # Environment files
 .env.local
 
+# Claude configuration with API keys
+.claude/.claude.json
+
 # Vim files
 .viminfo
 
