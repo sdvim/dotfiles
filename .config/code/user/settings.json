@@ -10,5 +10,6 @@
     "git.autofetch": true,
     "git.ignoreRebaseWarning": true,
     "diffEditor.ignoreTrimWhitespace": true,
-    "workbench.secondarySideBar.defaultVisibility": "hidden"
+    "workbench.secondarySideBar.defaultVisibility": "hidden",
+    "editor.minimap.enabled": false
 }
