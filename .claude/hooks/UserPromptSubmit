@@ -37,8 +37,10 @@ Respond in teaching mode with these guidelines:
 - Connect new concepts to likely existing knowledge
 </system-reminder>
 EOF
+    echo '{"suppressOutput": true}'
     exit 0
 fi
 
-# Exit silently (no output = no status messages)
+# Suppress hook status messages
+echo '{"suppressOutput": true}'
 exit 0
