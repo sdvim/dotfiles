@@ -1,7 +1,8 @@
 #!/bin/bash
 # Notify user when Claude finishes responding
 
-# Check if mute mode is enabled
+# Check if mute mode is enabled (via env var or file)
+[ -n "$CLAUDE_MUTE_MODE" ] && echo '{"suppressOutput": true}' && exit 0
 [ -f /tmp/claude_mute_mode ] && echo '{"suppressOutput": true}' && exit 0
 
 # Read task summary from tmux environment variable if it exists
