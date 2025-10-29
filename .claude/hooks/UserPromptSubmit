@@ -1,0 +1,44 @@
+#!/bin/bash
+# Auto-hide ghostty quick-terminal after submitting a prompt (only if prompt ends with !)
+# Inject teaching mode context when user says "tell me"
+
+# Read JSON input from stdin
+INPUT=$(cat)
+
+# Extract the user's prompt text using jq
+USER_PROMPT=$(echo "$INPUT" | jq -r '.prompt // empty')
+
+# Check if prompt ends with !
+if [[ "$USER_PROMPT" =~ !$ ]]; then
+    # Check if we're in ghostty by looking at tmux client terminal
+    TMUX_CLIENT_TERM=$(tmux display-message -p "#{client_termname}" 2>/dev/null)
+
+    if [[ "$TMUX_CLIENT_TERM" =~ "ghostty" ]]; then
+        # Send ctrl+' to ghostty to toggle (hide) the quick-terminal
+        # Use osascript to send the keystroke
+        osascript -e 'tell application "System Events" to tell process "ghostty" to keystroke "'"'"'" using control down' >/dev/null 2>&1
+    fi
+fi
+
+# Check if prompt contains "tell me" (case-insensitive)
+if [[ "$USER_PROMPT" =~ [Tt]ell[[:space:]]+me ]]; then
+    # Inject teaching mode instructions into Claude's context
+    cat <<'EOF'
+<system-reminder>
+TEACHING MODE ACTIVATED: The user has requested an explanation.
+
+Respond in teaching mode with these guidelines:
+- Explain concepts from first principles
+- Use clear examples and analogies to illustrate points
+- Break down complex topics into digestible steps
+- Be more detailed and thorough than usual
+- Anticipate and address common points of confusion
+- Use a patient, educational tone
+- Connect new concepts to likely existing knowledge
+</system-reminder>
+EOF
+    exit 0
+fi
+
+# Exit silently (no output = no status messages)
+exit 0

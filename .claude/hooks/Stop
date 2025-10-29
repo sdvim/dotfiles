@@ -1,0 +1,20 @@
+#!/bin/bash
+# Notify user when Claude finishes responding
+
+# Check if mute mode is enabled
+[ -f /tmp/claude_mute_mode ] && echo '{"suppressOutput": true}' && exit 0
+
+# Read task summary from tmux environment variable if it exists
+SUMMARY=$(tmux show-environment CLAUDE_TASK_SUMMARY 2>/dev/null | cut -d= -f2-)
+if [ -n "$SUMMARY" ]; then
+    # Clear the environment variable after reading
+    tmux set-environment -u CLAUDE_TASK_SUMMARY 2>/dev/null
+else
+    SUMMARY="Claude is ready"
+fi
+
+# Use say with Zarvox voice to alert user
+say --voice Zarvox "$SUMMARY" >/dev/null 2>&1 &
+
+# Exit silently (no output = no status messages)
+exit 0
