@@ -11,5 +11,10 @@
     "git.ignoreRebaseWarning": true,
     "diffEditor.ignoreTrimWhitespace": true,
     "workbench.secondarySideBar.defaultVisibility": "hidden",
-    "editor.minimap.enabled": false
+    "editor.minimap.enabled": false,
+    "workbench.sideBar.location": "right",
+    "githubPullRequests.pullBranch": "never",
+    "gitlens.ai.model": "vscode",
+    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+    "git.blame.editorDecoration.enabled": true
 }
