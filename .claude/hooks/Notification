@@ -1,0 +1,17 @@
+#!/bin/bash
+# Notify user when input or permissions are needed
+
+# Check if mute mode is enabled
+[ -f /tmp/claude_mute_mode ] && echo '{"suppressOutput": true}' && exit 0
+
+# Read JSON input from stdin
+INPUT=$(cat)
+
+# Extract notification type if available
+NOTIF_TYPE=$(echo "$INPUT" | jq -r '.type // "input needed"')
+
+# Use say with Zarvox voice to alert user
+say --voice Zarvox "Attention required" >/dev/null 2>&1 &
+
+# Exit silently (no output = no status messages)
+exit 0
