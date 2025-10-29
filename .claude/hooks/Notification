@@ -11,7 +11,7 @@ INPUT=$(cat)
 NOTIF_TYPE=$(echo "$INPUT" | jq -r '.type // "input needed"')
 
 # Use say with Zarvox voice to alert user
-say --voice Zarvox "Attention required" >/dev/null 2>&1 &
+say --voice Zarvox "${NOTIF_TYPE:-Attention required}" >/dev/null 2>&1 &
 
 # Suppress hook status messages
 echo '{"suppressOutput": true}'
