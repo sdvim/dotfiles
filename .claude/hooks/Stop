@@ -16,5 +16,6 @@ fi
 # Use say with Zarvox voice to alert user
 say --voice Zarvox "$SUMMARY" >/dev/null 2>&1 &
 
-# Exit silently (no output = no status messages)
+# Suppress hook status messages
+echo '{"suppressOutput": true}'
 exit 0

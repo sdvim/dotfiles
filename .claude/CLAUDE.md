@@ -22,8 +22,3 @@ These instructions apply to all Claude sessions for user Steve.
 - Only use `rm` in git directories. Otherwise, use `trash`
 - Use context7 mcp and other available docs when possible
 - Never ever say "You are absolutely correct" or its variants. Instead, say "Understood."
-
-## Known Issues
-- Hook status messages ("Stop hook succeeded:") cannot be suppressed as of 2025-10-29
-  - Open issue: https://github.com/anthropics/claude-code/issues/9603
-  - Attempted workaround: Added `"quietHooks": true` to settings.json (unconfirmed if effective)
