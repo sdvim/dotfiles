@@ -41,6 +41,7 @@ if [[ $- == *i* ]] && [[ -z "$CLAUDE_CODE" ]]; then
     alias o='claude -p "$(cat "/Users/steve/Library/Mobile Documents/iCloud~md~obsidian/Documents/core/$(date +%Y-%m).md")"'
     alias find="fd"
     alias grep="rg"
+    alias wip="git add . && git commit -m 'WIP'"
 fi
 
 # Exports
@@ -91,3 +92,15 @@ fi
 export CODEX_NETWORK=enabled
 export CODEX_APPROVAL=on-request
 export CODEX_FILESYSTEM=workspace-write
+
+# Claude Code defaults
+export MAX_THINKING_TOKENS=32000
+
+# bun completions
+[ -s "/Users/steve/.bun/_bun" ] && source "/Users/steve/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+alias claude="/Users/steve/.claude/local/claude"
