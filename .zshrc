@@ -47,6 +47,9 @@ fi
 # Exports
 export BAT_THEME="ansi"
 
+# Homebrew Ruby
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+
 # Setup zoxide and starship
 eval "$(zoxide init zsh)"
 
