@@ -9,7 +9,7 @@
     "diffEditor.renderSideBySide": false,
     "git.autofetch": true,
     "git.ignoreRebaseWarning": true,
-    "diffEditor.ignoreTrimWhitespace": true,
+    "diffEditor.ignoreTrimWhitespace": false,
     "workbench.secondarySideBar.defaultVisibility": "hidden",
     "editor.minimap.enabled": false,
     "workbench.sideBar.location": "right",
