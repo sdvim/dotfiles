@@ -1,0 +1,4 @@
+.zcompdump*
+.zhistory
+.zsh_history
+completions/_*
