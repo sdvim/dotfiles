@@ -1,12 +1,12 @@
+[user]
+	name = Steve Della Valentina
+	email = s.dellavalentina@gmail.com
+	signingkey = 333487C4FFB88C8D
 [commit]
 	gpgsign = true
-[user]
-	email = s.dellavalentina@gmail.com
-	name = Steve Della Valentina
-	signingkey = 798604F521F0B2F8
 [pull]
 	rebase = true
 [core]
-	editor = micro
+	editor = nvim
 [init]
 	defaultBranch = main
