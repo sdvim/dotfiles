@@ -1,21 +1,5 @@
 \.git
 \.gitignore
-README\.md
-LICENSE
-\.DS_Store
 \.stow-local-ignore
-
-# Sensitive config files
-gcloud/credentials\.db
-gcloud/access_tokens\.db
-gcloud/legacy_credentials
-gcloud/logs
-rclone\.conf
-code/user/globalStorage
-code/user/workspaceStorage
-code/user/History
-
-# API keys and secrets (add to .zshrc.local instead)
-.*API_KEY.*
-.*_TOKEN.*
-.*SECRET.*
+\.DS_Store
+README\.md
