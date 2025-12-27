@@ -1,8 +1,0 @@
-[core]
-account = steve@courtyard.io
-project = courtyard-frontend
-
-[compute]
-zone = us-central1-c
-region = us-central1
-
