@@ -1,4 +1,0 @@
-#!/bin/bash
-afplay /Users/steve/Downloads/ready-to-work.mp3 >/dev/null 2>&1 &
-echo '{"suppressOutput": true}'
-exit 0

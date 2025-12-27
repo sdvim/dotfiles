@@ -1,5 +1,0 @@
-{
-  "network": "enabled",
-  "approvals": "on-request",
-  "filesystem": "workspace-write"
-}
