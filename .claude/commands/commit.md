@@ -1,6 +1,4 @@
-# Commit Command
-
-Create sensible, atomic commits from staged and unstaged changes.
+# Create sensible, atomic commits from staged and unstaged changes.
 
 ## Instructions
 
@@ -11,25 +9,26 @@ Create sensible, atomic commits from staged and unstaged changes.
 
 ## Commit Message Convention
 
-First, check the repository's existing convention by examining recent commits:
+Detect the repo's convention by running:
 
 ```bash
-git log --oneline -10 | awk '{print $2}'
+CONVENTION=$(git log --oneline -5 2>/dev/null | awk '{print $2}' | grep -cE '^(Add|Remove|Delete|Fix|Update|Refactor|Clean|Simplify|Move|Rename|Improve|Create|Revert|Bump|Set|Use|Make|Replace|Enable|Disable|Support|Drop)$' | xargs -I{} sh -c '[ {} -ge 3 ] && echo simple || echo semantic')
+echo "Detected convention: $CONVENTION"
 ```
 
-**If the pattern shows simple verbs** (Add, Remove, Update, Fix, Refactor, Simplify, etc.):
+**If `simple`** (3+ of last 5 commits use imperative verbs):
 - Use imperative mood: "Add feature" not "Added feature"
 - Keep the title brief and descriptive
 - Examples: `Add user authentication`, `Remove deprecated API`, `Fix null pointer in parser`
 
-**If the pattern shows semantic prefixes** (feat, fix, chore, docs, etc.) or no clear pattern exists, default to [Semantic Commit Messages](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716):
-- `feat(scope)`: New feature
-- `fix(scope)`: Bug fix
-- `docs(scope)`: Documentation only
-- `style(scope)`: Formatting, no code change
-- `refactor(scope)`: Code restructuring, no behavior change
-- `test(scope)`: Adding/updating tests
-- `chore(scope)`: Maintenance tasks
+**If `semantic`** (default when no clear pattern):
+- `feat:` New feature
+- `fix:` Bug fix
+- `docs:` Documentation only
+- `style:` Formatting, no code change
+- `refactor:` Code restructuring, no behavior change
+- `test:` Adding/updating tests
+- `chore:` Maintenance tasks
 
 ## Process
 
