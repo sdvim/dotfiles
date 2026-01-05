@@ -2,3 +2,4 @@ quick-terminal-animation-duration = 0
 quick-terminal-screen = macos-menu-bar
 
 keybind = global:ctrl+'=toggle_quick_terminal
+keybind = cmd+backspace=text:\x17
