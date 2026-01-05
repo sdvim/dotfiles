@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+bindkey -e
+
 fpath+=$ZDOTDIR/completions
 
 autoload -U compinit
