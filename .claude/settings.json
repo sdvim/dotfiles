@@ -2,8 +2,10 @@
   "permissions": {
     "allow": [
       "WebFetch",
+      "WebSearch",
       "Bash(git:*)",
       "Bash(gh:*)",
+      "Bash(gpg:*)",
       "Bash(cat:*)",
       "Bash(ls:*)",
       "Bash(mkdir:*)",
@@ -15,7 +17,10 @@
       "Bash(which:*)",
       "Bash(wc:*)",
       "Bash(chmod:*)",
-      "Bash(stow:*)"
+      "Bash(stow:*)",
+      "Bash(lua:*)",
+      "Bash(luajit:*)",
+      "Bash(brew:*)"
     ]
   }
 }
