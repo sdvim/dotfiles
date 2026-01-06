@@ -19,5 +19,8 @@ export GPG_TTY=$(tty)
 # uv
 export PATH="/Users/steve/.config/local/bin:$PATH"
 
+# dotfiles scripts
+export PATH="$HOME/dotfiles/scripts:$PATH"
+
 # Source local secrets (not tracked in git)
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
