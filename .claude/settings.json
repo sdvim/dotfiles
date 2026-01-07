@@ -20,7 +20,15 @@
       "Bash(stow:*)",
       "Bash(lua:*)",
       "Bash(luajit:*)",
-      "Bash(brew:*)"
-    ]
+      "Bash(brew:*)",
+      "Bash(env)",
+      "Bash(find:*)",
+      "Bash(container:*)",
+      "Bash(curl:*)",
+      "Bash(echo:*)",
+      "Bash(lsof:*)",
+      "Skill(commit)"
+    ],
+    "defaultMode": "default"
   }
 }
