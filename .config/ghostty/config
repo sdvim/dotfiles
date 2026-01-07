@@ -3,3 +3,9 @@ quick-terminal-screen = macos-menu-bar
 
 keybind = global:ctrl+'=toggle_quick_terminal
 keybind = cmd+backspace=text:\x17
+
+# Split navigation
+keybind = opt+h=goto_split:left
+keybind = opt+j=goto_split:bottom
+keybind = opt+k=goto_split:top
+keybind = opt+l=goto_split:right

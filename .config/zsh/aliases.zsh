@@ -30,3 +30,6 @@ alias gs="git status -s"
 
 alias undo="git reset HEAD~1"
 alias wip="git add . && git commit -m 'WIP'"
+
+# Claude
+alias c="claude --dangerously-skip-permissions"
