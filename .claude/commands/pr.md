@@ -57,9 +57,20 @@ TEMPLATE=$(find . -maxdepth 3 -type f \( -name "pull_request_template.md" -o -na
 gh pr create --draft --title "PR Title" --body "PR body following template or summary"
 ```
 
+### Step 5: Monitor CI and fix failures
+
+After pushing the PR:
+
+1. Run `gh pr checks --watch` to monitor CI status
+2. If any checks fail, run `gh pr checks` to see which ones
+3. Fetch logs with `gh run view <run-id> --log-failed`
+4. Investigate and fix the issues
+5. Push fixes and repeat until all checks pass
+
 ## Output
 
 When complete, display:
 - The new branch name
 - List of commits made (`git log --oneline main..HEAD` or similar)
 - Link to the created draft PR
+- CI status (all checks passing)
