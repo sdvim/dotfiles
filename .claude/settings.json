@@ -27,6 +27,9 @@
       "Bash(curl:*)",
       "Bash(echo:*)",
       "Bash(lsof:*)",
+      "Bash(ln:*)",
+      "Bash(xargs:*)",
+      "Bash(od:*)",
       "Skill(commit)"
     ],
     "defaultMode": "default"
