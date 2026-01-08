@@ -5,6 +5,9 @@
 
   set -euo pipefail
 
+  # Check for disabled marker (toggle with /toggle-ha-notify command)
+  [[ -f ~/.claude/.ha-notify-disabled ]] && echo '{}' && exit 0
+
   HA_URL="${HA_URL:-http://localhost:8123}"
   RESPONSE_DIR="${HOME}/Containers/homeassistant/config/claude_responses"
   TIMEOUT="${CLAUDE_HA_TIMEOUT:-120}"  # seconds to wait for response
