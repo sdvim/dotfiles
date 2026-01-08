@@ -5,14 +5,14 @@ alias cat="bat"
 alias find="fd"
 alias grep="rg"
 alias ls="eza --icons=always -a"
-alias tree="eza -T -L 4 -a --git-ignore"
+alias tree="eza -T -L 4 -a --git-ignore --color=always"
 
 # Navigation
 alias cd="z"
 
 # Config
 alias alias_edit="nvim $ZDOTDIR/aliases.zsh"
-alias config_reload="source $ZDOTDIR/.zshrc"
+alias config_reload="source $ZDOTDIR/.zshrc && aerospace reload-config && echo 'Reloaded: zsh, aerospace'"
 alias config_edit="nvim $ZDOTDIR/.zshrc"
 
 # Git
@@ -26,10 +26,15 @@ alias gl="git log --pretty=format:'%C(yellow)%h%C(reset)%C(red)%d%C(reset)%n%C(c
 alias gp="git push"
 alias gpo="git pull origin"
 alias gpom="git pull origin main"
+alias gr="git rebase"
+alias grm="git rebase origin/main"
 alias gs="git status -s"
 
 alias undo="git reset HEAD~1"
 alias wip="git add . && git commit -m 'WIP'"
+
+# Music
+alias loop='pymusiclooper play --path "$(fd --extension mp3 | fzf)"'
 
 # Claude
 alias c="claude --dangerously-skip-permissions"
