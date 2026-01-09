@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+
+# Pre-commit hook to prevent committing secrets
+# Bypass with: SKIP_SECRET_CHECK=1 git commit
+# Or standard: git commit --no-verify
+
+set -euo pipefail
+
+if [[ "${SKIP_SECRET_CHECK:-}" == "1" ]]; then
+  exit 0
+fi
+
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
+# Get staged files (excluding deleted files)
+staged_files=$(git diff --cached --name-only --diff-filter=d 2>/dev/null)
+
+if [[ -z "$staged_files" ]]; then
+  exit 0
+fi
+
+errors=()
+
+# Sensitive filename patterns
+sensitive_files=(
+  '\.env$'
+  '\.env\.[a-z]+$'
+  'credentials\.json$'
+  'service.account\.json$'
+  '\.pem$'
+  '\.key$'
+  'id_rsa$'
+  'id_ed25519$'
+  '\.p12$'
+  '\.pfx$'
+  'htpasswd$'
+  '\.netrc$'
+  '\.npmrc$'
+  '\.pypirc$'
+)
+
+# Check for sensitive filenames
+for file in $staged_files; do
+  for pattern in "${sensitive_files[@]}"; do
+    if echo "$file" | grep -qE "$pattern"; then
+      errors+=("Sensitive file: $file")
+    fi
+  done
+done
+
+# Secret patterns: "pattern:::description"
+secret_patterns=(
+  'AKIA[0-9A-Z]{16}:::AWS Access Key ID'
+  'aws_secret_access_key[[:space:]]*=:::AWS Secret Key'
+  'ghp_[a-zA-Z0-9]{36}:::GitHub Personal Access Token'
+  'gho_[a-zA-Z0-9]{36}:::GitHub OAuth Token'
+  'ghu_[a-zA-Z0-9]{36}:::GitHub User Token'
+  'ghs_[a-zA-Z0-9]{36}:::GitHub Server Token'
+  'ghr_[a-zA-Z0-9]{36}:::GitHub Refresh Token'
+  'github_pat_[a-zA-Z0-9_]{22}_[a-zA-Z0-9]{59}:::GitHub Fine-grained PAT'
+  'xox[baprs]-[0-9a-zA-Z]{10,}:::Slack Token'
+  'sk-[a-zA-Z0-9]{48}:::OpenAI API Key'
+  'sk-proj-[a-zA-Z0-9_-]{80,}:::OpenAI Project Key'
+  'sk-ant-[a-zA-Z0-9_-]{80,}:::Anthropic API Key'
+  'SG\.[a-zA-Z0-9_-]{22}\.[a-zA-Z0-9_-]{43}:::SendGrid API Key'
+  'AIza[0-9A-Za-z_-]{35}:::Google API Key'
+  'ya29\.[0-9A-Za-z_-]+:::Google OAuth Token'
+  'sk_live_[0-9a-zA-Z]{24}:::Stripe Live Key'
+  'rk_live_[0-9a-zA-Z]{24}:::Stripe Restricted Key'
+  'AC[a-zA-Z0-9]{32}:::Twilio Account SID'
+  'npm_[a-zA-Z0-9]{36}:::NPM Access Token'
+  'BEGIN.*PRIVATE KEY:::Private Key'
+  'BEGIN CERTIFICATE:::Certificate'
+)
+
+# File extensions to skip (binary/non-text)
+skip_extensions='\.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|mp3|mp4|wav|pdf|zip|tar|gz|lock)$'
+
+# Scan staged content for secrets
+for file in $staged_files; do
+  # Skip binary files
+  if echo "$file" | grep -qiE "$skip_extensions"; then
+    continue
+  fi
+
+  # Get staged content of the file
+  content=$(git show ":$file" 2>/dev/null) || continue
+
+  for entry in "${secret_patterns[@]}"; do
+    pattern="${entry%%:::*}"
+    description="${entry##*:::}"
+
+    if echo "$content" | grep -qE -- "$pattern"; then
+      line_info=$(echo "$content" | grep -nE -- "$pattern" | head -1 | cut -d: -f1)
+      errors+=("$description in $file:$line_info")
+    fi
+  done
+done
+
+# Report errors
+if [[ ${#errors[@]} -gt 0 ]]; then
+  echo -e "${RED}Secret detection blocked this commit:${NC}"
+  echo ""
+  for error in "${errors[@]}"; do
+    echo -e "  ${YELLOW}!${NC} $error"
+  done
+  echo ""
+  echo "If this is a false positive, you can:"
+  echo "  1. Use SKIP_SECRET_CHECK=1 git commit"
+  echo "  2. Use git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
+exit 0
