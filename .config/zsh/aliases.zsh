@@ -34,7 +34,7 @@ alias undo="git reset HEAD~1"
 alias wip="git add . && git commit -m 'WIP'"
 
 # Music
-alias loop='pymusiclooper play --path "$(fd --extension mp3 | fzf)"'
+alias loop='pymusiclooper play --path "$(fd -e mp3 -e wav -e ogg -e flac | fzf)"'
 
 # Claude
 alias c="claude --dangerously-skip-permissions"
