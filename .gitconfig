@@ -8,5 +8,6 @@
 	rebase = true
 [core]
 	editor = nvim
+	hooksPath = ~/dotfiles/git-hooks
 [init]
 	defaultBranch = main
