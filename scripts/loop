@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+extensions=(-e mp3 -e wav -e ogg -e flac)
+
+if [[ $# -eq 0 ]]; then
+  # No args: interactive fzf selection
+  file=$(fd "${extensions[@]}" | fzf)
+else
+  # Args provided: search and pick first match
+  file=$(fd "${extensions[@]}" | grep -i "$*" | head -n 1)
+fi
+
+if [[ -n "$file" ]]; then
+  pymusiclooper play --path "$file"
+else
+  echo "No file found"
+  exit 1
+fi
