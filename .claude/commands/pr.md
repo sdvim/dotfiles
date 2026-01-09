@@ -59,13 +59,24 @@ gh pr create --draft --title "PR Title" --body "PR body following template or su
 
 ### Step 5: Monitor CI and fix failures
 
-After pushing the PR:
+After pushing the PR, check CI status at increasing intervals until all checks complete:
 
-1. Run `gh pr checks --watch` to monitor CI status
-2. If any checks fail, run `gh pr checks` to see which ones
-3. Fetch logs with `gh run view <run-id> --log-failed`
-4. Investigate and fix the issues
-5. Push fixes and repeat until all checks pass
+1. **Check at 2 minutes**: Wait 2 minutes, then run `gh pr checks`
+2. **Check at 4 minutes**: If still pending, wait another 2 minutes and check again
+3. **Check at 8 minutes**: If still pending, wait another 4 minutes and check again
+4. **Check at 16 minutes**: If still pending, wait another 8 minutes and check again
+
+Stop checking as soon as all checks have completed (all passed or any failed).
+
+```bash
+# Check CI status (run this at each interval)
+gh pr checks
+```
+
+If any checks fail:
+1. Fetch logs with `gh run view <run-id> --log-failed`
+2. Investigate and fix the issues
+3. Push fixes and restart the monitoring cycle
 
 ## Output
 
