@@ -18,3 +18,4 @@ setopt HIST_VERIFY
 
 source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/completions.zsh
+source $ZDOTDIR/fzf.zsh
