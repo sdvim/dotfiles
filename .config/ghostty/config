@@ -3,6 +3,7 @@ quick-terminal-screen = macos-menu-bar
 
 keybind = global:ctrl+'=toggle_quick_terminal
 keybind = cmd+backspace=text:\x17
+keybind = shift+f5=reload_config
 
 # Split navigation
 keybind = opt+h=goto_split:left
