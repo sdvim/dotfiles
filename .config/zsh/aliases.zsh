@@ -11,9 +11,16 @@ alias tree="eza -T -L 4 -a --git-ignore --color=always"
 alias cd="z"
 
 # Config
-alias alias_edit="nvim $ZDOTDIR/aliases.zsh"
-alias config_reload="source $ZDOTDIR/.zshrc && aerospace reload-config && echo 'Reloaded: zsh, aerospace'"
-alias config_edit="nvim $ZDOTDIR/.zshrc"
+alias restow="cd ~/dotfiles && stow -R ."
+
+edit() {
+  local editor="${EDITOR:-nvim}"
+  case "$1" in
+    aliases) $editor "$ZDOTDIR/aliases.zsh" ;;
+    config) $editor "$ZDOTDIR/.zshrc" ;;
+    *) $editor "$@" ;;
+  esac
+}
 
 # Git
 alias ga="git add ."
@@ -36,3 +43,4 @@ alias wip="git add . && git commit -m 'WIP'"
 
 # Claude
 alias c="claude --dangerously-skip-permissions"
+summ() { summarize "$1" --cli claude --format md --prompt "tldr outline"; }
