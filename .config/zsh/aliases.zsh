@@ -7,6 +7,40 @@ alias grep="rg"
 alias ls="eza --icons=always -a"
 alias tree="eza -T -L 4 -a --git-ignore --color=always"
 
+# Global aliases (can be used anywhere in a command)
+
+# Redirect to /dev/null
+# example: echo test > DN
+alias -g DN='/dev/null'
+
+# Suppress stderr
+# example: cmd NE
+alias -g NE='2>/dev/null'
+
+# Suppress all output
+# example: cmd NUL
+alias -g NUL='>/dev/null 2>&1'
+
+# Pipe to grep
+# example: ls G pattern
+alias -g G='| grep'
+
+# Pipe to less
+# example: cat file L
+alias -g L='| less'
+
+# Pipe to head
+# example: ps aux H
+alias -g H='| head'
+
+# Pipe to tail
+# example: tail -f log T
+alias -g T='| tail'
+
+# Count lines
+# example: ls C
+alias -g C='| wc -l'
+
 # Navigation
 alias cd="z"
 
@@ -42,5 +76,13 @@ alias undo="git reset HEAD~1"
 alias wip="git add . && git commit -m 'WIP'"
 
 # Claude
-alias c="claude --dangerously-skip-permissions"
+c() {
+  local session_name="${PWD##*/}"
+  if [[ -n "$TMUX" ]]; then
+    claude --dangerously-skip-permissions --fork-session "$@"
+  else
+    tmux new-session -s "$session_name" "claude --dangerously-skip-permissions --fork-session $*; exec zsh"
+  fi
+}
+alias cr="tmux rename-session"
 summ() { summarize "$1" --cli claude --format md --prompt "tldr outline"; }
