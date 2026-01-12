@@ -33,18 +33,5 @@
       "Skill(commit)"
     ],
     "defaultMode": "default"
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash|Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/ha-notify.sh"
-          }
-        ]
-      }
-    ]
   }
 }
