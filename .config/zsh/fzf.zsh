@@ -80,3 +80,24 @@ fzf-kill() {
 }
 zle -N fzf-kill
 bindkey '^g^k' fzf-kill
+
+# Insert snippet (Ctrl+S)
+fzf-snippet() {
+  local snippets=(
+    "| pbcopy:Copy output to clipboard"
+    "| xargs -I {}:Pipe to xargs with placeholder"
+    "2>&1:Redirect stderr to stdout"
+    '| tee >(pbcopy):Output and copy to clipboard'
+    "--help | less:View help in pager"
+    "| jq '.':Pretty print JSON"
+    "| head -20:First 20 lines"
+    "| sort | uniq -c | sort -rn:Count occurrences"
+  )
+  local selected=$(printf '%s\n' "${snippets[@]}" | fzf --delimiter=: --with-nth=1 --preview='echo {2}')
+  if [[ -n "$selected" ]]; then
+    LBUFFER+="${selected%%:*}"
+  fi
+  zle redisplay
+}
+zle -N fzf-snippet
+bindkey '^s' fzf-snippet
