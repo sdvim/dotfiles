@@ -16,6 +16,7 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
 setopt HIST_VERIFY
 
+source $ZDOTDIR/ssh-tmux.zsh
 source $ZDOTDIR/aliases.zsh
 source $ZDOTDIR/completions.zsh
 source $ZDOTDIR/fzf.zsh

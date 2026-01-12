@@ -22,5 +22,8 @@ export PATH="/Users/steve/.config/local/bin:$PATH"
 # dotfiles scripts
 export PATH="$HOME/dotfiles/scripts:$PATH"
 
+# VIP directories for SSH tmux picker
+export VIP_DIRS="$HOME/dotfiles:$HOME/Git"
+
 # Source local secrets (not tracked in git)
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
