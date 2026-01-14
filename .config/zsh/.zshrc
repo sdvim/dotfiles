@@ -2,6 +2,10 @@
 
 bindkey -e
 
+# Window title: show "pwd: command" when running, "pwd" at prompt
+precmd() { print -Pn "\e]0;%~\a" }
+preexec() { print -Pn "\e]0;%~: $1\a" }
+
 fpath+=$ZDOTDIR/completions
 
 autoload -U compinit
