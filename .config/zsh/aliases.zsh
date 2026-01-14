@@ -79,10 +79,15 @@ alias wip="git add . && git commit -m 'WIP'"
 # Claude
 c() {
   local session_name="${PWD##*/}"
+
   if [[ -n "$TMUX" ]]; then
     claude --dangerously-skip-permissions --fork-session "$@"
   else
-    tmux new-session -s "$session_name" "claude --dangerously-skip-permissions --fork-session $*; exec zsh"
+    if tmux has-session -t "$session_name" 2>/dev/null; then
+      tmux attach -d -t "$session_name"
+    else
+      tmux new-session -s "$session_name" "claude --dangerously-skip-permissions --fork-session $*; exec zsh"
+    fi
   fi
 }
 alias cr="tmux rename-session"
