@@ -29,10 +29,10 @@ This repository manages configuration files using GNU Stow for symlink managemen
 - Custom status line styling
 - UTF-8 and 256-color support
 
-### Claude AI Integration
-- Global MCP server configuration at `.config/claude/mcp.json`
-- Context7 MCP server available across all directories
-- Claude alias automatically loads MCP configuration
+### Claude Code
+- Project rules in `.claude/rules/`
+- Custom slash commands in `.claude/commands/`
+- Permissions and settings in `.claude/settings.json`
 
 ### Git
 - Shared configuration and ignore patterns
