@@ -1,5 +1,6 @@
 quick-terminal-animation-duration = 0
-quick-terminal-screen = macos-menu-bar
+quick-terminal-position = center
+quick-terminal-size = 40%,60%
 
 keybind = global:ctrl+'=toggle_quick_terminal
 keybind = cmd+backspace=text:\x17
