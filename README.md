@@ -1,10 +1,11 @@
+![Demo](demo.gif)
+
+*Demo recorded via `vhs` and [scripts/record-demo](scripts/record-demo)*
+
 # Dotfiles
 
 This repository manages configuration files using GNU Stow for symlink management.
 
-![Demo](demo.gif)
-
-*Demo recorded via `vhs` and [scripts/record-demo](scripts/record-demo)*
 
 ## Setup
 
