@@ -1,4 +1,4 @@
-# Create a pull request with atomic commits from current changes.
+# Create a pull request with atomic commits from current changes and wait for CI to pass.
 
 ## Instructions
 
@@ -57,9 +57,31 @@ TEMPLATE=$(find . -maxdepth 3 -type f \( -name "pull_request_template.md" -o -na
 gh pr create --draft --title "PR Title" --body "PR body following template or summary"
 ```
 
+### Step 5: Monitor CI and fix failures
+
+After pushing the PR, check CI status at increasing intervals until all checks complete:
+
+1. **Check at 2 minutes**: Wait 2 minutes, then run `gh pr checks`
+2. **Check at 4 minutes**: If still pending, wait another 2 minutes and check again
+3. **Check at 8 minutes**: If still pending, wait another 4 minutes and check again
+4. **Check at 16 minutes**: If still pending, wait another 8 minutes and check again
+
+Stop checking as soon as all checks have completed (all passed or any failed).
+
+```bash
+# Check CI status (run this at each interval)
+gh pr checks
+```
+
+If any checks fail:
+1. Fetch logs with `gh run view <run-id> --log-failed`
+2. Investigate and fix the issues
+3. Push fixes and restart the monitoring cycle
+
 ## Output
 
 When complete, display:
 - The new branch name
 - List of commits made (`git log --oneline main..HEAD` or similar)
 - Link to the created draft PR
+- CI status (all checks passing)
