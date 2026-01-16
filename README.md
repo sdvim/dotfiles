@@ -2,6 +2,10 @@
 
 This repository manages configuration files using GNU Stow for symlink management.
 
+![Demo](demo.gif)
+
+*Demo recorded via `vhs` and [scripts/record-demo](scripts/record-demo)*
+
 ## Setup
 
 1. Clone this repository to `~/dotfiles`
