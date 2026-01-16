@@ -6,6 +6,7 @@ alias find="fd"
 alias grep="rg"
 alias ls="eza --icons=always -a"
 alias tree="eza -T -L 4 -a --git-ignore --color=always"
+head() { bat --line-range :${2:-15} "$1"; }
 
 # Global aliases (can be used anywhere in a command)
 

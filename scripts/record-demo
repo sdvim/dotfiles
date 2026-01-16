@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Regenerate demo.gif from demo.tape
+
+set -e
+
+cd ~/dotfiles
+vhs demo.tape
+
+echo "Updated demo.gif"
+ls -lh demo.gif
