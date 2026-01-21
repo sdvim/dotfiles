@@ -95,3 +95,18 @@ c() {
 }
 alias cr="tmux rename-session"
 summ() { summarize "$1" --cli claude --format md --prompt "tldr outline"; }
+
+# Obsidian log helpers
+_log_append() {
+  local header="$1" item="$2"
+  local file="$OBSIDIAN_LOG/$(date +%Y-%m).md"
+  sed -i '' "/^## $header$/a\\
+$item
+" "$file"
+}
+
+todo()   { _log_append "TODO"    "- [ ] $*"; }
+want()   { _log_append "Want"    "- [ ] $*"; }
+errand() { _log_append "Errands" "- [ ] $*"; }
+chore()  { _log_append "Chores"  "- [ ] $*"; }
+idea()   { _log_append "Ideas"   "- $*"; }
