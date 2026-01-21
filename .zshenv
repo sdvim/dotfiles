@@ -27,5 +27,8 @@ export PATH="$HOME/dotfiles/scripts:$PATH"
 # VIP directories for SSH tmux picker
 export VIP_DIRS="$HOME/dotfiles:$HOME/Git"
 
+# Obsidian log vault
+export OBSIDIAN_LOG="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/log"
+
 # Source local secrets (not tracked in git)
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
