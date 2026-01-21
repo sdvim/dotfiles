@@ -110,3 +110,43 @@ want()   { _log_append "Want"    "- [ ] $*"; }
 errand() { _log_append "Errands" "- [ ] $*"; }
 chore()  { _log_append "Chores"  "- [ ] $*"; }
 idea()   { _log_append "Ideas"   "- $*"; }
+
+# Ghostty theme picker
+_map_ghostty_to_vhs() {
+  local ghostty_theme="$1"
+  case "$ghostty_theme" in
+    "GitHub Dark High Contrast") echo "GitHub Dark" ;;
+    "Nord") echo "nord" ;;
+    "TokyoNight Night") echo "tokyonight" ;;
+    "TokyoNight Storm") echo "tokyonight-storm" ;;
+    "Gruvbox Dark") echo "GruvboxDark" ;;
+    "Gruvbox Dark Hard") echo "GruvboxDarkHard" ;;
+    *) echo "$ghostty_theme" ;;
+  esac
+}
+
+theme-picker() {
+  local config="$HOME/.config/ghostty/config"
+  local tape="$HOME/dotfiles/demo.tape"
+  local original=$(grep "^theme = " "$config" | cut -d' ' -f3-)
+
+  local selected=$(ghostty +list-themes | sed 's/ (resources)//' | fzf \
+    --preview-window=hidden \
+    --bind="focus:execute-silent(
+      sed -i '' 's/^theme = .*/theme = {}/' $config
+      osascript -e 'tell app \"System Events\" to keystroke \"5\" using shift down' 2>/dev/null
+    )" \
+    --header="↑/↓ to browse (live preview), Enter to confirm, Esc to cancel"
+  )
+
+  if [[ -n "$selected" ]]; then
+    sed -i '' "s/^theme = .*/theme = $selected/" "$config"
+    local vhs_theme=$(_map_ghostty_to_vhs "$selected")
+    sed -i '' "s/^Set Theme .*/Set Theme \"$vhs_theme\"/" "$tape"
+    echo "Theme set: $selected (VHS: $vhs_theme)"
+  else
+    sed -i '' "s/^theme = .*/theme = $original/" "$config"
+    osascript -e 'tell app "System Events" to keystroke "5" using shift down' 2>/dev/null
+    echo "Cancelled, restored: $original"
+  fi
+}
