@@ -58,16 +58,18 @@ edit() {
 }
 
 # Git
+alias g="git"
 alias ga="git add ."
 alias gb="git branch"
 alias gc="git commit"
 alias gca="git commit --amend"
 alias gco="git checkout"
 alias gcom="git checkout main"
-alias gd="git diff"
+gd() { git status -s && echo && git diff "$@"; }
 alias gf="git fetch --prune"
 alias gl="git log --pretty=format:'%C(yellow)%h%C(reset)%C(red)%d%C(reset)%n%C(cyan)%ar%C(reset) %C(green)<%an>%C(reset)%n%s%n' --no-merges --max-count 5"
-alias gp="git push"
+alias gp="git pull"
+alias gpush="git push"
 alias gpo="git pull origin"
 alias gpom="git pull origin main"
 alias gr="git rebase"
