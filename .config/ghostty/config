@@ -1,4 +1,6 @@
 font-family = JetBrainsMono Nerd Font
+theme = GitHub Dark High Contrast
+unfocused-split-opacity = 0.5
 
 quick-terminal-animation-duration = 0
 quick-terminal-position = center
