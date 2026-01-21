@@ -5,7 +5,7 @@ Set FontFamily "JetBrainsMono Nerd Font"
 Set FontSize 28
 Set Width 1400
 Set Height 1040
-Set Theme "Dracula"
+Set Theme "GitHub Dark"
 Set Padding 20
 Set TypingSpeed 50ms
 
