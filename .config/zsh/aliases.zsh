@@ -87,9 +87,9 @@ c() {
     claude --dangerously-skip-permissions --fork-session "$@"
   else
     if tmux has-session -t "$session_name" 2>/dev/null; then
-      tmux attach -d -t "$session_name"
+      tmux attach -d -t "$session_name" \; set status off
     else
-      tmux new-session -s "$session_name" "claude --dangerously-skip-permissions --fork-session $*; exec zsh"
+      tmux new-session -s "$session_name" "claude --dangerously-skip-permissions --fork-session $*" \; set status off
     fi
   fi
 }
