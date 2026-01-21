@@ -53,7 +53,7 @@ if [[ -n "$SSH_CONNECTION" && -z "$TMUX" ]]; then
         for i in {1..${#vip_keys[@]}}; do
           if [[ "${vip_keys[$i]}" == "$choice" && $i -le ${#vip_dirs[@]} ]]; then
             dir="${vip_dirs[$i]}"
-            cd "$dir" && exec tmux new-session -s "${PWD##*/}" "claude --dangerously-skip-permissions; exec zsh"
+            cd "$dir" && exec tmux new-session -s "${PWD##*/}" "claude --dangerously-skip-permissions"
             break
           fi
         done
