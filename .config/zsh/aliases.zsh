@@ -86,14 +86,15 @@ c() {
   if [[ -n "$TMUX" ]]; then
     claude --dangerously-skip-permissions --fork-session "$@"
   else
-    if tmux has-session -t "$session_name" 2>/dev/null; then
-      tmux attach -d -t "$session_name" \; set status off
+    if tmux has-session -t "=$session_name" 2>/dev/null; then
+      tmux attach -d -t "=$session_name" \; set status off
     else
       tmux new-session -s "$session_name" "claude --dangerously-skip-permissions --fork-session $*" \; set status off
     fi
   fi
 }
 alias cr="tmux rename-session"
+alias commit='claude -p "/commit"'
 summ() { summarize "$1" --cli claude --format md --prompt "tldr outline"; }
 
 # Obsidian log helpers
