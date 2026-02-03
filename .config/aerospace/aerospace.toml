@@ -20,14 +20,15 @@ accordion-padding = 30
 # Mouse follows focus when monitor changes
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
-# Workspaces: P (personal), W (work) on primary; T (terminals) on secondary
-persistent-workspaces = ['P', 'W', 'T']
+# Workspaces: P (personal), W (work), G on primary; T (terminals) on secondary
+persistent-workspaces = ['P', 'W', 'G', 'T']
 
 # Assign workspaces to monitors
 # Primary (5K) gets personal/work, Secondary (ultrawide) gets terminals
 [workspace-to-monitor-force-assignment]
 P = 'main'
 W = 'main'
+G = 'main'
 T = 'secondary'
 
 [key-mapping]
@@ -61,11 +62,13 @@ alt-equal = 'resize smart +50'
 # Workspaces
 alt-1 = 'workspace P'
 alt-2 = 'workspace W'
+alt-3 = 'workspace G'
 alt-backtick = 'workspace T'
 
 # Move window to workspace
 alt-shift-1 = 'move-node-to-workspace P'
 alt-shift-2 = 'move-node-to-workspace W'
+alt-shift-3 = 'move-node-to-workspace G'
 alt-shift-backtick = 'move-node-to-workspace T'
 
 # Quick workspace switching
