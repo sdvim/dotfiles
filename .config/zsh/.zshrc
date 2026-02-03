@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+# Quick terminal → fish + zellij
+if [[ "$GHOSTTY_QUICK_TERMINAL" = "1" ]]; then
+    exec fish -c zellij
+fi
+
 bindkey -e
 
 # Window title: show "pwd: command" when running, "pwd" at prompt
