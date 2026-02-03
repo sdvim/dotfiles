@@ -46,7 +46,7 @@ alias -g C='| wc -l'
 alias cd="z"
 
 # Config
-alias restow="cd ~/dotfiles && stow -R ."
+alias restow="cd ~/dotfiles && ./scripts/generate-fish-aliases.sh && stow -R ."
 
 edit() {
   local editor="${EDITOR:-nvim}"
