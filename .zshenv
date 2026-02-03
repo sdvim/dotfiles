@@ -30,5 +30,31 @@ export VIP_DIRS="$HOME/dotfiles:$HOME/Git"
 # Obsidian log vault
 export OBSIDIAN_LOG="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/log"
 
+# Pull Request + Reset: creates PR from last session, resets branch, starts fresh
+prr() {
+    # Run /pr using the previous session's context
+    claude -c -p "/pr"
+
+    # Determine target branch based on current directory
+    local target_branch="main"
+    local dir="${PWD##*/}"
+    if [[ "$dir" =~ -aaa$ ]]; then
+        target_branch="main-aaa"
+    elif [[ "$dir" =~ -bbb$ ]]; then
+        target_branch="main-bbb"
+    elif [[ "$dir" =~ -ccc$ ]]; then
+        target_branch="main-ccc"
+    elif [[ "$dir" =~ -ddd$ ]]; then
+        target_branch="main-ddd"
+    fi
+
+    # Reset branch to origin/<target>
+    git fetch origin
+    git reset --hard "origin/$target_branch"
+
+    # Start fresh Claude session
+    c
+}
+
 # Source local secrets (not tracked in git)
 [[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
