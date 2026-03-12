@@ -64,7 +64,7 @@ alias gb="git branch"
 alias gc="git commit"
 alias gca="git commit --amend"
 alias gco="git checkout"
-alias gcom="git checkout main"
+alias gcom="git checkout --ignore-other-worktrees main"
 gd() { git status -s && echo && git diff "$@"; }
 alias gf="git fetch --prune"
 alias gl="git log --pretty=format:'%C(yellow)%h%C(reset)%C(red)%d%C(reset)%n%C(cyan)%ar%C(reset) %C(green)<%an>%C(reset)%n%s%n' --no-merges --max-count 5"
@@ -95,6 +95,7 @@ c() {
 }
 alias cr="tmux rename-session"
 alias commit='claude -p "/commit"'
+alias claude-update="npm update -g @anthropic-ai/claude-code"
 summ() { summarize "$1" --cli claude --format md --prompt "tldr outline"; }
 
 # Obsidian log helpers
