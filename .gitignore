@@ -1,3 +1,4 @@
 # Local overrides (secrets)
 *.local
+!.local/
 .DS_Store

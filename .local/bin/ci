@@ -1,0 +1,56 @@
+#!/bin/bash
+# Show GitHub PR CI check status for current branch
+
+branch=$(git branch --show-current 2>/dev/null)
+if [ -z "$branch" ]; then
+  echo "Not on a branch"
+  exit 1
+fi
+
+repo=$(git remote get-url origin 2>/dev/null)
+checks=$(gh pr checks "$branch" --repo "$repo" --json name,state,link 2>/dev/null)
+if [ $? -ne 0 ] || [ -z "$checks" ]; then
+  echo "No PR found for branch: $branch"
+  exit 1
+fi
+
+red='\033[1;31m'
+yellow='\033[1;33m'
+green='\033[1;32m'
+reset='\033[0m'
+
+show_group() {
+  local label="$1" color="$2" filter="$3"
+  local items
+  items=$(echo "$checks" | jq -r "$filter")
+  if [ -n "$items" ]; then
+    echo -e "${color}${label}${reset}"
+    echo "$items"
+    echo
+  fi
+}
+
+fail_filter='[.[] | select(.state == "FAILURE" or .state == "ERROR" or .state == "CANCELLED" or .state == "ACTION_REQUIRED" or .state == "STARTUP_FAILURE")] | .[] | "  \(.name)\n    \(.link)"'
+pend_filter='[.[] | select(.state == "PENDING" or .state == "QUEUED" or .state == "IN_PROGRESS" or .state == "WAITING" or .state == "STALE" or .state == "REQUESTED")] | .[] | "  \(.name)\n    \(.link)"'
+pass_filter='[.[] | select(.state == "SUCCESS" or .state == "NEUTRAL" or .state == "SKIPPED")] | .[] | "  \(.name)"'
+
+if [ "$1" = "--full" ]; then
+  show_group "Failing:" "$red" "$fail_filter"
+  show_group "Pending:" "$yellow" "$pend_filter"
+  show_group "Passing:" "$green" "$pass_filter"
+else
+  items=$(echo "$checks" | jq -r "$fail_filter")
+  if [ -n "$items" ]; then
+    echo -e "${red}Failing:${reset}"
+    echo "$items"
+  else
+    pend_items=$(echo "$checks" | jq -r "$pend_filter")
+    if [ -n "$pend_items" ]; then
+      total=$(echo "$checks" | jq 'length')
+      pend_count=$(echo "$checks" | jq '[.[] | select(.state == "PENDING" or .state == "QUEUED" or .state == "IN_PROGRESS" or .state == "WAITING" or .state == "STALE" or .state == "REQUESTED")] | length')
+      echo -e "${yellow}Pending ($pend_count of $total)${reset}"
+    else
+      echo -e "${green}All checks passing${reset}"
+    fi
+  fi
+fi
