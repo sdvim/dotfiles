@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p "$HOME/Screenshots" "$HOME/.npm-global" "$HOME/.local/bin" "$HOME/.tmux/plugins"
+
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+defaults write NSGlobalDomain KeyRepeat -int 2
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock mru-spaces -bool false
+defaults write com.apple.dock tilesize -int 48
+defaults write com.apple.dock minimize-to-application -bool true
+defaults write com.apple.finder AppleShowAllExtensions -bool true
+defaults write com.apple.finder AppleShowAllFiles -bool true
+defaults write com.apple.finder FXPreferredViewStyle -string clmv
+defaults write com.apple.finder ShowPathbar -bool true
+defaults write com.apple.finder ShowStatusBar -bool true
+defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+defaults write com.apple.finder _FXSortFoldersFirst -bool true
+defaults write com.apple.screencapture location -string "$HOME/Screenshots"
+defaults write com.apple.screencapture type -string png
+defaults write com.apple.screencapture disable-shadow -bool true
+
+osascript -e 'tell application "System Events" to tell every desktop to set picture to POSIX file "/System/Library/Desktop Pictures/Solid Colors/Black.png"' 2>/dev/null || true
+
+{{ if eq .chezmoi.hostname "air" -}}
+defaults write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
+defaults write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
+{{ end -}}
+
+{{ if or (eq .chezmoi.hostname "mini") (eq .chezmoi.hostname "pro") -}}
+if command -v displayplacer >/dev/null 2>&1; then
+  displayplacer \
+    "id:1D1C74AB-4B77-468F-996C-B1692B6AB419 res:2560x1440 hz:60 color_depth:8 scaling:on origin:(0,0) degree:0" \
+    "id:E2BEC5A2-3C20-413F-AB1F-7795F470DCB5 res:3440x1440 hz:60 color_depth:8 scaling:off origin:(-440,-1440) degree:180" \
+    >/dev/null 2>&1 || true
+fi
+{{ end -}}
+
+if command -v npm >/dev/null 2>&1; then
+  NPM_CONFIG_PREFIX="$HOME/.npm-global" npm install -g @steipete/summarize >/dev/null 2>&1 || true
+fi
+
+if [ ! -d "$HOME/.tmux/plugins/tmux-resurrect/.git" ]; then
+  git clone https://github.com/tmux-plugins/tmux-resurrect "$HOME/.tmux/plugins/tmux-resurrect"
+fi
+if [ ! -d "$HOME/.tmux/plugins/tmux-continuum/.git" ]; then
+  git clone https://github.com/tmux-plugins/tmux-continuum "$HOME/.tmux/plugins/tmux-continuum"
+fi
+
+hooks_dir="{{ .chezmoi.sourceDir }}/.git/hooks"
+hook_src="{{ .chezmoi.sourceDir }}/hooks/pre-commit"
+if [ -d "$hooks_dir" ] && [ -f "$hook_src" ]; then
+  ln -sf "$hook_src" "$hooks_dir/pre-commit"
+fi
+
+touch "$HOME/Git/.metadata_never_index" 2>/dev/null || true
+mdutil -i off "$HOME/Git" >/dev/null 2>&1 || true

@@ -1,0 +1,39 @@
+[user]
+	name = Steve Della Valentina
+	email = s.dellavalentina@gmail.com
+	signingKey = 333487C4FFB88C8D
+
+[commit]
+	gpgSign = true
+
+[tag]
+	gpgSign = true
+
+[gpg]
+	format = openpgp
+
+[core]
+	editor = nvim
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[credential]
+	helper = !gh auth git-credential
+

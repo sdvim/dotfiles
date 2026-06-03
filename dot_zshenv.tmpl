@@ -1,0 +1,33 @@
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+
+export EDITOR="nvim"
+export VISUAL="nvim"
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+export NPM_CONFIG_PREFIX="$HOME/.npm-global"
+export GPG_TTY="$(tty)"
+
+path=(
+  "$HOME/.npm-global/bin"
+  "$HOME/.local/bin"
+  "/opt/homebrew/bin"
+  "/opt/homebrew/sbin"
+  "/Applications/Obsidian.app/Contents/MacOS"
+  $path
+)
+
+{{ if or (eq .chezmoi.hostname "mini") (eq .chezmoi.hostname "pro") -}}
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+path=(
+  "$ANDROID_HOME/platform-tools"
+  "$ANDROID_HOME/emulator"
+  $path
+)
+{{ end -}}
+
+typeset -U path
+
+[[ -f "$HOME/.zshenv.local" ]] && source "$HOME/.zshenv.local"
+

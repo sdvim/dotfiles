@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew is required before applying this dotfiles repo." >&2
+  exit 1
+fi
+
+HOSTNAME="$(hostname -s)" brew bundle --file "{{ .chezmoi.sourceDir }}/Brewfile"

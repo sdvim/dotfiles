@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Running pre-commit checks..."
+
+echo ":: nix fmt --ci"
+nix fmt -- --ci
+
+echo ":: statix check"
+nix develop -c statix check .
+
+echo ":: deadnix"
+nix develop -c deadnix --fail .
+
+echo "All checks passed."

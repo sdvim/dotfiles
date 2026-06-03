@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Keybinding cheatsheet — displayed in a tmux popup via cmd+shift+?
+
+cat <<'EOF' | less -R
+                    ⌨️  Keybinding Cheatsheet
+                    ════════════════════════
+
+  GENERAL
+  ───────────────────────────────────────────
+  cmd+c             Copy
+  cmd+v             Paste
+  cmd+q             Quit
+  ctrl+'            Terminal workspace toggle
+  cmd+ctrl+f        Toggle fullscreen
+  shift+enter       Send shift+enter (CSI u)
+
+  NAVIGATION
+  ───────────────────────────────────────────
+  cmd+←             Line start
+  cmd+→             Line end
+  alt+←             Word left
+  alt+→             Word right
+
+  PANES
+  ───────────────────────────────────────────
+  cmd+d             Split horizontal
+  cmd+shift+d       Split vertical
+  cmd+[             Previous pane
+  cmd+]             Next pane
+  cmd+0-9           Select pane by number
+  cmd+shift+enter   Zoom pane
+  cmd+w             Close pane
+
+  WINDOWS
+  ───────────────────────────────────────────
+  cmd+t             New window
+  cmd+shift+0-9     Select window by number
+  cmd+shift+[       Previous window
+  cmd+shift+]       Next window
+  cmd+`             Next Ghostty window
+  cmd+shift+`       Move pane → previous tmux session
+  ctrl+tab          Next window
+  ctrl+shift+tab    Previous window
+
+  TMUX
+  ───────────────────────────────────────────
+  cmd+k             Clear scrollback
+  cmd+n             New session (new window)
+  cmd+shift+n       Move pane → new session
+  cmd+r             Open PR in browser
+  cmd+shift+r       Open PR in browser (Devin)
+  prefix W          View task output
+  CONFIG
+  ───────────────────────────────────────────
+  cmd+shift+<       Edit ghostty config
+  cmd+shift+?       This help screen
+
+  Press q to close
+EOF

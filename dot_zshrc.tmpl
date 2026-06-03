@@ -1,0 +1,92 @@
+autoload -U compinit && compinit -C
+
+if [[ -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  ZSH_AUTOSUGGEST_STRATEGY=(history)
+fi
+
+if [[ $options[zle] = on ]] && command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
+
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+
+if [[ $TERM != "dumb" ]] && command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+
+HISTSIZE="10000"
+SAVEHIST="10000"
+HISTFILE="$HOME/.zsh_history"
+mkdir -p "$(dirname "$HISTFILE")"
+
+setopt HIST_FCNTL_LOCK HIST_IGNORE_DUPS HIST_IGNORE_SPACE SHARE_HISTORY
+unsetopt APPEND_HISTORY EXTENDED_HISTORY HIST_EXPIRE_DUPS_FIRST HIST_FIND_NO_DUPS HIST_IGNORE_ALL_DUPS HIST_SAVE_NO_DUPS PROMPT_SP
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+bindkey '\e[1;3D' backward-word
+bindkey '\e[1;3C' forward-word
+
+if [[ -z "$CLAUDECODE" && -z "$CODEX_SANDBOX" ]]; then
+  alias cat="bat"
+  alias find="fd"
+  alias grep="rg"
+  alias ls="eza --icons=always -a"
+  alias tree="eza -T -L 4 -a --git-ignore --color=always"
+fi
+
+alias rebuild='chezmoi apply && source ~/.zshrc && tmux source-file ~/.tmux.conf 2>/dev/null; aerospace reload-config 2>/dev/null; ghostty +reload-config 2>/dev/null; true'
+alias reload='source ~/.zshrc'
+alias g='git'
+alias ga='git add .'
+alias gb='git branch'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias gco='git checkout'
+alias gcom='git checkout main'
+alias gf='git fetch --prune'
+alias gl="git log --pretty=format:'%C(yellow)%h%C(reset)%C(red)%d%C(reset)%n%C(cyan)%ar%C(reset) %C(green)<%an>%C(reset)%n%s%n' --no-merges --max-count 5"
+alias gp='git pull'
+alias gpom='git pull origin main'
+alias gr='git rebase'
+alias grom='git rebase origin/main'
+alias gd="git diff --diff-filter=d; git diff --diff-filter=D --name-status; git ls-files --others --exclude-standard | sed 's/^/??\t/'"
+alias gdom="git diff --diff-filter=d --stat -p origin/main; git diff --diff-filter=D --name-status origin/main; git ls-files --others --exclude-standard | sed 's/^/??\t/'"
+alias gs='git status -s'
+alias undo='git reset HEAD~1'
+alias wip="git add . && git commit -m 'WIP'"
+alias rwt='suffix=$(basename "$(pwd)" | sed "s/.*-//") && git checkout "main-$suffix" && git pull origin main && git fetch --prune'
+alias c='claude --allow-dangerously-skip-permissions --permission-mode plan'
+alias cdf='cd "$(fd --type d --hidden false | fzf)"'
+alias cx='codex --dangerously-bypass-approvals-and-sandbox'
+
+{{ if eq .chezmoi.hostname "mini" -}}
+alias docker-start='colima start'
+alias docker-stop='colima stop'
+{{ end -}}
+
+if [[ -n "$TMUX" ]]; then
+  _clear_claude_waiting() {
+    local p
+    p=$(tmux display -p '#{pane_id}' 2>/dev/null)
+    tmux set-option -p -u @claude_waiting 2>/dev/null
+    grep -vxF "$p" /tmp/tmux-claude-queue > /tmp/tmux-claude-queue.tmp 2>/dev/null && mv /tmp/tmux-claude-queue.tmp /tmp/tmux-claude-queue || rm -f /tmp/tmux-claude-queue.tmp
+    tmux refresh-client -S 2>/dev/null
+  }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd _clear_claude_waiting
+fi
+
+if [[ -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+  source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main)
+fi
+

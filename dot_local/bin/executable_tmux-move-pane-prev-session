@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+tmux_bin="${TMUX_BIN:-tmux}"
+current_session="${1:-}"
+pane_id="${2:-}"
+current_client_tty="${3:-}"
+current_window_id="${4:-}"
+
+if [ -z "$current_session" ] || [ -z "$pane_id" ] || [ -z "$current_client_tty" ] || [ -z "$current_window_id" ]; then
+  "$tmux_bin" display-message "Missing tmux pane/session context"
+  exit 1
+fi
+
+session_index() {
+  case "$1" in
+    main)
+      echo 0
+      ;;
+    main-*)
+      local suffix="${1#main-}"
+      if [[ "$suffix" =~ ^[0-9]+$ ]]; then
+        echo "$suffix"
+      else
+        echo -1
+      fi
+      ;;
+    *)
+      echo -1
+      ;;
+  esac
+}
+
+current_index="$(session_index "$current_session")"
+target_session=""
+best_index=-1
+
+while IFS= read -r session_name; do
+  idx="$(session_index "$session_name")"
+  if [ "$idx" -ge 0 ] && [ "$idx" -lt "$current_index" ] && [ "$idx" -gt "$best_index" ]; then
+    best_index="$idx"
+    target_session="$session_name"
+  fi
+done < <("$tmux_bin" list-sessions -F '#{session_name}')
+
+if [ -z "$target_session" ]; then
+  "$tmux_bin" display-message "No previous tmux session"
+  exit 0
+fi
+
+target_client_tty="$(
+  "$tmux_bin" list-clients -F '#{client_tty}	#{session_name}' \
+    | awk -F '	' -v current_tty="$current_client_tty" -v target="$target_session" '
+        $1 != current_tty && $2 == target {
+          print $1
+          exit
+        }
+      '
+)"
+
+if [ -n "$target_client_tty" ]; then
+  "$tmux_bin" switch-client -c "$target_client_tty" -t "$current_session"
+fi
+
+target_window_id="$("$tmux_bin" display-message -p -t "$target_session" '#{window_id}')"
+
+"$tmux_bin" move-pane -s "$pane_id" -t "$target_session"
+"$tmux_bin" select-layout -t "$target_window_id" even-horizontal >/dev/null 2>&1 || true
+"$tmux_bin" select-layout -t "$current_window_id" even-horizontal >/dev/null 2>&1 || true
+"$tmux_bin" switch-client -t "$target_session"

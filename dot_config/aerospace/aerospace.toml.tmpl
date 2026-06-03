@@ -1,0 +1,114 @@
+# AeroSpace Config
+# Docs: https://nikitabobko.github.io/AeroSpace/guide
+
+config-version = 2
+
+# Start at login
+start-at-login = true
+
+# Normalizations
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# Layout defaults - column-style tiles
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'horizontal'
+
+# Accordion padding (only used if you switch to accordion mode)
+accordion-padding = 30
+
+# Do not warp the cursor when focus moves across monitors
+
+# Workspaces: dedicated terminal workspace plus three numeric workspaces
+persistent-workspaces = ['~', '1', '2', '3', '4']
+
+[workspace-to-monitor-force-assignment]
+'~' = ['secondary', 'main']
+
+[key-mapping]
+preset = 'qwerty'
+
+[gaps]
+inner.horizontal = 10
+inner.vertical = 10
+outer.left = 0
+outer.bottom = 0
+outer.top = 0
+outer.right = 0
+
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main']
+f = ['layout floating tiling', 'mode main']
+backspace = ['close-all-windows-but-current', 'mode main']
+alt-shift-leftSquareBracket = ['join-with left', 'mode main']
+alt-shift-rightSquareBracket = ['join-with right', 'mode main']
+
+[mode.main.binding]
+# Layout toggles
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+
+# Focus left/right - crosses monitor boundaries, wraps around
+ctrl-leftSquareBracket = 'focus --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors left'
+ctrl-rightSquareBracket = 'focus --boundaries all-monitors-outer-frame --boundaries-action wrap-around-all-monitors right'
+
+# Move windows left/right
+ctrl-shift-leftSquareBracket = 'move left'
+ctrl-shift-rightSquareBracket = 'move right'
+
+# Focus window by position (1-4)
+alt-1 = 'focus --dfs-index 0'
+alt-2 = 'focus --dfs-index 1'
+alt-3 = 'focus --dfs-index 2'
+alt-4 = 'focus --dfs-index 3'
+
+# Resize
+ctrl-minus = 'resize smart -50'
+ctrl-equal = 'resize smart +50'
+ctrl-0 = 'balance-sizes'
+
+# Workspaces
+ctrl-1 = 'workspace 1'
+ctrl-2 = 'workspace 2'
+ctrl-3 = 'workspace 3'
+ctrl-4 = 'workspace 4'
+
+# Move window to workspace
+ctrl-shift-1 = 'move-node-to-workspace 1'
+ctrl-shift-2 = 'move-node-to-workspace 2'
+ctrl-shift-3 = 'move-node-to-workspace 3'
+ctrl-shift-4 = 'move-node-to-workspace 4'
+
+# Quick workspace switching
+ctrl-tab = 'workspace-back-and-forth'
+ctrl-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+ctrl-quote = 'exec-and-forget {{ .chezmoi.homeDir }}/.local/bin/aerospace-terminal-toggle'
+ctrl-backtick = 'workspace ~'
+ctrl-shift-backtick = 'move-node-to-workspace ~'
+
+# App launchers
+alt-g = 'exec-and-forget open -a Ghostty'
+alt-h = 'exec-and-forget open -a Helium'
+
+# Service mode
+alt-shift-semicolon = 'mode service'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = ['exec-and-forget {{ .chezmoi.homeDir }}/.local/bin/aerospace-terminal-toggle route-first-window']
+
+[[on-window-detected]]
+if.app-id = 'net.imput.helium'
+if.window-title-regex-substring = 'Google Meet'
+run = ['move-node-to-workspace ~']
+
+[[on-window-detected]]
+if.app-id = 'net.imput.helium'
+if.window-title-regex-substring = 'Sign in - Google Accounts'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Safari'
+if.window-title-regex-substring = 'Sign in - Google Accounts'
+run = 'layout floating'

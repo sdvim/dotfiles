@@ -1,0 +1,130 @@
+# Keep tmux-launched commands on the Homebrew/chezmoi PATH.
+set-environment -g PATH "/opt/homebrew/bin:/opt/homebrew/sbin:{{ .chezmoi.homeDir }}/.local/bin:{{ .chezmoi.homeDir }}/.npm-global/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Status bar at the top, inherits terminal background
+set -g status-position top
+set -g status-style 'bg=default'
+set -g status-left ' '
+set -g status-right '#(cat /tmp/tmux-cmd-state 2>/dev/null) '
+set -g status-right-length 80
+
+# Vi keys in copy mode (hjkl, /, v, etc.)
+set -g mode-keys vi
+
+# Mouse support (scrollback, pane selection, select-to-copy)
+set -g mouse on
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+
+# Windows start at 1
+set -g base-index 1
+set -g pane-base-index 1
+set -g renumber-windows on
+
+# Window titles: dir:process
+# Known dirs get short aliases, otherwise show basename
+# Claude Code overwrites its process title with a version — detect and fix
+# Per-pane Claude indicators: ! = waiting, ✱ = active
+set -g automatic-rename on
+set -g allow-rename off
+set -g set-titles off
+set -g window-status-format '#{?@window_has_alerts,#[fg=colour208],}#I:#(~/.local/bin/tmux-fmt-dir #{pane_current_path}):#(~/.local/bin/tmux-fmt-cmd #{pane_current_command} #{window_id})#(~/.local/bin/tmux-claude-indicator #{window_id})#{?@window_has_alerts,#[default],}'
+set -g window-status-current-format '#{?@window_has_alerts,#[fg=colour208 bold],#[bold]}#I:#(~/.local/bin/tmux-fmt-dir #{pane_current_path}):#(~/.local/bin/tmux-fmt-cmd #{pane_current_command} #{window_id})#(~/.local/bin/tmux-claude-indicator #{window_id})#{?@window_has_alerts,#[default],}'
+set -g window-status-current-style 'bold'
+set -g window-status-style 'dim'
+set-hook -g pane-focus-in 'run-shell -b "P=$(tmux display -p \"#{pane_id}\"); tmux set-option -p -u @claude_waiting 2>/dev/null; grep -vxF $P /tmp/tmux-claude-queue > /tmp/tmux-claude-queue.tmp 2>/dev/null && mv /tmp/tmux-claude-queue.tmp /tmp/tmux-claude-queue || rm -f /tmp/tmux-claude-queue.tmp; tmux refresh-client -S"'
+# Dim pane borders
+set -g pane-border-style 'fg=colour238'
+set -g pane-active-border-style 'fg=colour238'
+
+# Dim inactive panes (subtle foreground dim)
+set -g window-style 'fg=colour251,bg=default'
+set -g window-active-style 'fg=terminal,bg=default'
+
+# Auto-equalize panes on split/close (skip when zoomed)
+set-hook -g after-split-window "if-shell 'tmux display -p \"#{window_zoomed_flag}\" | grep -q 1' '' 'select-layout -E'"
+set-hook -g pane-exited "if-shell 'tmux display -p \"#{window_zoomed_flag}\" | grep -q 1' '' 'select-layout -E'"
+
+# Extended keys so shift+enter etc. pass through to apps
+set -s extended-keys on
+set -s extended-keys-format csi-u
+set -as terminal-features ',xterm-ghostty:RGB:extkeys'
+
+# Let apps know when their pane gains/loses focus (hides cursor in inactive panes)
+set -g focus-events on
+
+# Splits and new windows inherit current directory
+bind-key % split-window -h -c '#{pane_current_path}'
+bind-key '"' split-window -v -c '#{pane_current_path}'
+bind-key c new-window -c '#{pane_current_path}'
+
+# Select panes by number (prefix + N)
+bind-key 0 select-pane -t :.0
+bind-key 1 select-pane -t :.1
+bind-key 2 select-pane -t :.2
+bind-key 3 select-pane -t :.3
+bind-key 4 select-pane -t :.4
+bind-key 5 select-pane -t :.5
+bind-key 6 select-pane -t :.6
+bind-key 7 select-pane -t :.7
+bind-key 8 select-pane -t :.8
+bind-key 9 select-pane -t :.9
+
+# Select windows by number (prefix + Alt+N)
+bind-key M-0 select-window -t :0
+bind-key M-1 select-window -t :1
+bind-key M-2 select-window -t :2
+bind-key M-3 select-window -t :3
+bind-key M-4 select-window -t :4
+bind-key M-5 select-window -t :5
+bind-key M-6 select-window -t :6
+bind-key M-7 select-window -t :7
+bind-key M-8 select-window -t :8
+bind-key M-9 select-window -t :9
+
+# Previous pane (reverse of built-in 'o')
+bind-key O select-pane -t :.-
+
+# Clear scrollback buffer (cmd+k via Ghostty)
+bind-key K if -F '#{m:[0-9]*,#{pane_current_command}}' {run-shell -b 'P="#{pane_id}"; tmux send-keys -t "$P" -l "/clear"; sleep 0.05; tmux send-keys -t "$P" Enter; sleep 0.5; tmux send-keys -t "$P" -l "/plan"; sleep 0.05; tmux send-keys -t "$P" Enter'} {send-keys C-l ; clear-history}
+
+# Forward shift+enter to apps (CSI u format for Claude Code)
+bind-key -n S-Enter send-keys Escape "[13;2u"
+
+# Clear old bindings from previous config
+unbind-key r
+
+# View live tmux-cmd output (shown as hint after 10s)
+bind-key W new-window -n "task" "tail -f /tmp/tmux-cmd-live"
+
+# Open recently edited file in nvim (cmd+e via Ghostty)
+bind-key E run-shell "$HOME/.local/bin/tmux-edit-recent '#{pane_current_path}' '#{pane_id}'"
+
+# Open GitHub PR for current branch in browser (cmd+r via Ghostty)
+bind-key R run-shell -b "cd '#{pane_current_path}' && gh pr view --web 2>/dev/null || tmux display-message 'No PR found for this branch'"
+
+# Open PR on devinreview.com (cmd+shift+r via Ghostty)
+bind-key -n M-R run-shell -b "cd '#{pane_current_path}' && url=$(gh pr view --json url -q .url 2>/dev/null | sed 's|github.com|devinreview.com|') && [ -n \"$url\" ] && open \"$url\" || tmux display-message 'No PR found for this branch'"
+
+# Jump to next waiting Claude pane (prefix + G)
+bind-key G run-shell "$HOME/.local/bin/tmux-claude-next"
+
+# Move current pane to previous tmux session and follow it
+bind-key M run-shell -b "$HOME/.local/bin/tmux-move-pane-prev-session '#{session_name}' '#{pane_id}' '#{client_tty}' '#{window_id}'"
+
+# Keybinding cheatsheet (cmd+shift+? via Ghostty)
+bind-key ? display-popup -E -w 80% -h 80% "$HOME/.local/bin/keybindings-help"
+
+# Responsive layout: manual break/join panes
+bind-key B run-shell -b "$HOME/.local/bin/tmux-responsive-layout break"
+bind-key J run-shell -b "$HOME/.local/bin/tmux-responsive-layout join"
+
+# Increase scrollback
+set -g history-limit 50000
+
+# Session persistence (resurrect + continuum)
+# Options must be set before run-shell so plugins see them during init
+set -g @resurrect-capture-pane-contents 'on'
+set -g @continuum-restore 'on'
+set -g @continuum-save-interval '10'
+run-shell {{ .chezmoi.homeDir }}/.tmux/plugins/tmux-resurrect/resurrect.tmux
+run-shell {{ .chezmoi.homeDir }}/.tmux/plugins/tmux-continuum/continuum.tmux

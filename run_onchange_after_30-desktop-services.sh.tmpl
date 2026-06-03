@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+{{ if or (eq .chezmoi.hostname "mini") (eq .chezmoi.hostname "pro") -}}
+sudo launchctl enable system/com.openssh.sshd
+sudo launchctl bootstrap system /System/Library/LaunchDaemons/ssh.plist 2>/dev/null || true
+sudo launchctl enable system/com.apple.screensharing
+sudo launchctl bootstrap system /System/Library/LaunchDaemons/com.apple.screensharing.plist 2>/dev/null || true
+sudo launchctl enable system/com.apple.smbd
+sudo launchctl bootstrap system /System/Library/LaunchDaemons/com.apple.smbd.plist 2>/dev/null || true
+{{ end -}}
