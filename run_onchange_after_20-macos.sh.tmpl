@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-mkdir -p "$HOME/Screenshots" "$HOME/.npm-global" "$HOME/.local/bin" "$HOME/.tmux/plugins"
+mkdir -p "$HOME/Screenshots" "$HOME/.npm-global" "$HOME/.local/bin"
 
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 defaults write NSGlobalDomain InitialKeyRepeat -int 15
@@ -45,13 +45,6 @@ fi
 
 if command -v npm >/dev/null 2>&1; then
   NPM_CONFIG_PREFIX="$HOME/.npm-global" npm install -g @steipete/summarize >/dev/null 2>&1 || true
-fi
-
-if [ ! -d "$HOME/.tmux/plugins/tmux-resurrect/.git" ]; then
-  git clone https://github.com/tmux-plugins/tmux-resurrect "$HOME/.tmux/plugins/tmux-resurrect"
-fi
-if [ ! -d "$HOME/.tmux/plugins/tmux-continuum/.git" ]; then
-  git clone https://github.com/tmux-plugins/tmux-continuum "$HOME/.tmux/plugins/tmux-continuum"
 fi
 
 hooks_dir="{{ .chezmoi.sourceDir }}/.git/hooks"

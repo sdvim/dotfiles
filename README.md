@@ -17,9 +17,10 @@ chezmoi init --apply sdvim/dotfiles --branch chezmoi-reboot
 
 ```sh
 chezmoi diff --source ~/Git/dotfiles
+chezmoi status --source ~/Git/dotfiles
 chezmoi apply --source ~/Git/dotfiles --dry-run --verbose
+chezmoi doctor --source ~/Git/dotfiles
 brew bundle check --file ~/Git/dotfiles/Brewfile
 ```
 
 This branch replaces the old Stow layout with a clean chezmoi source tree. It is intended to be validated on the current Nix-managed machine with dry-run only, then applied on a fresh macOS install.
-
