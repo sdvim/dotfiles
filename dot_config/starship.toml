@@ -1,0 +1,38 @@
+format = "$directory$git_branch$git_status${env_var.CLAUDE_CONTEXT}${env_var.CI_STATUS}$character"
+right_format = "$cmd_duration"
+
+[character]
+success_symbol = "[›](green)"
+error_symbol = "[›](red)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "blue"
+
+[git_branch]
+format = "[$branch]($style) "
+style = "purple"
+
+[git_status]
+format = "([$all_status$ahead_behind]($style) )"
+style = "yellow"
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇡${ahead_count}⇣${behind_count}"
+deleted = "×"
+
+[cmd_duration]
+min_time = 2000
+format = "[$duration]($style)"
+style = "dimmed white"
+
+[env_var.CLAUDE_CONTEXT]
+variable = "CLAUDE_CONTEXT"
+format = "[$env_value]($style) "
+style = "yellow"
+
+[env_var.CI_STATUS]
+variable = "CI_STATUS"
+format = "$env_value "
+style = ""
