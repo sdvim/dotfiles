@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: macos-server-power <status|apply>
+
+status  Print current macOS power, SSH, and host identity state.
+apply   Apply headless Mac mini server power and SSH settings. Requires sudo.
+EOF
+}
+
+require_macos() {
+  if [[ "$(uname -s)" != "Darwin" ]]; then
+    printf 'macos-server-power: this command only supports macOS\n' >&2
+    exit 1
+  fi
+}
+
+have_pmset_capability() {
+  local capability=$1
+  pmset -g cap 2>/dev/null | awk '{print $1}' | grep -qx "$capability"
+}
+
+print_systemsetup_value() {
+  local label=$1
+  shift
+
+  printf '%s: ' "$label"
+  if ! "$@" 2>&1; then
+    printf '(requires administrator access or Full Disk Access)\n'
+  fi
+}
+
+status() {
+  require_macos
+
+  printf 'Host identity\n'
+  printf '%s\n' '-------------'
+  printf 'ComputerName: '
+  scutil --get ComputerName 2>/dev/null || true
+  printf 'LocalHostName: '
+  scutil --get LocalHostName 2>/dev/null || true
+  printf 'hostname: '
+  hostname
+  printf '\n'
+
+  printf 'Power settings\n'
+  printf '%s\n' '--------------'
+  pmset -g custom
+  printf '\n'
+
+  printf 'Power capabilities\n'
+  printf '%s\n' '------------------'
+  pmset -g cap
+  printf '\n'
+
+  printf 'Scheduled power events\n'
+  printf '%s\n' '----------------------'
+  pmset -g sched
+  printf '\n'
+
+  printf 'System setup\n'
+  printf '%s\n' '------------'
+  print_systemsetup_value 'Remote Login' systemsetup -getremotelogin
+  print_systemsetup_value 'Wake on Network Access' systemsetup -getwakeonnetworkaccess
+  print_systemsetup_value 'Restart on Power Failure' systemsetup -getrestartpowerfailure
+  print_systemsetup_value 'Restart on Freeze' systemsetup -getrestartfreeze
+  print_systemsetup_value 'Startup Delay After Power Failure' systemsetup -getwaitforstartupafterpowerfailure
+}
+
+apply_pmset() {
+  local -a settings=(
+    sleep 0
+    disksleep 0
+    displaysleep 10
+  )
+
+  local setting
+  for setting in womp ttyskeepawake tcpkeepalive autorestart autorestartatconnect powernap lowpowermode; do
+    if have_pmset_capability "$setting"; then
+      case "$setting" in
+        lowpowermode) settings+=("$setting" 0) ;;
+        *) settings+=("$setting" 1) ;;
+      esac
+    fi
+  done
+
+  if have_pmset_capability standby; then
+    # Standby is deep sleep/hibernate-like behavior. Disable it for a reachable headless server.
+    settings+=(standby 0)
+  fi
+
+  sudo pmset -a "${settings[@]}"
+}
+
+apply_systemsetup() {
+  sudo systemsetup -setremotelogin on
+  sudo systemsetup -setwakeonnetworkaccess on
+  sudo systemsetup -setrestartpowerfailure on
+  sudo systemsetup -setrestartfreeze on
+  sudo systemsetup -setwaitforstartupafterpowerfailure 30
+}
+
+apply() {
+  require_macos
+
+  printf 'Requesting sudo for macOS power and SSH settings...\n'
+  sudo -v
+
+  apply_pmset
+  apply_systemsetup
+
+  printf '\nApplied server power settings. Current state:\n\n'
+  status
+}
+
+main() {
+  local command=${1:-}
+  case "$command" in
+    status) status ;;
+    apply) apply ;;
+    -h|--help|help|"") usage ;;
+    *)
+      usage >&2
+      exit 2
+      ;;
+  esac
+}
+
+main "$@"

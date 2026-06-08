@@ -1,0 +1,5 @@
+{{- $roles := list "workstation" "server" -}}
+{{- $role := promptChoice "Machine role" $roles "workstation" -}}
+[data]
+role = {{ $role | quote }}
+headless = {{ eq $role "server" }}
