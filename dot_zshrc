@@ -34,10 +34,6 @@ if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init zsh --disable-up-arrow)"
 fi
 
-if [[ -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
-
 if command -v starship >/dev/null 2>&1; then
   export STARSHIP_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/starship.toml"
   ZLE_RPROMPT_INDENT=0
@@ -50,6 +46,10 @@ cxd() {
     --dangerously-bypass-approvals-and-sandbox \
     "$@"
 }
+
+if [[ -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
 
 if [[ -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

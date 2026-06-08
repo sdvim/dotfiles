@@ -30,9 +30,7 @@ style = "dimmed white"
 [env_var.CLAUDE_CONTEXT]
 variable = "CLAUDE_CONTEXT"
 format = "[$env_value]($style) "
-style = "yellow"
 
 [env_var.CI_STATUS]
 variable = "CI_STATUS"
 format = "$env_value "
-style = ""

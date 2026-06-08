@@ -2,7 +2,6 @@
 
 ## Repository Purpose
 
-- This is the `mini-chezmoi` reboot branch for personal dotfiles.
 - Treat this repository as a chezmoi source tree, not as the home directory itself.
 - Keep the branch intentionally small and conservative until the reboot grows a clearer structure.
 
@@ -11,7 +10,7 @@
 - `dot_zprofile` manages `~/.zprofile` and should keep Homebrew shell setup available.
 - `dot_zshrc` manages `~/.zshrc` for interactive zsh setup.
 - `dot_config/starship.toml` manages `~/.config/starship.toml`.
-- `private_dot_codex/private_config.toml` manages `~/.codex/config.toml`.
+- `private_dot_codex/private_config.toml.tmpl` manages `~/.codex/config.toml`.
 - Project-local Codex files under `.codex/` are repository configuration, not chezmoi home targets.
 
 ## Tooling Conventions
