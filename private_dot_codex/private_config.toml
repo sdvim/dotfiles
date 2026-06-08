@@ -1,4 +1,9 @@
+plan_mode_reasoning_effort = "xhigh"
+
 [projects."/Users/stevedv"]
+trust_level = "trusted"
+
+[projects."/Users/stevedv/Git/dotfiles"]
 trust_level = "trusted"
 
 [tui]
@@ -6,4 +11,4 @@ status_line = ["current-dir", "project-name", "git-branch", "branch-changes"]
 status_line_use_colors = true
 
 [tui.model_availability_nux]
-"gpt-5.5" = 2
+"gpt-5.5" = 3
