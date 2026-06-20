@@ -28,8 +28,8 @@
 - Use `.chezmoi.toml.tmpl` to initialize or change this data; the default role is `workstation`.
 - Server-only files must be gated with `.chezmoiignore.tmpl` so workstation machines do not receive them.
 - The Mac mini server role is intended for a headless, always-on machine reachable by SSH.
-- Privileged macOS server tuning must be installed as an explicit command and run manually with sudo. Do not hide `pmset` or `systemsetup` mutations inside normal shell startup.
-- `macos-server-power status` is safe for inspection; `macos-server-power apply` changes power and SSH settings.
+- Privileged macOS server tuning must be installed as an explicit command and run manually with sudo. Do not hide `pmset`, `systemsetup`, or Screen Sharing mutations inside normal shell startup.
+- `macos-server status` is safe for inspection; `macos-server apply` changes power, SSH, and Screen Sharing settings.
 - For executables under `~/.local/bin`, put the `executable_` attribute on the basename, for example `dot_local/bin/executable_tool`.
 
 ## Chezmoi Rules

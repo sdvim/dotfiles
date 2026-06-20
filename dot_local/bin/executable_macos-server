@@ -3,16 +3,16 @@ set -euo pipefail
 
 usage() {
   cat <<'EOF'
-Usage: macos-server-power <status|apply>
+Usage: macos-server <status|apply>
 
-status  Print current macOS power, SSH, and host identity state.
-apply   Apply headless Mac mini server power and SSH settings. Requires sudo.
+status  Print current macOS power, SSH, Screen Sharing, and host identity state.
+apply   Apply headless Mac mini server power, SSH, and Screen Sharing settings. Requires sudo.
 EOF
 }
 
 require_macos() {
   if [[ "$(uname -s)" != "Darwin" ]]; then
-    printf 'macos-server-power: this command only supports macOS\n' >&2
+    printf 'macos-server: this command only supports macOS\n' >&2
     exit 1
   fi
 }
@@ -32,8 +32,33 @@ print_systemsetup_value() {
   fi
 }
 
+remote_user() {
+  local user=${MACOS_SERVER_REMOTE_USER:-${SUDO_USER:-${USER:-}}}
+
+  if [[ -z "$user" || "$user" == "root" ]]; then
+    user=$(stat -f '%Su' /dev/console 2>/dev/null || true)
+  fi
+
+  if [[ -z "$user" || "$user" == "root" || "$user" == "unknown" ]]; then
+    printf 'macos-server: cannot determine remote user; set MACOS_SERVER_REMOTE_USER\n' >&2
+    exit 1
+  fi
+
+  printf '%s\n' "$user"
+}
+
+print_service_state() {
+  local label=$1
+  local service=$2
+
+  printf '%s: ' "$label"
+  launchctl print "system/$service" 2>/dev/null | awk -F '= ' '/state = / { print $2; found=1; exit } END { if (!found) print "unknown" }'
+}
+
 status() {
   require_macos
+  local user
+  user=$(remote_user)
 
   printf 'Host identity\n'
   printf '%s\n' '-------------'
@@ -67,6 +92,25 @@ status() {
   print_systemsetup_value 'Restart on Power Failure' systemsetup -getrestartpowerfailure
   print_systemsetup_value 'Restart on Freeze' systemsetup -getrestartfreeze
   print_systemsetup_value 'Startup Delay After Power Failure' systemsetup -getwaitforstartupafterpowerfailure
+  printf '\n'
+
+  printf 'Remote access\n'
+  printf '%s\n' '-------------'
+  print_service_state 'SSH service' com.openssh.sshd
+  printf 'SSH port: '
+  if nc -vz -G 2 127.0.0.1 22 >/dev/null 2>&1; then
+    printf 'reachable\n'
+  else
+    printf 'not reachable\n'
+  fi
+  print_service_state 'Screen Sharing service' com.apple.screensharing
+  printf 'Screen Sharing port: '
+  if nc -vz -G 2 127.0.0.1 5900 >/dev/null 2>&1; then
+    printf 'reachable\n'
+  else
+    printf 'not reachable\n'
+  fi
+  dseditgroup -o checkmember -m "$user" com.apple.access_screensharing 2>&1 || true
 }
 
 apply_pmset() {
@@ -102,16 +146,30 @@ apply_systemsetup() {
   sudo systemsetup -setwaitforstartupafterpowerfailure 30
 }
 
+apply_screen_sharing() {
+  local user
+  user=$(remote_user)
+
+  sudo dseditgroup -o edit -a "$user" -t user com.apple.access_screensharing
+  sudo /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart \
+    -activate \
+    -configure -access -on \
+    -users "$user" \
+    -privs -all \
+    -restart -agent
+}
+
 apply() {
   require_macos
 
-  printf 'Requesting sudo for macOS power and SSH settings...\n'
+  printf 'Requesting sudo for macOS power, SSH, and Screen Sharing settings...\n'
   sudo -v
 
   apply_pmset
   apply_systemsetup
+  apply_screen_sharing
 
-  printf '\nApplied server power settings. Current state:\n\n'
+  printf '\nApplied server power and remote access settings. Current state:\n\n'
   status
 }
 
