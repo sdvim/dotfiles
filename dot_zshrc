@@ -34,18 +34,60 @@ if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init zsh --disable-up-arrow)"
 fi
 
+alias reload='source ~/.zshrc'
+
+if command -v git >/dev/null 2>&1; then
+  alias g='git'
+  alias ga='git add .'
+  alias gb='git branch'
+  alias gc='git commit'
+  alias gca='git commit --amend'
+  alias gco='git checkout'
+  alias gcom='git checkout main'
+  alias gf='git fetch --prune'
+  alias gl='git log --pretty=format:"%C(yellow)%h%C(reset)%C(red)%d%C(reset)%n%C(cyan)%ar%C(reset) %C(green)<%an>%C(reset)%n%s%n" --no-merges --max-count 5'
+  alias gp='git pull'
+  alias gpom='git pull origin main'
+  alias gr='git rebase'
+  alias grom='git rebase origin/main'
+  alias gd='git diff --diff-filter=d; git diff --diff-filter=D --name-status; git ls-files --others --exclude-standard | sed "s/^/??\t/"'
+  alias gdom='git diff --diff-filter=d --stat -p origin/main; git diff --diff-filter=D --name-status origin/main; git ls-files --others --exclude-standard | sed "s/^/??\t/"'
+  alias gs='git status -s'
+  alias undo='git reset HEAD~1'
+  alias wip='git add . && git commit -m WIP'
+  alias rwt='suffix=$(basename "$(pwd)" | sed "s/.*-//") && git checkout "main-$suffix" && git pull origin main && git fetch --prune'
+fi
+
+if command -v codex >/dev/null 2>&1; then
+  alias cx='codex --dangerously-bypass-approvals-and-sandbox'
+  alias cxd='command codex resume --last --cd "$HOME/Git/dotfiles" --dangerously-bypass-approvals-and-sandbox'
+fi
+
+if command -v claude >/dev/null 2>&1; then
+  alias c='claude --allow-dangerously-skip-permissions --permission-mode plan'
+fi
+
+if command -v fd >/dev/null 2>&1 && command -v fzf >/dev/null 2>&1; then
+  alias cdf='cd "$(fd --type d --hidden false | fzf)"'
+fi
+
+if [[ -z "${CLAUDECODE:-}" && -z "${CODEX_SANDBOX:-}" ]]; then
+  command -v bat >/dev/null 2>&1 && alias cat='bat'
+  command -v fd >/dev/null 2>&1 && alias find='fd'
+  command -v rg >/dev/null 2>&1 && alias grep='rg'
+  command -v eza >/dev/null 2>&1 && alias ls='eza --icons=always -a'
+  command -v eza >/dev/null 2>&1 && alias tree='eza -T -L 4 -a --git-ignore --color=always'
+fi
+
+if [[ -d "$HOME/Git/nix-config" ]] && command -v darwin-rebuild >/dev/null 2>&1; then
+  alias rebuild='git -C "$HOME/Git/nix-config" add scripts/ config/ && sudo darwin-rebuild switch --flake "$HOME/Git/nix-config#$(hostname -s)" && source ~/.zshrc && tmux source-file ~/.tmux.conf 2>/dev/null; aerospace reload-config 2>/dev/null; ghostty +reload-config 2>/dev/null; true'
+fi
+
 if command -v starship >/dev/null 2>&1; then
   export STARSHIP_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/starship.toml"
   ZLE_RPROMPT_INDENT=0
   eval "$(starship init zsh)"
 fi
-
-cxd() {
-  command codex resume --last \
-    --cd /Users/stevedv/Git/dotfiles \
-    --dangerously-bypass-approvals-and-sandbox \
-    "$@"
-}
 
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
