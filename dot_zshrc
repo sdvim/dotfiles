@@ -12,9 +12,11 @@ if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
   fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
 fi
 
-autoload -Uz compinit
-mkdir -p -- "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+if (( ! ${+_comps} )); then
+  autoload -Uz compinit
+  mkdir -p -- "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+  compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
+fi
 
 setopt EXTENDED_HISTORY
 setopt HIST_FCNTL_LOCK
