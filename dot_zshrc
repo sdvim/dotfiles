@@ -34,7 +34,29 @@ if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init zsh --disable-up-arrow)"
 fi
 
-alias reload='source ~/.zshrc'
+reload-dotfiles() {
+  if command -v chezmoi >/dev/null 2>&1; then
+    local source_dir="${CHEZMOI_SOURCE_DIR:-}"
+    if [[ -z "$source_dir" ]]; then
+      source_dir="$(chezmoi source-path 2>/dev/null || print -r -- "$HOME/Git/dotfiles")"
+    fi
+
+    chezmoi apply --source "$source_dir" "$@" || return
+  fi
+
+  if [[ -r "$HOME/.zprofile" ]]; then
+    source "$HOME/.zprofile"
+  fi
+
+  if [[ -r "$HOME/.zshrc" ]]; then
+    source "$HOME/.zshrc"
+  fi
+
+  if command -v tmux >/dev/null 2>&1 && [[ -r "$HOME/.tmux.conf" ]]; then
+    tmux source-file "$HOME/.tmux.conf" 2>/dev/null || true
+  fi
+}
+alias reload='reload-dotfiles'
 
 if command -v git >/dev/null 2>&1; then
   alias g='git'
