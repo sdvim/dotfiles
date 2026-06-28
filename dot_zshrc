@@ -27,7 +27,7 @@ unsetopt INC_APPEND_HISTORY
 unsetopt SHARE_HISTORY
 
 if command -v fnm >/dev/null 2>&1; then
-  eval "$(fnm env --use-on-cd --shell zsh)"
+  eval "$(fnm env --use-on-cd --shell zsh --resolve-engines=false)"
 fi
 
 if command -v atuin >/dev/null 2>&1; then
