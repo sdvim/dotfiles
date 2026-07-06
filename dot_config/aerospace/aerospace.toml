@@ -2,8 +2,12 @@ config-version = 2
 
 persistent-workspaces = ['~', '1', '2', '3']
 
+start-at-login = true
+
 gaps.inner.horizontal = 12
 gaps.inner.vertical = 12
+
+exec-on-workspace-change = ['/bin/bash', '-c', 'aerospace move-mouse window-lazy-center']
 
 on-window-detected = [
   { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = 'move-node-to-workspace "~"' },
@@ -21,6 +25,14 @@ ctrl-shift-backtick = 'move-node-to-workspace "~"'
 ctrl-shift-1 = 'move-node-to-workspace 1'
 ctrl-shift-2 = 'move-node-to-workspace 2'
 ctrl-shift-3 = 'move-node-to-workspace 3'
+
+ctrl-equal = 'resize smart +50'
+ctrl-minus = 'resize smart -50'
+ctrl-0 = 'balance-sizes'
+ctrl-rightSquareBracket = 'focus --wrap-around dfs-next'
+ctrl-leftSquareBracket = 'focus --wrap-around dfs-prev'
+ctrl-shift-rightSquareBracket = 'swap dfs-next'
+ctrl-shift-leftSquareBracket = 'swap dfs-prev'
 
 [workspace-to-monitor-force-assignment]
 '~' = 'secondary'
