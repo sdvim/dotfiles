@@ -1,0 +1,26 @@
+config-version = 2
+
+persistent-workspaces = ['~', '1', '2', '3']
+
+gaps.inner.horizontal = 12
+gaps.inner.vertical = 12
+
+on-window-detected = [
+  { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = 'move-node-to-workspace "~"' },
+]
+
+[mode.main.binding]
+ctrl-quote = 'workspace --auto-back-and-forth "~"'
+
+ctrl-backtick = 'workspace "~"'
+ctrl-1 = 'workspace 1'
+ctrl-2 = 'workspace 2'
+ctrl-3 = 'workspace 3'
+
+ctrl-shift-backtick = 'move-node-to-workspace "~"'
+ctrl-shift-1 = 'move-node-to-workspace 1'
+ctrl-shift-2 = 'move-node-to-workspace 2'
+ctrl-shift-3 = 'move-node-to-workspace 3'
+
+[workspace-to-monitor-force-assignment]
+'~' = 'secondary'
