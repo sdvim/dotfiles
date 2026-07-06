@@ -1,0 +1,28 @@
+[user]
+	name = Steve Della Valentina
+	email = s.dellavalentina@gmail.com
+
+[pull]
+	rebase = true
+
+[core]
+	editor = nvim
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+
+[init]
+	defaultBranch = main
+
+[credential]
+	helper = !gh auth git-credential
