@@ -2,6 +2,7 @@
 node = "22"
 python = "3.13"
 go = "latest"
+turbo = "latest"
 
 [tasks.install-codex-skill-validator-deps]
 description = "Install Python packages needed for local Codex skill validation"
