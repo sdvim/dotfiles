@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v git >/dev/null 2>&1; then
+  printf 'open-github-pr: git was not found\n' >&2
+  exit 127
+fi
+
+if ! command -v gh >/dev/null 2>&1; then
+  printf 'open-github-pr: gh was not found\n' >&2
+  exit 127
+fi
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+  printf 'open-github-pr: not inside a git repository\n' >&2
+  exit 1
+}
+
+cd "$repo_root"
+exec gh pr view --web

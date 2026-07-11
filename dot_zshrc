@@ -12,6 +12,11 @@ if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
   fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
 fi
 
+typeset -U path
+if [[ -d "$HOME/.local/bin" ]]; then
+  path=("$HOME/.local/bin" $path)
+fi
+
 if (( ! ${+_comps} )); then
   autoload -Uz compinit
   mkdir -p -- "${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
@@ -33,61 +38,95 @@ if command -v mise >/dev/null 2>&1; then
 fi
 
 if command -v atuin >/dev/null 2>&1; then
-  eval "$(atuin init zsh --disable-up-arrow)"
-fi
+  eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
 
-reload-dotfiles() {
-  if command -v chezmoi >/dev/null 2>&1; then
-    local source_dir="${CHEZMOI_SOURCE_DIR:-}"
-    if [[ -z "$source_dir" ]]; then
-      source_dir="$(chezmoi source-path 2>/dev/null || print -r -- "$HOME/Git/dotfiles")"
+  atuin-fzf-search-user() {
+    emulate -L zsh
+    zle -I
+
+    local db="${ATUIN_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/atuin}/history.db"
+    local user_author="${ATUIN_FZF_USER_AUTHOR:-${USER:-$(whoami)}}"
+    local user_author_sql=${user_author//\'/\'\'}
+    local selected id command
+
+    [[ -r "$db" ]] || return 1
+
+    selected="$(
+      sqlite3 -readonly -separator $'\t' "$db" "
+        select
+          id,
+          datetime(timestamp / 1000000000, 'unixepoch', 'localtime'),
+          replace(cwd, char(9), ' '),
+          replace(replace(command, char(10), ' \\n '), char(9), ' ')
+        from history
+        where author = '$user_author_sql' and deleted_at is null
+        order by timestamp desc
+        limit 5000;
+      " |
+        fzf --height=60% --layout=reverse --scheme=history --delimiter=$'\t' --with-nth=2.. --nth=2.. --query="$BUFFER"
+    )"
+
+    if [[ -n "$selected" ]]; then
+      id="${selected%%$'\t'*}"
+      command="$(sqlite3 -readonly -noheader "$db" "select command from history where id = '$id';")"
+      if [[ -n "$command" ]]; then
+        RBUFFER=""
+        LBUFFER="$command"
+      fi
     fi
 
-    chezmoi apply --source "$source_dir" "$@" || return
-  fi
+    zle reset-prompt
+  }
+  atuin-search-all-viins() {
+    _atuin_search --keymap-mode=vim-insert
+  }
 
-  if [[ -r "$HOME/.zprofile" ]]; then
-    source "$HOME/.zprofile"
-  fi
+  zle -N atuin-fzf-search-user
+  zle -N atuin-search-all-viins
+  bindkey -M emacs '^R' atuin-fzf-search-user
+  bindkey -M viins '^R' atuin-fzf-search-user
+  bindkey -M emacs $'\e[82;6u' atuin-search
+  bindkey -M viins $'\e[82;6u' atuin-search-all-viins
+  bindkey -M emacs $'\e[114;6u' atuin-search
+  bindkey -M viins $'\e[114;6u' atuin-search-all-viins
+fi
 
-  if [[ -r "$HOME/.zshrc" ]]; then
-    source "$HOME/.zshrc"
-  fi
-
-  if command -v tmux >/dev/null 2>&1 && [[ -r "$HOME/.tmux.conf" ]]; then
-    tmux source-file "$HOME/.tmux.conf" 2>/dev/null || true
-  fi
-}
-alias reload='reload-dotfiles'
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/ghostty.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/ghostty.zsh"
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/aerospace.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/aerospace.zsh"
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/dotfiles.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/dotfiles.zsh"
 
 if command -v git >/dev/null 2>&1; then
   [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/git.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/git.zsh"
   [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/git.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/git.zsh"
 fi
 
-if command -v codex >/dev/null 2>&1; then
-  alias cx='codex --dangerously-bypass-approvals-and-sandbox'
-  alias cxd='command codex resume --last --cd "$HOME/Git/dotfiles" --dangerously-bypass-approvals-and-sandbox'
+if (( $+functions[open-github-pr-widget] )); then
+  zle -N open-github-pr-widget
+  bindkey -M emacs $'\e[114;9u' open-github-pr-widget
+  bindkey -M viins $'\e[114;9u' open-github-pr-widget
 fi
+
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/codex.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/codex.zsh"
 
 if command -v claude >/dev/null 2>&1; then
   alias c='claude --allow-dangerously-skip-permissions --permission-mode plan'
 fi
 
-if command -v fd >/dev/null 2>&1 && command -v fzf >/dev/null 2>&1; then
-  alias cdf='cd "$(fd --type d --hidden false | fzf)"'
+if [[ -t 0 && -r /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
+  FZF_CTRL_R_COMMAND= FZF_ALT_C_COMMAND= source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 fi
+
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/commands.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/commands.zsh"
 
 if [[ -z "${CLAUDECODE:-}" && -z "${CODEX_SANDBOX:-}" ]]; then
   command -v bat >/dev/null 2>&1 && alias cat='bat'
   command -v fd >/dev/null 2>&1 && alias find='fd'
   command -v rg >/dev/null 2>&1 && alias grep='rg'
   command -v eza >/dev/null 2>&1 && alias ls='eza --icons=always -a'
-  command -v eza >/dev/null 2>&1 && alias tree='eza -T -L 4 -a --git-ignore --color=always'
 fi
 
 if [[ -d "$HOME/Git/nix-config" ]] && command -v darwin-rebuild >/dev/null 2>&1; then
-  alias rebuild='git -C "$HOME/Git/nix-config" add scripts/ config/ && sudo darwin-rebuild switch --flake "$HOME/Git/nix-config#$(hostname -s)" && source ~/.zshrc && tmux source-file ~/.tmux.conf 2>/dev/null; aerospace reload-config 2>/dev/null; ghostty +reload-config 2>/dev/null; true'
+  alias rebuild='git -C "$HOME/Git/nix-config" add scripts/ config/ && sudo darwin-rebuild switch --flake "$HOME/Git/nix-config#$(hostname -s)" && source ~/.zshrc && tmux source-file ~/.tmux.conf 2>/dev/null; aerospace reload-config 2>/dev/null; reload-ghostty 2>/dev/null; true'
 fi
 
 if command -v starship >/dev/null 2>&1; then
@@ -102,7 +141,32 @@ fi
 
 if [[ -r /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
   source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(autosuggest-or-complete)
+
+  autosuggest-or-complete() {
+    local buffer="$BUFFER"
+    local postdisplay="$POSTDISPLAY"
+    local cursor="$CURSOR"
+
+    zle autosuggest-accept
+
+    if [[ "$BUFFER" == "$buffer" && "$POSTDISPLAY" == "$postdisplay" && "$CURSOR" == "$cursor" ]]; then
+      zle expand-or-complete
+    fi
+  }
+  zle -N autosuggest-or-complete
+  bindkey '^I' autosuggest-or-complete
+  bindkey -M viins '^I' autosuggest-or-complete
 fi
+
+bindkey '^[h' backward-char
+bindkey '^[j' down-line-or-history
+bindkey '^[k' up-line-or-history
+bindkey '^[l' forward-char
+bindkey -M viins '^[h' backward-char
+bindkey -M viins '^[j' down-line-or-history
+bindkey -M viins '^[k' up-line-or-history
+bindkey -M viins '^[l' forward-char
 
 if [[ -r /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
   source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

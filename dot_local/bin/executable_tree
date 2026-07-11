@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if command -v eza >/dev/null 2>&1; then
+  exec eza -T -L 4 -a --git-ignore --color=always "$@"
+fi
+
+printf 'tree: eza was not found\n' >&2
+exit 127

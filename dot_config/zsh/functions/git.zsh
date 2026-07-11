@@ -55,3 +55,15 @@ swt() {
 
   return "$failed"
 }
+
+open-github-pr-widget() {
+  emulate -L zsh
+
+  zle -I
+  if ! open-github-pr; then
+    zle -M 'open-github-pr failed'
+    return 1
+  fi
+
+  zle reset-prompt
+}
