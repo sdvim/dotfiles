@@ -1,0 +1,204 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+usage: setup-macos [--plan] [--yes] [--reset-folder-views] [--help]
+
+Configure macOS Finder and screenshot defaults for this dotfiles setup.
+
+Options:
+  --plan                Print the changes that would be made and exit.
+  --yes                 Apply without prompting.
+  --reset-folder-views  Remove existing Finder .DS_Store folder view overrides
+                        under $HOME, excluding ~/Library.
+  --help                Show this help.
+EOF
+}
+
+plan=0
+yes=0
+reset_folder_views=0
+while (( $# > 0 )); do
+  case "$1" in
+    --plan)
+      plan=1
+      ;;
+    --yes)
+      yes=1
+      ;;
+    --reset-folder-views)
+      reset_folder_views=1
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      printf 'setup-macos: unknown option: %s\n' "$1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+  shift
+done
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  printf 'setup-macos: this script only supports macOS\n' >&2
+  exit 1
+fi
+
+finder_plist="$HOME/Library/Preferences/com.apple.finder.plist"
+downloads_url="file://$HOME/Downloads/"
+print_plan() {
+  cat <<EOF
+setup-macos will:
+  - Set Finder's default view to list view.
+  - Sort normal Finder list views by name and keep folders first.
+  - Sort Downloads by date last opened.
+  - Show hidden dot files, all extensions, the path bar, and the status bar.
+  - Open new Finder windows at $HOME/Downloads.
+  - Search the current folder by default.
+  - Avoid .DS_Store files on network and USB volumes.
+  - Put screenshots in $HOME/Downloads.
+  - Point Hammerspoon at $HOME/.config/hammerspoon/init.lua.
+  - Restart Finder and SystemUIServer.
+EOF
+
+  if (( reset_folder_views )); then
+    cat <<'EOF'
+  - Remove existing .DS_Store Finder view overrides under $HOME, excluding ~/Library.
+    This skips generated/cache directories such as node_modules, .git, target, dist, and build.
+EOF
+  fi
+}
+
+confirm() {
+  if (( yes )); then
+    return 0
+  fi
+
+  print_plan
+  printf '\nApply these changes? [y/N] '
+  local reply
+  IFS= read -r reply
+  case "$reply" in
+    [Yy]|[Yy][Ee][Ss])
+      ;;
+    *)
+      printf 'setup-macos: cancelled\n'
+      exit 1
+      ;;
+  esac
+}
+
+plist_ensure_dict() {
+  local plist="$1"
+  local entry="$2"
+
+  /usr/libexec/PlistBuddy -c "Print $entry" "$plist" >/dev/null 2>&1 || \
+    /usr/libexec/PlistBuddy -c "Add $entry dict" "$plist" >/dev/null
+}
+
+plist_set_or_add() {
+  local plist="$1"
+  local entry="$2"
+  local type="$3"
+  local value="$4"
+
+  if /usr/libexec/PlistBuddy -c "Print $entry" "$plist" >/dev/null 2>&1; then
+    /usr/libexec/PlistBuddy -c "Set $entry $value" "$plist" >/dev/null
+  else
+    /usr/libexec/PlistBuddy -c "Add $entry $type $value" "$plist" >/dev/null
+  fi
+}
+
+configure_finder_view_plist() {
+  [[ -e "$finder_plist" ]] || /usr/bin/plutil -create xml1 "$finder_plist"
+
+  plist_ensure_dict "$finder_plist" ":StandardViewSettings"
+  plist_ensure_dict "$finder_plist" ":StandardViewSettings:ListViewSettings"
+  plist_set_or_add "$finder_plist" ":StandardViewSettings:ListViewSettings:sortColumn" string name
+
+  plist_ensure_dict "$finder_plist" ":StandardViewSettings:ExtendedListViewSettingsV2"
+  plist_set_or_add "$finder_plist" ":StandardViewSettings:ExtendedListViewSettingsV2:sortColumn" string name
+
+  plist_ensure_dict "$finder_plist" ":FK_DefaultListViewSettings"
+  plist_set_or_add "$finder_plist" ":FK_DefaultListViewSettings:sortColumn" string dateLastOpened
+
+  /usr/bin/plutil -lint "$finder_plist" >/dev/null
+}
+
+reset_finder_folder_views() {
+  find "$HOME" \
+    \( \
+      -path "$HOME/Library" -o \
+      -path "$HOME/.local/share" -o \
+      -name .git -o \
+      -name node_modules -o \
+      -name vendor -o \
+      -name .cache -o \
+      -name .npm -o \
+      -name .pnpm-store -o \
+      -name .yarn -o \
+      -name .bun -o \
+      -name Pods -o \
+      -name DerivedData -o \
+      -name .next -o \
+      -name .turbo -o \
+      -name target -o \
+      -name dist -o \
+      -name build -o \
+      -name .venv -o \
+      -name venv -o \
+      -name __pycache__ -o \
+      -name .gradle -o \
+      -name .m2 -o \
+      -name .cargo -o \
+      -name .rustup \
+    \) -prune -o \
+    -name .DS_Store -type f -print -exec rm -f {} +
+}
+
+apply_settings() {
+  mkdir -p "$HOME/Downloads"
+
+  defaults write com.apple.finder FXPreferredViewStyle -string Nlsv
+  defaults write com.apple.finder _FXSortFoldersFirst -bool true
+  defaults write com.apple.finder AppleShowAllFiles -bool true
+  defaults write com.apple.finder NewWindowTarget -string PfLo
+  defaults write com.apple.finder NewWindowTargetPath -string "$downloads_url"
+  defaults write com.apple.finder ShowPathbar -bool true
+  defaults write com.apple.finder ShowStatusBar -bool true
+  defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+  defaults write com.apple.finder FXDefaultSearchScope -string SCcf
+  defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+  defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
+  defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+  defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+  defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
+  defaults write com.apple.screencapture location -string "$HOME/Downloads"
+  defaults write org.hammerspoon.Hammerspoon MJConfigFile -string "$HOME/.config/hammerspoon/init.lua"
+
+  chflags nohidden "$HOME/Library" 2>/dev/null || true
+  configure_finder_view_plist
+
+  if (( reset_folder_views )); then
+    reset_finder_folder_views
+  fi
+
+  killall Finder >/dev/null 2>&1 || true
+  killall SystemUIServer >/dev/null 2>&1 || true
+}
+
+if (( plan )); then
+  print_plan
+  exit 0
+fi
+
+confirm
+apply_settings
+printf 'setup-macos: applied macOS defaults\n'
