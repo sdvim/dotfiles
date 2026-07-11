@@ -1,38 +1,82 @@
 config-version = 2
 
-persistent-workspaces = ['~', '1', '2', '3']
+persistent-workspaces = ['A', 'B', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 start-at-login = true
 
 gaps.inner.horizontal = 12
 gaps.inner.vertical = 12
 
-exec-on-workspace-change = ['/bin/bash', '-c', 'aerospace move-mouse window-lazy-center']
+exec-on-workspace-change = ['/bin/bash', '-c', 'state="${XDG_STATE_HOME:-$HOME/.local/state}/aerospace"; mkdir -p "$state"; printf "%s\n" "$AEROSPACE_PREV_WORKSPACE" > "$state/prev-workspace"; printf "%s\n" "$AEROSPACE_FOCUSED_WORKSPACE" > "$state/focused-workspace"; aerospace move-mouse window-lazy-center']
 
 on-window-detected = [
-  { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = 'move-node-to-workspace "~"' },
+  { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = '''exec-and-forget /bin/bash -lc 'new="${AEROSPACE_WINDOW_ID:-}"; if [[ -z "$new" ]]; then exit 0; fi; for ws in A B 1 2 3 4 5 6 7 8 9; do if ! aerospace list-windows --workspace "$ws" --app-bundle-id com.mitchellh.ghostty --format "%{window-id}" | grep -vxF "$new" >/dev/null; then aerospace move-node-to-workspace --window-id "$new" "$ws"; exit 0; fi; done' ''' },
 ]
 
 [mode.main.binding]
-ctrl-quote = 'workspace --auto-back-and-forth "~"'
+ctrl-quote = '''exec-and-forget /bin/bash -lc 'target="$1"; current="$(aerospace list-workspaces --focused)"; prev_file="${XDG_STATE_HOME:-$HOME/.local/state}/aerospace/prev-workspace"; prev="$(cat "$prev_file" 2>/dev/null || true)"; if [[ "$current" == "$target" && -n "$prev" && "$prev" != "A" && "$prev" != "B" ]]; then aerospace workspace "$prev"; else aerospace workspace "$target"; fi' _ 'A' '''
+ctrl-semicolon = '''exec-and-forget /bin/bash -lc 'target="$1"; current="$(aerospace list-workspaces --focused)"; prev_file="${XDG_STATE_HOME:-$HOME/.local/state}/aerospace/prev-workspace"; prev="$(cat "$prev_file" 2>/dev/null || true)"; if [[ "$current" == "$target" && -n "$prev" && "$prev" != "A" && "$prev" != "B" ]]; then aerospace workspace "$prev"; else aerospace workspace "$target"; fi' _ 'B' '''
 
-ctrl-backtick = 'workspace "~"'
+ctrl-backtick = 'focus-monitor --wrap-around next'
 ctrl-1 = 'workspace 1'
 ctrl-2 = 'workspace 2'
 ctrl-3 = 'workspace 3'
+ctrl-4 = 'workspace 4'
+ctrl-5 = 'workspace 5'
+ctrl-6 = 'workspace 6'
+ctrl-7 = 'workspace 7'
+ctrl-8 = 'workspace 8'
+ctrl-9 = 'workspace 9'
 
-ctrl-shift-backtick = 'move-node-to-workspace "~"'
+ctrl-shift-backtick = 'move-node-to-workspace A'
+ctrl-shift-semicolon = 'move-node-to-workspace B'
 ctrl-shift-1 = 'move-node-to-workspace 1'
 ctrl-shift-2 = 'move-node-to-workspace 2'
 ctrl-shift-3 = 'move-node-to-workspace 3'
+ctrl-shift-4 = 'move-node-to-workspace 4'
+ctrl-shift-5 = 'move-node-to-workspace 5'
+ctrl-shift-6 = 'move-node-to-workspace 6'
+ctrl-shift-7 = 'move-node-to-workspace 7'
+ctrl-shift-8 = 'move-node-to-workspace 8'
+ctrl-shift-9 = 'move-node-to-workspace 9'
 
-ctrl-equal = 'resize smart +50'
-ctrl-minus = 'resize smart -50'
-ctrl-0 = 'balance-sizes'
-ctrl-rightSquareBracket = 'focus --wrap-around dfs-next'
-ctrl-leftSquareBracket = 'focus --wrap-around dfs-prev'
-ctrl-shift-rightSquareBracket = 'swap dfs-next'
-ctrl-shift-leftSquareBracket = 'swap dfs-prev'
+ctrl-cmd-1 = 'focus --dfs-index 0'
+ctrl-cmd-2 = 'focus --dfs-index 1'
+ctrl-cmd-3 = 'focus --dfs-index 2'
+ctrl-cmd-4 = 'focus --dfs-index 3'
+ctrl-cmd-5 = 'focus --dfs-index 4'
+ctrl-cmd-6 = 'focus --dfs-index 5'
+ctrl-cmd-7 = 'focus --dfs-index 6'
+ctrl-cmd-8 = 'focus --dfs-index 7'
+ctrl-cmd-9 = 'focus --dfs-index 8'
+ctrl-cmd-s = 'exec-and-forget open -a Slack'
+ctrl-cmd-h = 'exec-and-forget open -a Helium'
+ctrl-cmd-g = 'exec-and-forget open -a Ghostty'
+ctrl-cmd-b = 'exec-and-forget open -a "Beeper Desktop"'
+ctrl-cmd-m = 'exec-and-forget open -a "Google Meet"'
+ctrl-cmd-z = 'exec-and-forget open -a Zed'
+ctrl-cmd-l = 'exec-and-forget open -a Linear'
+ctrl-cmd-c = 'exec-and-forget open -a "Google Calendar"'
+
+cmd-shift-equal = 'resize smart +50'
+cmd-shift-minus = 'resize smart -50'
+cmd-shift-0 = 'balance-sizes'
+ctrl-rightSquareBracket = 'workspace --wrap-around next'
+ctrl-leftSquareBracket = 'workspace --wrap-around prev'
+ctrl-cmd-rightSquareBracket = 'focus --wrap-around dfs-next'
+ctrl-cmd-leftSquareBracket = 'focus --wrap-around dfs-prev'
+ctrl-cmd-shift-rightSquareBracket = 'swap dfs-next'
+ctrl-cmd-shift-leftSquareBracket = 'swap dfs-prev'
 
 [workspace-to-monitor-force-assignment]
-'~' = 'secondary'
+'A' = 'secondary'
+'B' = 'secondary'
+'1' = 'main'
+'2' = 'main'
+'3' = 'main'
+'4' = 'main'
+'5' = 'main'
+'6' = 'main'
+'7' = 'main'
+'8' = 'main'
+'9' = 'main'
