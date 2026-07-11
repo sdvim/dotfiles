@@ -1,1 +1,13 @@
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/commands.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/commands.zsh"
+
+if command -v git >/dev/null 2>&1; then
+  [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/git.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/git.zsh"
+  [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/git.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/git.zsh"
+fi
+
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/ghostty.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/ghostty.zsh"
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/aerospace.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/aerospace.zsh"
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/dotfiles.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/dotfiles.zsh"
+[[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/codex.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/codex.zsh"
