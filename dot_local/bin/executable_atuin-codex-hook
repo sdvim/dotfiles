@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+set -u
+
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/atuin-codex-hook"
+
+has_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+read_payload() {
+  payload="$(cat)"
+  [[ -n "$payload" ]] || exit 0
+  jq -e . >/dev/null 2>&1 <<<"$payload" || exit 0
+}
+
+payload_string() {
+  local filter=$1
+  jq -r "$filter // empty" <<<"$payload" 2>/dev/null
+}
+
+hook_event() {
+  payload_string '.hook_event_name // .event_name // .event'
+}
+
+tool_use_id() {
+  payload_string '.tool_use_id // .toolUseId // .item_id // .call_id // .callId // .id'
+}
+
+tool_command() {
+  payload_string '
+    .tool_input.command //
+    .toolInput.command //
+    .tool_input.cmd //
+    .toolInput.cmd //
+    .input.command //
+    .input.cmd //
+    .command //
+    .cmd
+  '
+}
+
+tool_exit_status() {
+  local status
+
+  status="$(payload_string '
+    .tool_response.exit_code //
+    .toolResponse.exit_code //
+    .tool_response.exitCode //
+    .toolResponse.exitCode //
+    .tool_response.exit //
+    .toolResponse.exit //
+    .output.exit_code //
+    .output.exitCode //
+    .exit_code //
+    .exitCode //
+    .exit
+  ')"
+
+  if [[ "$status" =~ ^[0-9]+$ ]]; then
+    printf '%s\n' "$status"
+  else
+    printf '0\n'
+  fi
+}
+
+state_path_for() {
+  local id=$1
+  local safe_id
+
+  safe_id="$(printf '%s' "$id" | LC_ALL=C tr -cs 'A-Za-z0-9_.-' '_')"
+  printf '%s/%s.id\n' "$state_dir" "$safe_id"
+}
+
+record_start() {
+  local command id state_file history_id
+
+  command="$(tool_command)"
+  [[ -n "$command" ]] || return 0
+
+  id="$(tool_use_id)"
+  [[ -n "$id" ]] || id="$(printf '%s' "$command" | shasum -a 256 | awk '{print $1}')"
+
+  history_id="$(atuin history start --author codex -- "$command" 2>/dev/null)" || return 0
+  [[ -n "$history_id" ]] || return 0
+
+  mkdir -p -- "$state_dir" || return 0
+  state_file="$(state_path_for "$id")"
+  printf '%s\n' "$history_id" >"$state_file" 2>/dev/null || true
+}
+
+record_end() {
+  local id state_file history_id exit_status
+
+  id="$(tool_use_id)"
+  [[ -n "$id" ]] || return 0
+
+  state_file="$(state_path_for "$id")"
+  [[ -r "$state_file" ]] || return 0
+
+  IFS= read -r history_id <"$state_file" || history_id=""
+  [[ -n "$history_id" ]] || {
+    rm -f -- "$state_file"
+    return 0
+  }
+
+  exit_status="$(tool_exit_status)"
+  atuin history end --exit "$exit_status" "$history_id" >/dev/null 2>&1 || true
+  rm -f -- "$state_file"
+}
+
+main() {
+  local event
+
+  has_cmd atuin || exit 0
+  has_cmd jq || exit 0
+  read_payload
+
+  event="$(hook_event)"
+  case "$event" in
+    PreToolUse)
+      record_start
+      ;;
+    PostToolUse)
+      record_end
+      ;;
+  esac
+}
+
+main "$@"
