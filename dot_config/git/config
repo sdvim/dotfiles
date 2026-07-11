@@ -1,6 +1,13 @@
 [user]
 	name = Steve Della Valentina
 	email = s.dellavalentina@gmail.com
+	signingkey = 333487C4FFB88C8D
+
+[commit]
+	gpgsign = true
+
+[gpg]
+	format = openpgp
 
 [pull]
 	rebase = true
