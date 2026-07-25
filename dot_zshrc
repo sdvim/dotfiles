@@ -23,6 +23,9 @@ if (( ! ${+_comps} )); then
   compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 fi
 
+zstyle ':completion:*' path-completion false
+zstyle ':completion:*' accept-exact-dirs true
+
 setopt EXTENDED_HISTORY
 setopt HIST_FCNTL_LOCK
 setopt HIST_IGNORE_DUPS
