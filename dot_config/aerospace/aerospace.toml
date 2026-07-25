@@ -1,6 +1,6 @@
 config-version = 2
 
-persistent-workspaces = ['A', 'B', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+persistent-workspaces = ['A', 'B', '1', '2', '3', '4']
 
 start-at-login = true
 
@@ -10,7 +10,7 @@ gaps.inner.vertical = 12
 exec-on-workspace-change = ['/bin/bash', '-c', 'state="${XDG_STATE_HOME:-$HOME/.local/state}/aerospace"; mkdir -p "$state"; printf "%s\n" "$AEROSPACE_PREV_WORKSPACE" > "$state/prev-workspace"; printf "%s\n" "$AEROSPACE_FOCUSED_WORKSPACE" > "$state/focused-workspace"; aerospace move-mouse window-lazy-center']
 
 on-window-detected = [
-  { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = '''exec-and-forget /bin/bash -lc 'new="${AEROSPACE_WINDOW_ID:-}"; if [[ -z "$new" ]]; then exit 0; fi; for ws in A B 1 2 3 4 5 6 7 8 9; do if ! aerospace list-windows --workspace "$ws" --app-bundle-id com.mitchellh.ghostty --format "%{window-id}" | grep -vxF "$new" >/dev/null; then aerospace move-node-to-workspace --window-id "$new" "$ws"; exit 0; fi; done' ''' },
+  { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = '''exec-and-forget /bin/bash -lc 'new="${AEROSPACE_WINDOW_ID:-}"; if [[ -z "$new" ]]; then exit 0; fi; for ws in A B 1 2 3 4; do if ! aerospace list-windows --workspace "$ws" --app-bundle-id com.mitchellh.ghostty --format "%{window-id}" | grep -vxF "$new" >/dev/null; then aerospace move-node-to-workspace --window-id "$new" "$ws"; exit 0; fi; done' ''' },
 ]
 
 [mode.main.binding]
@@ -22,24 +22,15 @@ ctrl-1 = 'workspace 1'
 ctrl-2 = 'workspace 2'
 ctrl-3 = 'workspace 3'
 ctrl-4 = 'workspace 4'
-ctrl-5 = 'workspace 5'
-ctrl-6 = 'workspace 6'
-ctrl-7 = 'workspace 7'
-ctrl-8 = 'workspace 8'
-ctrl-9 = 'workspace 9'
 
-ctrl-shift-backtick = 'move-node-to-workspace A'
+ctrl-shift-quote = 'move-node-to-workspace A'
 ctrl-shift-semicolon = 'move-node-to-workspace B'
 ctrl-shift-1 = 'move-node-to-workspace 1'
 ctrl-shift-2 = 'move-node-to-workspace 2'
 ctrl-shift-3 = 'move-node-to-workspace 3'
 ctrl-shift-4 = 'move-node-to-workspace 4'
-ctrl-shift-5 = 'move-node-to-workspace 5'
-ctrl-shift-6 = 'move-node-to-workspace 6'
-ctrl-shift-7 = 'move-node-to-workspace 7'
-ctrl-shift-8 = 'move-node-to-workspace 8'
-ctrl-shift-9 = 'move-node-to-workspace 9'
 
+cmd-backtick = 'focus --wrap-around dfs-next'
 ctrl-cmd-1 = 'focus --dfs-index 0'
 ctrl-cmd-2 = 'focus --dfs-index 1'
 ctrl-cmd-3 = 'focus --dfs-index 2'
@@ -75,8 +66,3 @@ ctrl-cmd-shift-leftSquareBracket = 'swap dfs-prev'
 '2' = 'main'
 '3' = 'main'
 '4' = 'main'
-'5' = 'main'
-'6' = 'main'
-'7' = 'main'
-'8' = 'main'
-'9' = 'main'
