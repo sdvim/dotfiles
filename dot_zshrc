@@ -100,12 +100,6 @@ if command -v git >/dev/null 2>&1; then
   [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/git.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/git.zsh"
 fi
 
-if (( $+functions[open-github-pr-widget] )); then
-  zle -N open-github-pr-widget
-  bindkey -M emacs $'\e[114;9u' open-github-pr-widget
-  bindkey -M viins $'\e[114;9u' open-github-pr-widget
-fi
-
 [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/codex.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/codex.zsh"
 
 if command -v claude >/dev/null 2>&1; then

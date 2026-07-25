@@ -10,7 +10,6 @@ macos-titlebar-style = hidden
 
 keybind = ctrl+shift+tab=goto_split:previous
 keybind = ctrl+tab=goto_split:next
-keybind = super+r=text:\x1b[114;9u
 keybind = ctrl+shift+r=text:\x1b[82;6u
 keybind = super+digit_1=ignore
 keybind = super+1=ignore

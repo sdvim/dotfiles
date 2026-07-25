@@ -4,6 +4,8 @@ hs.ipc.cliInstall()
 
 local paneHotkeys = {}
 local paneHotkeysEnabled = false
+local openPrHotkey
+local openPrTask
 
 local function focusGhosttyPane(index)
   local script = string.format([[
@@ -33,6 +35,62 @@ local function reloadGhosttyConfig()
   return true
 end
 
+local function focusedGhosttyWorkingDirectory()
+  local script = [[
+tell application "Ghostty"
+  if not (exists front window) then return ""
+  set selectedTab to selected tab of front window
+  set selectedTerminal to focused terminal of selectedTab
+  return working directory of selectedTerminal
+end tell
+]]
+
+  local ok, workingDirectory = hs.osascript.applescript(script)
+  if not ok or type(workingDirectory) ~= "string" or workingDirectory == "" then
+    return nil
+  end
+
+  return workingDirectory
+end
+
+local function openGhosttyGitHubPr()
+  if openPrTask ~= nil and openPrTask:isRunning() then
+    return
+  end
+
+  local workingDirectory = focusedGhosttyWorkingDirectory()
+  if workingDirectory == nil then
+    hs.alert.show("Could not determine Ghostty working directory")
+    return
+  end
+
+  local helperPath = os.getenv("HOME") .. "/.local/bin/open-github-pr"
+  local task = hs.task.new(helperPath, function(exitCode, stdOut, stdErr)
+    openPrTask = nil
+
+    if exitCode ~= 0 then
+      local message = stdErr ~= "" and stdErr or stdOut
+      message = message:gsub("^%s+", ""):gsub("%s+$", "")
+      hs.alert.show(message ~= "" and message or "open-github-pr failed")
+    end
+  end)
+
+  if task == nil or not task:setWorkingDirectory(workingDirectory) then
+    hs.alert.show("Could not start open-github-pr")
+    return
+  end
+
+  local environment = task:environment()
+  environment.PATH = "/opt/homebrew/bin:" .. (environment.PATH or "/usr/bin:/bin:/usr/sbin:/sbin")
+  task:setEnvironment(environment)
+
+  openPrTask = task
+  if not task:start() then
+    openPrTask = nil
+    hs.alert.show("Could not start open-github-pr")
+  end
+end
+
 local function ghosttyIsFrontmost()
   local app = hs.application.frontmostApplication()
   return app ~= nil and app:bundleID() == ghosttyBundleID
@@ -51,6 +109,12 @@ local function setGhosttyPaneHotkeysEnabled(enabled)
     end
   end
 
+  if enabled then
+    openPrHotkey:enable()
+  else
+    openPrHotkey:disable()
+  end
+
   paneHotkeysEnabled = enabled
 end
 
@@ -59,6 +123,8 @@ for index = 1, 9 do
     focusGhosttyPane(index)
   end)
 end
+
+openPrHotkey = hs.hotkey.new({ "cmd" }, "r", openGhosttyGitHubPr)
 
 local function syncGhosttyPaneHotkeys()
   setGhosttyPaneHotkeysEnabled(ghosttyIsFrontmost())
@@ -78,6 +144,9 @@ hs.autoLaunch(true)
 _G.ghosttyPaneHotkeys = paneHotkeys
 _G.focusGhosttyPane = focusGhosttyPane
 _G.reloadGhosttyConfig = reloadGhosttyConfig
+_G.focusedGhosttyWorkingDirectory = focusedGhosttyWorkingDirectory
+_G.openGhosttyGitHubPr = openGhosttyGitHubPr
+_G.ghosttyOpenPrHotkey = openPrHotkey
 _G.ghosttyPaneWatcher = appWatcher
 _G.ghosttyPaneSyncTimer = syncTimer
 _G.syncGhosttyPaneHotkeys = syncGhosttyPaneHotkeys
