@@ -1,3 +1,5 @@
+tap "nikitabobko/tap"
+
 brew "ast-grep"
 brew "atuin"
 brew "bat"
@@ -33,6 +35,7 @@ brew "zsh-syntax-highlighting"
 
 cask "1password"
 cask "1password-cli"
+cask "nikitabobko/tap/aerospace"
 cask "codex"
 cask "ghostty"
 cask "helium-browser"

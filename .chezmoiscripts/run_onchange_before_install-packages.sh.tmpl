@@ -1,0 +1,13 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/sh
+set -eu
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "install-packages: Homebrew is required before applying this dotfiles repo" >&2
+  exit 127
+fi
+
+brew bundle --file=/dev/stdin <<'EOF'
+{{ include "Brewfile" }}
+EOF
+{{- end }}

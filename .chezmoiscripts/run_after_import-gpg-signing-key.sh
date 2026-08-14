@@ -14,6 +14,11 @@ if ! command -v gpg >/dev/null 2>&1; then
   exit 127
 fi
 
+if ! op whoami >/dev/null 2>&1; then
+  echo "import-gpg-signing-key: sign in to 1Password or enable CLI integration" >&2
+  exit 1
+fi
+
 if ! gpg --list-secret-keys "$key_fingerprint" >/dev/null 2>&1; then
   op read "$key_ref" | gpg --batch --import
 fi
