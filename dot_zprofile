@@ -1,5 +1,7 @@
 eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 
+export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
 [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/commands.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/commands.zsh"
 
 if command -v git >/dev/null 2>&1; then
