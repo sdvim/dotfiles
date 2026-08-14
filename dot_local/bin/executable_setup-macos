@@ -53,6 +53,7 @@ downloads_url="file://$HOME/Downloads/"
 print_plan() {
   cat <<EOF
 setup-macos will:
+  - Hide the Dock and wait 20 seconds before revealing it.
   - Set Finder's default view to list view.
   - Sort normal Finder list views by name and keep folders first.
   - Sort Downloads by date last opened.
@@ -62,7 +63,7 @@ setup-macos will:
   - Avoid .DS_Store files on network and USB volumes.
   - Put screenshots in $HOME/Downloads.
   - Point Hammerspoon at $HOME/.config/hammerspoon/init.lua.
-  - Restart Finder and SystemUIServer.
+  - Restart the Dock, Finder, and SystemUIServer.
 EOF
 
   if (( reset_folder_views )); then
@@ -163,6 +164,9 @@ reset_finder_folder_views() {
 apply_settings() {
   mkdir -p "$HOME/Downloads"
 
+  defaults write com.apple.dock autohide -bool true
+  defaults write com.apple.dock autohide-delay -float 20
+
   defaults write com.apple.finder FXPreferredViewStyle -string Nlsv
   defaults write com.apple.finder _FXSortFoldersFirst -bool true
   defaults write com.apple.finder AppleShowAllFiles -bool true
@@ -191,6 +195,7 @@ apply_settings() {
   fi
 
   killall Finder >/dev/null 2>&1 || true
+  killall Dock >/dev/null 2>&1 || true
   killall SystemUIServer >/dev/null 2>&1 || true
 }
 
