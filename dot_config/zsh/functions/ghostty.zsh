@@ -28,12 +28,9 @@ function reload-ghostty {
     return 0
   fi
 
-  if ! command -v hs >/dev/null 2>&1; then
-    print -u2 'reload-ghostty: hs was not found'
-    return 127
-  fi
-
-  hs -A -c 'return reloadGhosttyConfig()' || {
+  osascript \
+    -e 'tell application "Ghostty" to activate' \
+    -e 'tell application "System Events" to keystroke "," using {command down, shift down}' >/dev/null || {
     print -u2 'reload-ghostty: failed to trigger Ghostty config reload'
     return 1
   }

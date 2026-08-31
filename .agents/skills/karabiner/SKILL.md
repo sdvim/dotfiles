@@ -9,7 +9,7 @@ description: Edit and validate this dotfiles repo's Karabiner-Elements keyboard 
 
 Edit only `dot_config/karabiner/karabiner.json` for Karabiner configuration changes.
 
-Do not change Hammerspoon, Ghostty, AeroSpace, zsh, or broader dotfiles config for Karabiner work unless the user explicitly asks for it.
+Do not change Ghostty, AeroSpace, zsh, or broader dotfiles config for Karabiner work unless the user explicitly asks for it.
 
 ## Docs
 
@@ -31,7 +31,7 @@ Use local introspection commands before changing device-specific or app-specific
 ## Workflow
 
 1. Read `dot_config/karabiner/karabiner.json` and preserve valid JSON.
-2. Make the smallest change that satisfies the request. Keep low-level keyboard and device policy in Karabiner; keep resident app automation in Hammerspoon unless the user asks to move it.
+2. Make the smallest change that satisfies the request. Keep low-level keyboard and device policy in Karabiner; keep higher-level app automation in the owning app or dedicated tooling unless the user asks to move it.
 3. For device-specific rules, inspect `karabiner_cli --list-connected-devices` and avoid hard-coding a single external keyboard unless the user requested that exact device.
 4. For app-scoped rules, verify the bundle id with `osascript -e 'id of app "<Application Name>"'` when the app is installed.
 5. Validate the source config with:

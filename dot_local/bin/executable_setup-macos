@@ -62,7 +62,6 @@ setup-macos will:
   - Search the current folder by default.
   - Avoid .DS_Store files on network and USB volumes.
   - Put screenshots in $HOME/Downloads.
-  - Point Hammerspoon at $HOME/.config/hammerspoon/init.lua.
   - Restart the Dock, Finder, and SystemUIServer.
 EOF
 
@@ -185,7 +184,6 @@ apply_settings() {
   defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
   defaults write com.apple.screencapture location -string "$HOME/Downloads"
-  defaults write org.hammerspoon.Hammerspoon MJConfigFile -string "$HOME/.config/hammerspoon/init.lua"
 
   chflags nohidden "$HOME/Library" 2>/dev/null || true
   configure_finder_view_plist
