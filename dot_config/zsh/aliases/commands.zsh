@@ -2,6 +2,11 @@ if command -v eza >/dev/null 2>&1; then
   alias tree='eza -T -L 4 -a --git-ignore --color=always'
 fi
 
+alias bi='brew install'
+alias bu='brew update'
+alias buy='brew upgrade -y'
+alias yi='yarn install'
+
 if command -v zoxide >/dev/null 2>&1; then
   if ! whence -w z >/dev/null 2>&1; then
     eval "$(zoxide init zsh --hook none)"
