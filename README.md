@@ -25,6 +25,15 @@ as Karabiner-Elements.
 
 - Karabiner handles low-level keyboard remaps: Caps Lock as Control, external keyboard Command/Option swapping, app-switcher suppression, and small app-scoped key remaps.
 
+## Codex Session Watcher
+
+`codex-sessions` lists running local Codex CLI sessions and uses `fzf` to
+select one before following its tool calls. Use `codex-sessions --from-start`
+to replay existing calls first. The watcher prints command and tool metadata,
+not tool output. Its default log is colored and command-only; use
+`--all-fields` for timestamps and diagnostic metadata or `--no-color` for
+plain output.
+
 ## Removed Hammerspoon Automation
 
 - `cmd+1` through `cmd+9` no longer focus numbered Ghostty panes. Ghostty's native behavior is restored: `cmd+1` through `cmd+8` select numbered tabs, and `cmd+9` selects the last tab.
