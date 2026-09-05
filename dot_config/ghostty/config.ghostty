@@ -5,7 +5,7 @@ font-feature = +calt,+ss02,+ss06,+ss07,+ss08
 font-size = 14
 cursor-style = block
 cursor-style-blink = false
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor,ssh-env,ssh-terminfo
 unfocused-split-opacity = 0.5
 macos-titlebar-style = hidden
 
