@@ -1,2 +1,23 @@
+{{- $local := joinPath .chezmoi.homeDir ".config/dotfiles-local/AGENTS.md" -}}
+{{- if stat $local -}}{{ include $local }}{{- end }}
 
 {{ include ".chezmoitemplates/frontend-instructions.md" }}
+
+# Iterating on a task
+
+- When the task or checkout changes, confirm the branch, PR/base, dirty work,
+  and authorized finish step. Carry authorization within that scope, not across
+  unrelated tasks. Preserve work already present.
+- Inspect existing scripts, flows, and fixtures before improvising setup. For
+  UI work, establish access to the consuming screen before substantial edits;
+  identify missing prerequisites early.
+- Reuse passing checks until relevant source, dependencies, configuration, or
+  an unresolved concern changes. Serialize commands that regenerate shared
+  outputs; run independent checks after those outputs are stable.
+- Before handing off checkout changes, inspect flag-off/unresolved behavior,
+  error completion, subscription breadth, and existing design tokens.
+- Extract components by coherent responsibility and a small interface. Respect
+  repository size limits, but moving all state into one large hook alone does
+  not establish simpler code.
+- For operational questions, lead with one recommended command. Verify the
+  effective local configuration before claiming which environment it runs.

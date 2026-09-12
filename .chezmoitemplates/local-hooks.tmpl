@@ -1,0 +1,28 @@
+{{- $document := .document -}}
+{{- $file := joinPath .home ".config/dotfiles-local/agent-hooks.json" -}}
+{{- if stat $file -}}
+  {{- $local := (get (include $file | fromJson) .engine) | default dict -}}
+  {{- $hooks := (get $document "hooks") | default dict -}}
+  {{- range $event, $groups := (get $local "hooks") | default dict -}}
+    {{- $commands := list -}}
+    {{- range $group := $groups -}}
+      {{- range $handler := get $group "hooks" -}}
+        {{- $commands = append $commands (get $handler "command") -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $merged := list -}}
+    {{- range $group := (get $hooks $event) | default list -}}
+      {{- $handlers := list -}}
+      {{- range $handler := get $group "hooks" -}}
+        {{- if not (has (get $handler "command") $commands) -}}
+          {{- $handlers = append $handlers $handler -}}
+        {{- end -}}
+      {{- end -}}
+      {{- if $handlers -}}{{- $merged = append $merged (setValueAtPath "hooks" $handlers $group) -}}{{- end -}}
+    {{- end -}}
+    {{- range $group := $groups -}}{{- $merged = append $merged $group -}}{{- end -}}
+    {{- $hooks = setValueAtPath $event $merged $hooks -}}
+  {{- end -}}
+  {{- $document = setValueAtPath "hooks" $hooks $document -}}
+{{- end -}}
+{{- $document | toPrettyJson -}}

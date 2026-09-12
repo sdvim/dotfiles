@@ -34,3 +34,5 @@
 [credential]
 	helper = !gh auth git-credential
 
+[include]
+	path = ~/.config/dotfiles-local/git.inc

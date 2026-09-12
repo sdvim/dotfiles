@@ -39,6 +39,8 @@ and existing UI; do not require a Figma link for unrelated frontend work.
   development bundle and existing flows. Boot a free simulator for your task;
   do not reset or reuse another task's active device. A web preview of native
   code is not native verification.
+  If `~/.config/dotfiles-local/frontend.md` exists, read it for applicable
+  project-specific login flows, native flavor checks, and recovery procedures.
 - **Components:** use the existing Storybook when helpful, then check the
   consuming page or native screen for integration behavior. Use terminal-browser
   when a shared terminal preview is useful.
@@ -77,6 +79,8 @@ or the repository's ignored evidence directory. Chrome DevTools can write under
 `~/.cache/frontend-verification` (or `$XDG_CACHE_HOME/frontend-verification`).
 Report the tested URL or bundle, viewport/device, states, actual results, source
 revision plus dirty changes, artifact locations and remaining discrepancies.
+Keep a [verification record](assets/verification.md) beside the saved flows and
+screenshots so a resumed task can reuse the setup and locate its evidence.
 
 Run relevant repository tests, types, lint and formatting too. If tooling or
 access remains blocked after a focused recovery attempt, preserve partial

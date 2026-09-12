@@ -160,3 +160,35 @@ test("browser launcher preserves explicit session and config arguments including
   assert.equal(result.args.at(-1), "--filename=/tmp/a b.png");
   assert.ok(!result.args.includes("--config"));
 });
+
+test("doctor launcher forwards iOS arguments without requiring Java setup", (t) => {
+  const f = fixture(t);
+  const launcher = path.join(f.home, ".local/bin/frontend-doctor");
+  fs.copyFileSync(
+    path.join(source, "dot_local/bin/executable_frontend-doctor"),
+    launcher,
+  );
+  fs.chmodSync(launcher, 0o755);
+  fs.writeFileSync(
+    path.join(f.home, ".config/frontend-tools/doctor.mjs"),
+    "console.log(JSON.stringify(process.argv.slice(2)));\n",
+  );
+  const args = [
+    "ios",
+    "--device",
+    "00000000-0000-4000-8000-000000000001",
+    "--environment",
+    "development",
+    "--port",
+    "8081",
+  ];
+  assert.deepEqual(
+    JSON.parse(
+      execute(launcher, args, {
+        cwd: f.root,
+        env: { HOME: f.home, PATH: "/usr/bin:/bin" },
+      }),
+    ),
+    args,
+  );
+});

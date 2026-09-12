@@ -34,6 +34,40 @@ not tool output. Its default log is colored and command-only; use
 `--all-fields` for timestamps and diagnostic metadata or `--no-color` for
 plain output.
 
+## Local project configuration
+
+Company instructions, repository mappings, and private tools stay outside this
+public repository. Optional files in `~/.config/dotfiles-local/` extend the
+managed setup on this machine:
+
+- `AGENTS.md`: project-scoped instructions included in the Codex and Claude
+  instruction files when rendered by chezmoi.
+- `frontend.md`: project-specific recipes read by the frontend verification skill.
+- `git.inc`: local Git configuration, including conditional repository hooks.
+- `agent-hooks.json`: engine-specific hook groups, for example
+  `{"codex":{"hooks":{"Stop":[{"hooks":[{"type":"command","command":"/path/to/local-check"}]}]}}}`.
+
+Missing files add no project configuration. The hook merge preserves unrelated
+settings and handlers and replaces handlers with matching local commands on
+reapplication. Removing a local command does not uninstall an already-installed
+hook: remove that hook from the effective client settings too.
+
+Apply the instruction and hook targets after changing their local inputs:
+
+```sh
+chezmoi apply --exclude=scripts --source "$HOME/Git/dotfiles" -- \
+  "$HOME/.codex/AGENTS.md" "$HOME/.codex/hooks.json" \
+  "$HOME/.claude/CLAUDE.md" "$HOME/.claude/settings.json" \
+  "$HOME/.config/git/config"
+```
+
+Keep local scripts and their configuration outside the source tree, and back
+those files up privately. Do not import rendered company instructions or hooks
+with `chezmoi add`; it can copy private content back into the public source.
+Chezmoi's `private_` filename prefix controls permissions, not Git visibility.
+Review hook commands in the client after applying; a fresh session may be needed
+for changed instructions and hooks to take effect.
+
 ## Global frontend tools for Codex
 
 Codex's personal frontend instructions apply across repositories. The
@@ -131,3 +165,28 @@ it does not run simulators or browsers as part of the default test suite.
 - `cmd+1` through `cmd+9` no longer focus numbered Ghostty panes. Ghostty's native behavior is restored: `cmd+1` through `cmd+8` select numbered tabs, and `cmd+9` selects the last tab.
 - `cmd+r` no longer detects the focused Ghostty terminal's working directory and opens its GitHub pull request. Run `open-github-pr` from a repository directory until it is bound through tmux, herdr, or another terminal workflow.
 - `edit-ghostty` and `reload-ghostty` still validate, apply, and reload the Ghostty config without Hammerspoon.
+
+### iOS configuration inspection
+
+From an Expo app directory, run:
+
+```sh
+frontend-doctor ios --device <UDID> --environment development --port 8081
+```
+
+Use `--project <path>` to select an app from elsewhere and `--env-var <name>`
+when its Expo config reads a variable other than the default `APP_ENV`. The
+helper sets that variable only for config inspection; it does not change the
+running app or server. Environment names follow the project's own contract.
+
+The doctor compares requested, generated, and installed bundle identifiers,
+checks the selected simulator and Metro checkout, and reports an artifact path.
+Exit codes are 0 for completed checks, 1 for a detected mismatch, and 2 for
+incomplete inspection when no mismatch was detected. These checks do not prove
+screen readiness, authentication, or visual correctness.
+
+Validate the generic tools and local configuration merge with:
+
+```sh
+node --test tests/frontend-tools/*.test.mjs
+```

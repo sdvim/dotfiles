@@ -1,4 +1,4 @@
 {{- /* chezmoi:modify-template */ -}}
 {{- $document := dict -}}
 {{- if .chezmoi.stdin | trim -}}{{- $document = fromJson .chezmoi.stdin -}}{{- end -}}
-{{ $document | toPrettyJson }}
+{{ includeTemplate "local-hooks.tmpl" (dict "engine" "codex" "home" .chezmoi.homeDir "document" $document) }}
