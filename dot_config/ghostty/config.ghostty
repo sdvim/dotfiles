@@ -43,3 +43,4 @@ keybind = super+n=text:\x02N
 keybind = super+w=text:\x02x
 keybind = super+shift+w=text:\x02D
 keybind = super+shift+enter=text:\x02z
+keybind = super+e=text:\x02E

@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+. "$HOME/.config/frontend-tools/env.sh"
+exec "$FRONTEND_NODE" "$HOME/.config/frontend-tools/browser.mjs" "$@"

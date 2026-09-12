@@ -1,0 +1,320 @@
+#!/usr/bin/env python3
+"""Pick an uncommitted added line and open it in Neovim."""
+
+from __future__ import annotations
+
+import os
+import re
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+from typing import Iterable
+
+
+HUNK_RE = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
+
+
+class EditChangesError(RuntimeError):
+    """A user-facing error while building or opening a changed-line target."""
+
+
+def run_git(root: Path, args: list[str], *, check: bool = True) -> subprocess.CompletedProcess[bytes]:
+    """Run Git without involving a shell."""
+
+    result = subprocess.run(
+        ["git", "-C", os.fspath(root), *args],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if check and result.returncode != 0:
+        message = result.stderr.decode("utf-8", "replace").strip()
+        raise EditChangesError(message or "git command failed")
+    return result
+
+
+def git_unquote(value: str) -> str:
+    """Decode Git's C-style quoted path representation."""
+
+    if len(value) < 2 or value[0] != '"' or value[-1] != '"':
+        return value
+
+    encoded = value[1:-1].encode("utf-8")
+    decoded = bytearray()
+    index = 0
+    escapes = {
+        ord("a"): 0x07,
+        ord("b"): 0x08,
+        ord("t"): 0x09,
+        ord("n"): 0x0A,
+        ord("v"): 0x0B,
+        ord("f"): 0x0C,
+        ord("r"): 0x0D,
+        ord('"'): ord('"'),
+        ord("\\"): ord("\\"),
+    }
+    while index < len(encoded):
+        byte = encoded[index]
+        if byte != ord("\\"):
+            decoded.append(byte)
+            index += 1
+            continue
+        index += 1
+        if index >= len(encoded):
+            decoded.append(ord("\\"))
+            break
+        escaped = encoded[index]
+        if escaped in escapes:
+            decoded.append(escapes[escaped])
+            index += 1
+            continue
+        if 0x30 <= escaped <= 0x37:
+            octal = bytes([escaped])
+            index += 1
+            for _ in range(2):
+                if index < len(encoded) and 0x30 <= encoded[index] <= 0x37:
+                    octal += bytes([encoded[index]])
+                    index += 1
+                else:
+                    break
+            decoded.append(int(octal, 8))
+            continue
+        decoded.append(escaped)
+        index += 1
+    return decoded.decode("utf-8", "surrogateescape")
+
+
+def patch_path(value: str) -> str | None:
+    """Return a repository-relative path from a `+++` patch header."""
+
+    if value.startswith('"'):
+        escaped = False
+        closing_quote = None
+        for index, character in enumerate(value[1:], 1):
+            if character == '"' and not escaped:
+                closing_quote = index
+                break
+            escaped = character == "\\" and not escaped
+            if character != "\\":
+                escaped = False
+        if closing_quote is not None:
+            value = value[: closing_quote + 1]
+    value = git_unquote(value)
+    if value == "/dev/null":
+        return None
+    if value.startswith("b/"):
+        return value[2:]
+    return value
+
+
+def changed_lines_from_patch(patch: bytes) -> list[tuple[str, int, str]]:
+    """Extract added lines and their current line numbers from a zero-context diff."""
+
+    records: list[tuple[str, int, str]] = []
+    current_path: str | None = None
+    current_line = 0
+    current_remaining = 0
+
+    for raw_line in patch.decode("utf-8", "replace").splitlines():
+        if raw_line.startswith("+++ "):
+            current_path = patch_path(raw_line[4:])
+            current_remaining = 0
+            continue
+
+        hunk = HUNK_RE.match(raw_line)
+        if hunk:
+            current_line = int(hunk.group(1))
+            current_remaining = int(hunk.group(2) or "1")
+            continue
+
+        if current_path is None or current_remaining <= 0:
+            continue
+        if raw_line.startswith("+"):
+            records.append((current_path, current_line, raw_line[1:]))
+            current_line += 1
+            current_remaining -= 1
+        elif raw_line.startswith(" "):
+            current_line += 1
+            current_remaining -= 1
+        elif raw_line.startswith("-"):
+            continue
+        elif raw_line.startswith("\\"):
+            continue
+
+    return records
+
+
+def null_paths(output: bytes) -> list[str]:
+    """Decode Git's NUL-delimited path output without losing unusual filenames."""
+
+    return [os.fsdecode(value) for value in output.split(b"\0") if value]
+
+
+def current_file_lines(root: Path, relative_path: str) -> Iterable[tuple[str, int, str]]:
+    """Return all lines in a new, non-binary working-tree file."""
+
+    path = root / relative_path
+    if path.is_symlink() or not path.is_file():
+        return ()
+    try:
+        data = path.read_bytes()
+    except OSError:
+        return ()
+    if b"\0" in data:
+        return ()
+    text = data.decode("utf-8", "replace")
+    return ((relative_path, line_number, line) for line_number, line in enumerate(text.splitlines(), 1))
+
+
+def repository_root(start: Path) -> Path:
+    result = subprocess.run(
+        ["git", "-C", os.fspath(start), "rev-parse", "--show-toplevel"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if result.returncode != 0:
+        message = result.stderr.decode("utf-8", "replace").strip()
+        raise EditChangesError(message or "current directory is not inside a Git repository")
+    return Path(os.fsdecode(result.stdout.rstrip(b"\n"))).resolve()
+
+
+def collect_records(root: Path) -> list[tuple[str, int, str]]:
+    """Build one snapshot of all currently added or modified lines."""
+
+    head = run_git(root, ["rev-parse", "--verify", "HEAD"], check=False)
+    records: list[tuple[str, int, str]] = []
+    if head.returncode == 0:
+        patch = run_git(
+            root,
+            [
+                "diff",
+                "--no-ext-diff",
+                "--no-textconv",
+                "--no-renames",
+                "--unified=0",
+                "--no-color",
+                "HEAD",
+                "--",
+            ],
+        )
+        records.extend(changed_lines_from_patch(patch.stdout))
+    else:
+        # An unborn repository has no HEAD to diff against. Every indexed or
+        # untracked text line is new from the user's point of view.
+        indexed = null_paths(run_git(root, ["ls-files", "--cached", "-z"]).stdout)
+        for relative_path in indexed:
+            records.extend(current_file_lines(root, relative_path))
+
+    untracked = null_paths(run_git(root, ["ls-files", "--others", "--exclude-standard", "-z"]).stdout)
+    for relative_path in untracked:
+        records.extend(current_file_lines(root, relative_path))
+
+    records.sort(key=lambda record: (record[0], record[1]))
+    return records
+
+
+def display_path(path: str) -> str:
+    """Keep control characters in unusual filenames from corrupting fzf rows."""
+
+    return path.replace("\\", "\\\\").replace("\t", "\\t").replace("\n", "\\n").replace("\r", "\\r")
+
+
+def select_record(records: list[tuple[str, int, str]]) -> tuple[str, int, str] | None:
+    if not records:
+        return None
+    payload = "".join(
+        f"{index}\t{display_path(path)}:{line}\t{source}\n"
+        for index, (path, line, source) in enumerate(records)
+    )
+    fzf = shutil.which("fzf")
+    if fzf is None:
+        raise EditChangesError("fzf was not found")
+
+    environment = os.environ.copy()
+    # Keep an interactive shortcut deterministic even if the user's shell
+    # exports broad fzf defaults or a different default shell.
+    environment["FZF_DEFAULT_OPTS"] = ""
+    environment["FZF_DEFAULT_OPTS_FILE"] = ""
+    command = [
+        fzf,
+        "--sync",
+        "--no-multi",
+        "--no-mouse",
+        "--layout=reverse",
+        "--height=100%",
+        "--border=none",
+        "--prompt=Edit changed lines> ",
+        "--header=Type 4+ characters to open a unique match; Enter opens the selected line",
+        "--delimiter=\t",
+        "--nth=2..",
+        "--with-nth=2..",
+        "--accept-nth=1",
+        "--with-shell=/bin/sh -c",
+        "--bind=one:transform:if [ \"${#FZF_QUERY}\" -ge 4 ]; then printf accept; fi",
+    ]
+    result = subprocess.run(
+        command,
+        input=payload.encode("utf-8", "surrogateescape"),
+        stdout=subprocess.PIPE,
+        stderr=None,
+        env=environment,
+        check=False,
+    )
+    if result.returncode != 0:
+        return None
+    selected = result.stdout.decode("utf-8", "replace").splitlines()
+    if not selected:
+        return None
+    try:
+        return records[int(selected[0])]
+    except (ValueError, IndexError):
+        raise EditChangesError("fzf returned an invalid changed-line selection") from None
+
+
+def open_in_nvim(root: Path, record: tuple[str, int, str]) -> None:
+    relative_path, line_number, _ = record
+    target = root / relative_path
+    if not target.is_file() or target.is_symlink():
+        raise EditChangesError(f"selected file is no longer available: {relative_path}")
+    try:
+        with target.open("rb") as stream:
+            current_line_count = sum(1 for _ in stream)
+    except OSError as error:
+        raise EditChangesError(f"cannot read selected file: {relative_path}: {error}") from error
+    if line_number > max(current_line_count, 1):
+        raise EditChangesError(f"selected line moved beyond the end of {relative_path}; run the picker again")
+    os.chdir(root)
+    nvim = shutil.which("nvim")
+    if nvim is None:
+        raise EditChangesError("nvim was not found")
+    os.execvpe(nvim, [nvim, f"+{line_number}", "--", relative_path], os.environ.copy())
+
+
+def main() -> int:
+    try:
+        start = Path(os.environ.get("HERDR_ACTIVE_PANE_CWD") or os.getcwd()).expanduser()
+        root = repository_root(start)
+        records = collect_records(root)
+        selected = select_record(records)
+        if selected is None:
+            if records:
+                return 0
+            raise EditChangesError("no uncommitted added lines found")
+        open_in_nvim(root, selected)
+    except EditChangesError as error:
+        print(f"edit-changes: {error}", file=sys.stderr)
+        if sys.stdin.isatty():
+            try:
+                input("Press Enter to close this pane...")
+            except (EOFError, KeyboardInterrupt):
+                pass
+        return 1
+    except KeyboardInterrupt:
+        return 130
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

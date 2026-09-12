@@ -1,4 +1,5 @@
 tap "nikitabobko/tap"
+tap "mobile-dev-inc/tap"
 
 brew "ast-grep"
 brew "atuin"
@@ -19,6 +20,7 @@ brew "lazygit"
 brew "lua"
 brew "luarocks"
 brew "mise"
+brew "mobile-dev-inc/tap/maestro"
 brew "neovim"
 brew "pinentry-mac"
 brew "ripgrep"

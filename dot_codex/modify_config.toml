@@ -1,0 +1,9 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $document := dict -}}
+{{- if .chezmoi.stdin | trim -}}{{- $document = fromToml .chezmoi.stdin -}}{{- end -}}
+{{- $servers := (get $document "mcp_servers") | default dict -}}
+{{- range $name, $binary := dict "chrome-devtools" "codex-helium-mcp" "maestro" "codex-maestro-mcp" -}}
+  {{- $entry := dict "command" (joinPath $.chezmoi.homeDir ".local/bin" $binary) "enabled" true "startup_timeout_sec" 60 "tool_timeout_sec" 120 -}}
+  {{- $servers = setValueAtPath $name $entry $servers -}}
+{{- end -}}
+{{- setValueAtPath "mcp_servers" $servers $document | toToml -}}

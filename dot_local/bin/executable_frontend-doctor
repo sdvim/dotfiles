@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+. "$HOME/.config/frontend-tools/env.sh"
+frontend_java
+exec "$FRONTEND_NODE" "$HOME/.config/frontend-tools/doctor.mjs"

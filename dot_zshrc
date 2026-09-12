@@ -119,13 +119,6 @@ fi
 
 [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/commands.zsh" ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/aliases/commands.zsh"
 
-if [[ -z "${CLAUDECODE:-}" && -z "${CODEX_SANDBOX:-}" ]]; then
-  command -v bat >/dev/null 2>&1 && alias cat='bat'
-  command -v fd >/dev/null 2>&1 && alias find='fd'
-  command -v rg >/dev/null 2>&1 && alias grep='rg'
-  command -v eza >/dev/null 2>&1 && alias ls='eza --icons=always -a'
-fi
-
 if [[ -d "$HOME/Git/nix-config" ]] && command -v darwin-rebuild >/dev/null 2>&1; then
   alias rebuild='git -C "$HOME/Git/nix-config" add scripts/ config/ && sudo darwin-rebuild switch --flake "$HOME/Git/nix-config#$(hostname -s)" && source ~/.zshrc && tmux source-file ~/.tmux.conf 2>/dev/null; aerospace reload-config 2>/dev/null; reload-ghostty 2>/dev/null; true'
 fi

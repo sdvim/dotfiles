@@ -1,6 +1,6 @@
 config-version = 2
 
-persistent-workspaces = ['A', 'B', '1', '2', '3', '4']
+persistent-workspaces = ['A', 'B', '1', '2', '3', '4', '5']
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'horizontal'
 
@@ -12,6 +12,7 @@ gaps.inner.vertical = 12
 exec-on-workspace-change = ['/bin/bash', '-c', 'state="${XDG_STATE_HOME:-$HOME/.local/state}/aerospace"; mkdir -p "$state"; printf "%s\n" "$AEROSPACE_PREV_WORKSPACE" > "$state/prev-workspace"; printf "%s\n" "$AEROSPACE_FOCUSED_WORKSPACE" > "$state/focused-workspace"']
 
 on-window-detected = [
+  { if = 'test %{app-bundle-id} = net.imput.helium', run = '''exec-and-forget /bin/sh -c 'exec "$HOME/.local/bin/aerospace-agent-browser"' ''' },
   { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = '''exec-and-forget /bin/bash -lc 'new="${AEROSPACE_WINDOW_ID:-}"; if [[ -z "$new" ]]; then exit 0; fi; for ws in A B 1 2 3 4; do if ! aerospace list-windows --workspace "$ws" --app-bundle-id com.mitchellh.ghostty --format "%{window-id}" | grep -vxF "$new" >/dev/null; then aerospace move-node-to-workspace --window-id "$new" "$ws"; exit 0; fi; done' ''' },
 ]
 
@@ -23,6 +24,7 @@ ctrl-1 = 'workspace 1'
 ctrl-2 = 'workspace 2'
 ctrl-3 = 'workspace 3'
 ctrl-4 = 'workspace 4'
+ctrl-5 = 'workspace 5'
 
 ctrl-shift-quote = 'move-node-to-workspace A'
 ctrl-shift-semicolon = 'move-node-to-workspace B'
@@ -30,8 +32,8 @@ ctrl-shift-1 = 'move-node-to-workspace 1'
 ctrl-shift-2 = 'move-node-to-workspace 2'
 ctrl-shift-3 = 'move-node-to-workspace 3'
 ctrl-shift-4 = 'move-node-to-workspace 4'
+ctrl-shift-5 = 'move-node-to-workspace 5'
 
-cmd-backtick = 'focus-monitor --wrap-around next'
 ctrl-cmd-1 = 'focus --dfs-index 0'
 ctrl-cmd-2 = 'focus --dfs-index 1'
 ctrl-cmd-3 = 'focus --dfs-index 2'
@@ -69,3 +71,4 @@ ctrl-cmd-shift-leftSquareBracket = 'swap dfs-prev'
 '2' = 'main'
 '3' = 'main'
 '4' = 'main'
+'5' = 'main'

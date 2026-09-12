@@ -1,0 +1,4 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $document := dict -}}
+{{- if .chezmoi.stdin | trim -}}{{- $document = fromJson .chezmoi.stdin -}}{{- end -}}
+{{ $document | toPrettyJson }}

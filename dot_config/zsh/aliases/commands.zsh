@@ -1,7 +1,3 @@
-if command -v eza >/dev/null 2>&1; then
-  alias tree='eza -T -L 4 -a --git-ignore --color=always'
-fi
-
 alias bi='brew install'
 alias bu='brew update'
 alias buy='brew upgrade -y'

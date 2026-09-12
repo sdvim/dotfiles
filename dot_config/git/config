@@ -33,3 +33,4 @@
 
 [credential]
 	helper = !gh auth git-credential
+
