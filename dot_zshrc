@@ -40,6 +40,10 @@ if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
 fi
 
+if command -v herdr >/dev/null 2>&1; then
+  source <(herdr completion zsh)
+fi
+
 if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
 
