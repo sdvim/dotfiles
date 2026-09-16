@@ -1,0 +1,125 @@
+# This is a demo config to showcase some of the most important commands.
+# It is meant to be changed and configured, as it is intentionally kept sparse.
+# For a (much) more advanced configuration example see my dotfiles:
+# https://github.com/FelixKratz/dotfiles
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+##### Bar Appearance #####
+# Configuring the general appearance of the bar.
+# These are only some of the options available. For all options see:
+# https://felixkratz.github.io/SketchyBar/config/bar
+# If you are looking for other colors, see the color picker:
+# https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
+
+sketchybar --bar position=top display=main height=40 blur_radius=30 color=0x40000000
+
+##### Changing Defaults #####
+# We now change some default values, which are applied to all further items.
+# For a full list of all available item properties see:
+# https://felixkratz.github.io/SketchyBar/config/items
+
+default=(
+  padding_left=2
+  padding_right=2
+  icon.font="SF Pro:Medium:15.0"
+  label.font="SF Pro:Medium:13.0"
+  label.y_offset=-1
+  icon.color=0xffffffff
+  label.color=0xffffffff
+  icon.padding_left=4
+  icon.padding_right=4
+  label.padding_left=4
+  label.padding_right=4
+)
+sketchybar --default "${default[@]}"
+
+##### Adding the AeroSpace Window Overview #####
+# The previous aerospace_workspace and front_app indicators are intentionally
+# retired. Their source scripts remain available as a fallback, but the active
+# left side is now maintained by aerospace_max.
+# https://felixkratz.github.io/SketchyBar/config/events#creating-custom-events
+
+sketchybar --remove aerospace_workspace >/dev/null 2>&1 || :
+sketchybar --remove front_app >/dev/null 2>&1 || :
+sketchybar --add event aerospace_max_change
+
+max_overview=(
+  drawing=off
+  icon.drawing=off
+  label.drawing=off
+  background.drawing=off
+  update_freq=0
+  script="$PLUGIN_DIR/aerospace_max.sh"
+)
+sketchybar --add item aerospace_max left \
+           --set aerospace_max "${max_overview[@]}" \
+           --subscribe aerospace_max aerospace_max_change space_windows_change
+NAME=aerospace_max "$PLUGIN_DIR/aerospace_max.sh"
+
+##### Adding Right Items #####
+# In the same way as the left items we can add items to the right side.
+# Additional position (e.g. center) are available, see:
+# https://felixkratz.github.io/SketchyBar/config/items#adding-items-to-sketchybar
+
+# Some items refresh on a fixed cycle, e.g. the clock runs its script once
+# every 10s. Other items respond to events they subscribe to, e.g. the
+# volume.sh script is only executed once an actual change in system audio
+# volume is registered. More info about the event system can be found here:
+# https://felixkratz.github.io/SketchyBar/config/events
+
+# The connection item owns the network poll and can toggle the optional
+# per-second traffic items. Remove the previous single-item implementation on
+# reload so an old "network" item cannot remain visible.
+for network_item in network network_down network_up network_connection; do
+  sketchybar --remove "$network_item" >/dev/null 2>&1 || :
+done
+for disk_item in disk_read disk_write; do
+  sketchybar --remove "$disk_item" >/dev/null 2>&1 || :
+done
+sketchybar --add event network_mode_change
+
+sketchybar --add item clock center \
+           --set clock update_freq=1 icon.drawing=off label.font.features=tnum script="$PLUGIN_DIR/clock.sh" \
+           --add item codex_usage right \
+           --set codex_usage width=dynamic icon="􀆿" label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center update_freq=300 script="$PLUGIN_DIR/codex_usage.sh" \
+           --add item weather right \
+           --set weather drawing=off width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center update_freq=900 script="$PLUGIN_DIR/weather.sh" \
+           --add item aqi right \
+           --set aqi drawing=off width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center update_freq=1800 script="$PLUGIN_DIR/aqi.sh" \
+           --add item focus_mode right \
+           --set focus_mode drawing=off label.drawing=off width=28 icon.width=18 icon.align=center icon.padding_left=0 icon.padding_right=0 update_freq=5 script="$PLUGIN_DIR/focus_mode.sh" \
+           --add item volume right \
+           --set volume width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center icon.padding_right=8 script="$PLUGIN_DIR/volume.sh" \
+           --subscribe volume volume_change \
+           --add item battery right \
+           --set battery width=dynamic label.width=dynamic label.font.features=tnum icon.width=24 icon.align=center icon.padding_right=8 update_freq=120 script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery system_woke power_source_change \
+           --add item apple_health right \
+           --set apple_health width=dynamic icon="♥" icon.width=18 icon.align=center label.width=dynamic label.font.features=tnum update_freq=60 script="$PLUGIN_DIR/health.sh" \
+           --subscribe apple_health system_woke \
+           --add item ram_usage right \
+           --set ram_usage width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center \
+           --add item cpu_usage right \
+           --set cpu_usage width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center update_freq=5 script="$PLUGIN_DIR/system_resources.sh" \
+           --add item disk_write right \
+           --set disk_write width=dynamic label.width=dynamic label.font.features=tnum icon="↑" icon.width=18 icon.align=center \
+           --add item disk_read right \
+           --set disk_read width=dynamic label.width=dynamic label.font.features=tnum icon="↓" icon.width=18 icon.align=center update_freq=1 script="$PLUGIN_DIR/disk.sh" \
+           --add item network_connection right \
+           --set network_connection width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center update_freq=1 script="$PLUGIN_DIR/network.sh" click_script="$PLUGIN_DIR/network_mode.sh" \
+           --add item network_up right \
+           --set network_up drawing=off icon.drawing=off label.drawing=off width=dynamic label.width=dynamic icon="↑" icon.width=18 icon.align=center \
+           --add item network_down right \
+           --set network_down drawing=off icon.drawing=off label.drawing=off width=dynamic label.width=dynamic icon="↓" icon.width=18 icon.align=center \
+           --subscribe network_connection wifi_change network_mode_change
+
+# macOS publishes this distributed notification when Bluetooth device state
+# changes. The routine update remains as a battery-level refresh fallback.
+sketchybar --add event bluetooth_devices_changed com.apple.bluetooth.status
+sketchybar --add item bluetooth_devices right \
+           --set bluetooth_devices drawing=off icon.drawing=off label.drawing=off update_freq=30 script="$PLUGIN_DIR/bluetooth_devices.sh" \
+           --subscribe bluetooth_devices system_woke bluetooth_devices_changed
+
+##### Force all scripts to run the first time (never do this in a script) #####
+sketchybar --update

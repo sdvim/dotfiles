@@ -8,12 +8,18 @@ start-at-login = true
 
 gaps.inner.horizontal = 12
 gaps.inner.vertical = 12
+gaps.outer.top = [{ monitor.main = 40 }, 0]
 
 exec-on-workspace-change = ['/bin/bash', '-c', 'state="${XDG_STATE_HOME:-$HOME/.local/state}/aerospace"; mkdir -p "$state"; printf "%s\n" "$AEROSPACE_PREV_WORKSPACE" > "$state/prev-workspace"; printf "%s\n" "$AEROSPACE_FOCUSED_WORKSPACE" > "$state/focused-workspace"']
 
+on-focus-changed = [
+  '''exec-and-forget /bin/sh -c 'exec sketchybar --trigger aerospace_max_change FOCUSED_WINDOW_ID="$AEROSPACE_WINDOW_ID" FOCUSED_WORKSPACE="$AEROSPACE_WORKSPACE"' ''',
+]
+
 on-window-detected = [
-  { if = 'test %{app-bundle-id} = net.imput.helium', run = '''exec-and-forget /bin/sh -c 'exec "$HOME/.local/bin/aerospace-agent-browser"' ''' },
-  { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', run = '''exec-and-forget /bin/bash -lc 'new="${AEROSPACE_WINDOW_ID:-}"; if [[ -z "$new" ]]; then exit 0; fi; for ws in A B 1 2 3 4; do if ! aerospace list-windows --workspace "$ws" --app-bundle-id com.mitchellh.ghostty --format "%{window-id}" | grep -vxF "$new" >/dev/null; then aerospace move-node-to-workspace --window-id "$new" "$ws"; exit 0; fi; done' ''' },
+  { if = 'test %{app-bundle-id} = net.imput.helium', check-further-callbacks = true, run = '''exec-and-forget /bin/sh -c 'exec "$HOME/.local/bin/aerospace-agent-browser"' ''' },
+  { if = 'test %{app-bundle-id} = com.mitchellh.ghostty', check-further-callbacks = true, run = '''exec-and-forget /bin/bash -lc 'new="${AEROSPACE_WINDOW_ID:-}"; if [[ -z "$new" ]]; then exit 0; fi; for ws in A B 1 2 3 4; do if ! aerospace list-windows --workspace "$ws" --app-bundle-id com.mitchellh.ghostty --format "%{window-id}" | grep -vxF "$new" >/dev/null; then aerospace move-node-to-workspace --window-id "$new" "$ws"; exit 0; fi; done' ''' },
+  { if = 'true', run = '''exec-and-forget /bin/sh -c 'exec sketchybar --trigger aerospace_max_change' ''' },
 ]
 
 [mode.main.binding]
