@@ -59,6 +59,24 @@ frontend-browser requests
 frontend-browser close
 ```
 
+## Reproduce stateful regressions
+
+Turn the reported starting state and interaction sequence into a repeatable
+reproduction before changing behavior. For flicker, delay, or disabled controls,
+check the first render after each action as well as the settled result. Prefer
+tests through the real state owners, mocking external boundaries; hand-built
+return values can describe states the application never reaches.
+
+Trace persisted preferences, SDK-owned selection, derived presentation, and
+asynchronous readiness together. A cached label does not prove the underlying
+action is available. When a fix fails, make the reproduction catch the newly
+reported failure before applying another hypothesis; avoid layering presentation
+fallbacks onto an unexplained state transition.
+
+Record reusable fixture setup and restoration beside the saved interaction flow.
+Check current device, account, flags, and environment before reusing it. Keep
+first-render evidence distinct from a settled screenshot or a latency benchmark.
+
 ## See, measure, correct
 
 Match the design frame's viewport, theme, text, and relevant state. Wait for fonts

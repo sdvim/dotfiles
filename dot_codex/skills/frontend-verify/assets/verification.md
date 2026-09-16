@@ -6,6 +6,8 @@
 - Device/UDID, bundle, requested environment:
 - Metro port and process checkout:
 - Saved flow and artifact directory:
+- Starting state, exact action sequence, and expected first-render/settled results:
+- Fixture setup, original values, and restoration result (exclude secrets):
 
 | Command or interaction | Source revision/dirty state | Result | Cached? | Evidence path |
 | --- | --- | --- | --- | --- |
@@ -19,5 +21,6 @@
 
 ## Resume
 
+- Current hypothesis and rejected approaches, with evidence links:
 - Source/configuration changes since these checks (mark affected results stale):
 - Next concrete step, if needed:

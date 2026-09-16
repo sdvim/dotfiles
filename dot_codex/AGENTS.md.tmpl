@@ -11,6 +11,14 @@
 - Inspect existing scripts, flows, and fixtures before improvising setup. For
   UI work, establish access to the consuming screen before substantial edits;
   identify missing prerequisites early.
+- Keep reads bounded: locate symbols or headings, then read relevant ranges.
+  Save full logs to artifacts and return summaries or failure excerpts. If output
+  is truncated, narrow the query; do not repeat a larger dump. Reuse unchanged
+  instructions and manifests already read in the session.
+- During long debugging, keep a short checkpoint with the reproduction, current
+  hypothesis, rejected approaches, changed files, valid checks, and next step.
+  Link full evidence on disk. After compaction, resume from that checkpoint and
+  verify changes since it was written before repeating exploration or checks.
 - Reuse passing checks until relevant source, dependencies, configuration, or
   an unresolved concern changes. Serialize commands that regenerate shared
   outputs; run independent checks after those outputs are stable.
