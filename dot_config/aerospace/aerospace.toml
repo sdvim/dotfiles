@@ -8,7 +8,6 @@ start-at-login = true
 
 gaps.inner.horizontal = 12
 gaps.inner.vertical = 12
-gaps.outer.top = [{ monitor.main = 40 }, 0]
 
 exec-on-workspace-change = ['/bin/bash', '-c', 'state="${XDG_STATE_HOME:-$HOME/.local/state}/aerospace"; mkdir -p "$state"; printf "%s\n" "$AEROSPACE_PREV_WORKSPACE" > "$state/prev-workspace"; printf "%s\n" "$AEROSPACE_FOCUSED_WORKSPACE" > "$state/focused-workspace"']
 
