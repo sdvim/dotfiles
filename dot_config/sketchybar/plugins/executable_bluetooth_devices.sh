@@ -2,6 +2,8 @@
 
 SKETCHYBAR_BIN="${SKETCHYBAR_BIN:-sketchybar}"
 ITEM_PREFIX="bluetooth_device_"
+DISK_WRITE_ITEM="${SKETCHYBAR_DISK_WRITE_ITEM:-disk_write}"
+DISK_READ_ITEM="${SKETCHYBAR_DISK_READ_ITEM:-disk_read}"
 LOCK_DIR="${TMPDIR:-/tmp}/sketchybar-bluetooth-devices.lock"
 
 # Set BLUETOOTH_HIDE_DEVICE_NAME=0 to show names again. The default is to show
@@ -234,6 +236,17 @@ set_device_item() {
   fi
 }
 
+move_disk_items_after_devices() {
+  last_device_item="$(printf '%s\n' "$DESIRED_ITEMS" | tail -n 1)"
+  [ -n "$last_device_item" ] || return 0
+
+  # Right-positioned items render in reverse declaration order. Keep the
+  # disk indicators after every dynamic Bluetooth item in that order so they
+  # render before the Bluetooth devices on the left side of the right group.
+  "$SKETCHYBAR_BIN" --move "$DISK_WRITE_ITEM" after "$last_device_item"
+  "$SKETCHYBAR_BIN" --move "$DISK_READ_ITEM" after "$DISK_WRITE_ITEM"
+}
+
 TAB="$(printf '\t')"
 DEVICE_INDEX=0
 DESIRED_ITEMS=""
@@ -344,6 +357,7 @@ printf '%s\n' "$EXISTING_ITEMS" |
   done
 
 if [ "$DEVICE_INDEX" -gt 0 ]; then
+  move_disk_items_after_devices
   "$SKETCHYBAR_BIN" --set "$NAME" drawing=off icon.drawing=off label.drawing=off
 else
   hide_devices

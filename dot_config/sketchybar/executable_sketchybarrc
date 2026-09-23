@@ -102,10 +102,6 @@ sketchybar --add item clock center \
            --set ram_usage width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center \
            --add item cpu_usage right \
            --set cpu_usage width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center update_freq=5 script="$PLUGIN_DIR/system_resources.sh" \
-           --add item disk_write right \
-           --set disk_write width=dynamic label.width=dynamic label.font.features=tnum icon="↑" icon.width=18 icon.align=center \
-           --add item disk_read right \
-           --set disk_read width=dynamic label.width=dynamic label.font.features=tnum icon="↓" icon.width=18 icon.align=center update_freq=1 script="$PLUGIN_DIR/disk.sh" \
            --add item network_connection right \
            --set network_connection width=dynamic label.width=dynamic label.font.features=tnum icon.width=18 icon.align=center update_freq=1 script="$PLUGIN_DIR/network.sh" click_script="$PLUGIN_DIR/network_mode.sh" \
            --add item network_up right \
@@ -120,6 +116,13 @@ sketchybar --add event bluetooth_devices_changed com.apple.bluetooth.status
 sketchybar --add item bluetooth_devices right \
            --set bluetooth_devices drawing=off icon.drawing=off label.drawing=off update_freq=30 script="$PLUGIN_DIR/bluetooth_devices.sh" \
            --subscribe bluetooth_devices system_woke bluetooth_devices_changed
+
+# Add these last so the right-aligned disk indicators remain the leftmost
+# visible items in the right-side group.
+sketchybar --add item disk_write right \
+           --set disk_write width=dynamic label.width=dynamic label.font.features=tnum icon="↑" icon.width=18 icon.align=center \
+           --add item disk_read right \
+           --set disk_read width=dynamic label.width=dynamic label.font.features=tnum icon="↓" icon.width=18 icon.align=center update_freq=1 script="$PLUGIN_DIR/disk.sh"
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update
