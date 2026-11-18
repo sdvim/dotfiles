@@ -35,7 +35,7 @@ cask "ghostty"
 {{ end }}
 
 {{ if has "window-manager" $roles -}}
-tap "nikitabobko/tap"
+tap "nikitabobko/tap", trusted: true
 cask "nikitabobko/tap/aerospace"
 {{ end }}
 
@@ -60,6 +60,6 @@ cask "google-chrome"
 {{ end }}
 
 {{ if or (has "ios-dev" $roles) (has "android-dev" $roles) -}}
-tap "mobile-dev-inc/tap"
+tap "mobile-dev-inc/tap", trusted: true
 brew "mobile-dev-inc/tap/maestro"
 {{ end }}
