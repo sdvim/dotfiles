@@ -31,6 +31,7 @@ roles = [
 
 [machines.pro-14]
 roles = [
+    "tailscale-daemon",
     "ios-dev",
     "android-dev",
     "web-dev",
@@ -43,6 +44,7 @@ roles = [
 
 [machines.pro-16]
 roles = [
+    "tailscale-daemon",
     "ios-dev",
     "android-dev",
     "web-dev",
