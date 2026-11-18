@@ -3,7 +3,7 @@ name = "Steve Della Valentina"
 email = "s.dellavalentina@gmail.com"
 
 [gpg]
-key = "59CCEAA377B73C77742851E4333487C4FFB88C8D"
+key = "AC143EA65DF15E5DCF72FE0F4367FA0B7857EACD"
 ref = "op://Private/GPG Secret Key/notesPlain"
 
 [ssh]
