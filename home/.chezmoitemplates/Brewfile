@@ -12,7 +12,12 @@ brew "shellcheck"
 brew "vips"
 cask "1password"
 cask "1password-cli"
+
+{{ if has "tailscale-daemon" $roles -}}
+brew "tailscale"
+{{ else -}}
 cask "tailscale-app"
+{{ end }}
 
 {{ if has "personal" $roles -}}
 cask "beeper"

@@ -19,6 +19,7 @@ roles = [
 
 [machines.mini]
 roles = [
+    "tailscale-daemon",
     "personal",
     "ios-dev",
     "web-dev",
