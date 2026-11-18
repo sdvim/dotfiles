@@ -1,0 +1,11 @@
+{{- if has "home-vpn" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+scutil --nc list | grep -q '(com.wireguard.macos) "home"' && exit 0
+dir=$(mktemp -d)
+trap 'rm -rf "$dir"' EXIT
+op read {{ .wireguard.ref | quote }} >"$dir/home.conf"
+open -a WireGuard
+printf 'In WireGuard, choose Import Tunnel(s) from File, pick %s, then press Enter. ' "$dir/home.conf" >/dev/tty
+read -r _ </dev/tty
+{{ end -}}

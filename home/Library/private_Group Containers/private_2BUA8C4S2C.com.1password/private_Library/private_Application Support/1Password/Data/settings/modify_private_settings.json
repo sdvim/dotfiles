@@ -1,0 +1,13 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- if .chezmoi.stdin -}}
+{{-   $settings := fromJson .chezmoi.stdin -}}
+{{-   $wanted := dict "sshAgent.enabled" true "sshAgent.sshAuthorizatonModel" "application" "sshAgent.sshSessionDuration" "infinite" "developers.cliSharedLockState.enabled" true -}}
+{{-   $changed := false -}}
+{{-   range $key, $value := $wanted -}}
+{{-     if ne (toJson (get $settings $key)) (toJson $value) -}}
+{{-       $_ := set $settings $key $value -}}
+{{-       $changed = true -}}
+{{-     end -}}
+{{-   end -}}
+{{-   if $changed }}{{ toPrettyJson $settings }}{{ else }}{{ .chezmoi.stdin }}{{ end -}}
+{{- end -}}

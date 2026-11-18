@@ -6,6 +6,9 @@ email = "s.dellavalentina@gmail.com"
 key = "AC143EA65DF15E5DCF72FE0F4367FA0B7857EACD"
 ref = "op://Private/GPG Secret Key/notesPlain"
 
+[wireguard]
+ref = "op://Private/WireGuard air/notesPlain"
+
 [ssh]
 key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJH2Ub2J0rqXp9F+PYen8BPQFjiVt72qReIo9uC83Sa"
 
