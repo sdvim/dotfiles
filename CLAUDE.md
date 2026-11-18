@@ -11,7 +11,7 @@ Data:
 - Personal values (machines, roles, git identity, keys) live only in `home/.chezmoidata.toml`
 - Choose per-machine behavior by role, never by machine name
 - Packages are in `home/.chezmoitemplates/Brewfile`
-- Applying only installs packages; never remove them automatically
+- Applying only installs missing packages; never upgrade or remove them automatically
 
 Workflow:
 - Edit the source under `home/`, then `chezmoi diff` and `chezmoi apply`
