@@ -1,0 +1,33 @@
+{{- $roles := dig "machines" .host "roles" (list) . -}}
+setopt auto_cd interactive_comments
+setopt share_history hist_ignore_all_dups hist_ignore_space
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+cdpath=($HOME)
+
+fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+autoload -Uz compinit && compinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+bindkey '^[OA' up-line-or-beginning-search
+bindkey '^[[B' down-line-or-beginning-search
+bindkey '^[OB' down-line-or-beginning-search
+
+(( $+commands[hx] )) && export EDITOR=hx VISUAL=hx
+
+eval "$(atuin init zsh --disable-up-arrow)"
+
+restart() { ssh -t "$1" sudo fdesetup authrestart }
+{{- if has "terminal" $roles }}
+
+eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+{{- end }}

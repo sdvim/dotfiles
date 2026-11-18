@@ -26,7 +26,11 @@ for host in $hosts; do
         git config -f "$dest/.config/git/config" --list >/dev/null || fail "$host: git config does not parse"
         [ "$(ssh -F "$dest/.ssh/config" -G mini </dev/null 2>/dev/null | awk '$1 == "hostname" { print $2 }')" = mini.example.ts.net ] ||
             fail "$host: ssh config does not resolve mini to its tailnet name"
-        zsh -n "$dest/.zshenv" || fail "$host: .zshenv has a syntax error"
+        for zshfile in .zshenv .zprofile .zshrc; do
+            zsh -n "$dest/$zshfile" || fail "$host: $zshfile has a syntax error"
+        done
+        jq -e '.hooks.PostToolUse[0].hooks[0].command | test("atuin hook claude-code")' "$dest/.claude/settings.json" >/dev/null 2>&1 ||
+            fail "$host: Claude Code settings lack the Atuin hooks"
         if [ "$(cm execute-template '{{ has "remote-login" (dig "machines" .host "roles" (list) .) }}')" = true ]; then
             grep -qF "$(cm execute-template '{{ .ssh.key }}')" "$dest/.ssh/authorized_keys" 2>/dev/null ||
                 fail "$host: authorized_keys lacks the SSH key"

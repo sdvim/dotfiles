@@ -24,12 +24,19 @@ cask "beeper"
 cask "obsidian"
 {{ end }}
 
+{{ if has "home-vpn" $roles -}}
+brew "mas"
+mas "WireGuard", id: 1451685025
+{{ end }}
+
 {{ if has "terminal" $roles -}}
 brew "bat"
 brew "eza"
 brew "starship"
 brew "tealdeer"
 brew "zoxide"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
 cask "font-paper-mono"
 cask "ghostty"
 {{ end }}

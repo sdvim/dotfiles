@@ -12,6 +12,7 @@ key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJH2Ub2J0rqXp9F+PYen8BPQFjiVt72qReIo
 [machines.air]
 roles = [
     "personal",
+    "home-vpn",
     "terminal",
     "window-manager",
     "t3-desktop",

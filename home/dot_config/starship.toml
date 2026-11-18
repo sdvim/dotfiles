@@ -1,0 +1,29 @@
+add_newline = false
+format = "$username$hostname$directory$character"
+right_format = "$status$git_branch$git_state$git_status"
+
+[username]
+format = "[$user]($style)[@](white)"
+style_user = "bright-red"
+
+[hostname]
+format = "[$hostname]($style) "
+style = "yellow"
+
+[directory]
+format = "[$path]($style) "
+style = "blue"
+fish_style_pwd_dir_length = 1
+
+[character]
+success_symbol = "[❯](bold red)[❯](bold yellow)[❯](bold green)"
+error_symbol = "[❯](bold red)[❯](bold yellow)[❯](bold green)"
+
+[status]
+disabled = false
+format = "[✘ $status]($style) "
+style = "red"
+
+[git_branch]
+format = "[$branch]($style) "
+style = "purple"

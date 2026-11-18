@@ -1,0 +1,10 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $settings := dict -}}
+{{- if .chezmoi.stdin }}{{ $settings = fromJson .chezmoi.stdin }}{{ end -}}
+{{- $atuin := list (dict "matcher" "^Bash$" "hooks" (list (dict "type" "command" "command" "/opt/homebrew/bin/atuin hook claude-code"))) -}}
+{{- $hooks := dict "PreToolUse" $atuin "PostToolUse" $atuin "PostToolUseFailure" $atuin -}}
+{{- if eq (toJson (get $settings "hooks")) (toJson $hooks) -}}
+{{-   .chezmoi.stdin -}}
+{{- else -}}
+{{-   setValueAtPath "hooks" $hooks $settings | toPrettyJson -}}
+{{- end -}}
