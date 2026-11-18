@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+brew bundle --file=- <<'BREWFILE'
+{{ includeTemplate "Brewfile" . }}
+BREWFILE

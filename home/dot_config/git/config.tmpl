@@ -1,0 +1,27 @@
+[user]
+	name = {{ .git.name }}
+	email = {{ .git.email }}
+{{- with dig "gpg" "key" "" . }}
+	signingkey = {{ . }}
+
+[commit]
+	gpgsign = true
+
+[tag]
+	gpgsign = true
+{{- end }}
+
+[pull]
+	rebase = true
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+
+[init]
+	defaultBranch = main
+
+[credential]
+	helper = !gh auth git-credential

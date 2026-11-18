@@ -1,0 +1,17 @@
+theme = light:Ayu Light,dark:Ayu
+
+font-family = Paper Mono
+font-size = 14
+font-feature = zero
+font-feature = ss01
+
+confirm-close-surface = false
+
+background = #000000
+
+keybind = global:ctrl+j=toggle_quick_terminal
+
+quick-terminal-position = center
+quick-terminal-animation-duration = 0
+
+macos-hidden = always

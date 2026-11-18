@@ -1,0 +1,2 @@
+typeset -U path
+path=("$HOME/.local/bin" /opt/homebrew/bin /opt/homebrew/sbin $path)

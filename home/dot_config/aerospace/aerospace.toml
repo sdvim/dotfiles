@@ -1,0 +1,28 @@
+config-version = 2
+
+[gaps]
+inner.horizontal = 6
+inner.vertical = 6
+
+[mode.main.binding]
+ctrl-backtick = 'workspace "`"'
+ctrl-1 = 'workspace 1'
+ctrl-2 = 'workspace 2'
+ctrl-3 = 'workspace 3'
+ctrl-4 = 'workspace 4'
+ctrl-5 = 'workspace 5'
+
+ctrl-shift-backtick = 'move-node-to-workspace "`"'
+ctrl-shift-1 = 'move-node-to-workspace 1'
+ctrl-shift-2 = 'move-node-to-workspace 2'
+ctrl-shift-3 = 'move-node-to-workspace 3'
+ctrl-shift-4 = 'move-node-to-workspace 4'
+ctrl-shift-5 = 'move-node-to-workspace 5'
+
+ctrl-0 = 'balance-sizes'
+ctrl-minus = 'resize width -50'
+ctrl-equal = 'resize width +50'
+ctrl-leftSquareBracket = 'focus --wrap-around dfs-prev'
+ctrl-rightSquareBracket = 'focus --wrap-around dfs-next'
+ctrl-shift-leftSquareBracket = 'move left'
+ctrl-shift-rightSquareBracket = 'move right'

@@ -1,0 +1,15 @@
+{{- if has "ios-dev" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+if [ ! -d /Applications/Xcode.app ]; then
+    open -a "App Store"
+    printf 'This Mac gets Xcode: sign in to the App Store, then press Enter. ' >/dev/tty
+    read -r _ </dev/tty
+    mas install 497799835
+fi
+[ "$(xcode-select -p)" = /Applications/Xcode.app/Contents/Developer ] ||
+    sudo xcode-select --switch /Applications/Xcode.app
+xcodebuild -license check >/dev/null 2>&1 || sudo xcodebuild -license accept
+xcodebuild -checkFirstLaunchStatus || sudo xcodebuild -runFirstLaunch
+xcrun simctl list runtimes | grep -q '^iOS' || xcodebuild -downloadPlatform iOS
+{{ end -}}

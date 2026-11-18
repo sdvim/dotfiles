@@ -1,0 +1,5 @@
+sourceDir = {{ .chezmoi.workingTree | quote }}
+
+[data]
+    host = {{ output "scutil" "--get" "LocalHostName" | trim | quote }}
+    tailnet = {{ promptStringOnce . "tailnet" "Tailnet domain" | quote }}

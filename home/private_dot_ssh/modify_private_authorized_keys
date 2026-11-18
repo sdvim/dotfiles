@@ -1,0 +1,8 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $roles := dig "machines" .host "roles" (list) . -}}
+{{- $keys := .chezmoi.stdin -}}
+{{- $keys -}}
+{{- if and (has "remote-login" $roles) (not (contains .ssh.key $keys)) -}}
+{{-   if and $keys (not (hasSuffix "\n" $keys)) }}{{ "\n" }}{{ end -}}
+{{-   .ssh.key }}{{ "\n" }}
+{{- end -}}

@@ -1,0 +1,7 @@
+{{- if has "t3-server" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+t3=$HOME/.local/bin/t3
+[ -x "$t3" ] || curl -fsSL https://t3.codes/install.sh | T3CODE_CHANNEL=nightly sh
+launchctl print "gui/$(id -u)/com.t3tools.t3code.service" >/dev/null 2>&1 || "$t3" up --connect --lan
+{{ end -}}

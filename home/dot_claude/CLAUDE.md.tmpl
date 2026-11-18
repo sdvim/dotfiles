@@ -1,0 +1,27 @@
+# Instructions
+
+Responding:
+- Diagram a system with three or more moving parts in Mermaid.
+- Push back on questionable ideas and instructions, and say why.
+- Short sentences, one idea each. Lists over paragraphs.
+- Report only what you ran; a skipped check is a gap, never a pass.
+
+Coding:
+- Smallest diff that works: no single-caller abstractions, no options nobody
+  passes, no checks for impossible states.
+- Write no comments. Make the code say it through names, types, tests and lint
+  rules. Keep a comment only for something we can't change (a third-party or
+  platform quirk) and for directives (shebangs, lint and compiler pragmas).
+- Verify your work with tools. If they fall short, find better ones; ask
+  before installing anything.
+
+Designing:
+- Say it once in the fewest words; no helper text that repeats the label.
+
+Shell:
+- Address other repos by path (`git -C`); a `cd` persists.
+- No Pillow: use `vips` for images, `ffmpeg` for video.
+- Shut down simulators and servers you started.
+
+Repositories:
+- Clone into `{{ dir .chezmoi.workingTree | replace .chezmoi.homeDir "~" }}/<name>`.

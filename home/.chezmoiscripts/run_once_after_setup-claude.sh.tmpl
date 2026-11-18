@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+claude=$HOME/.local/bin/claude
+[ -x "$claude" ] || curl -fsSL https://claude.ai/install.sh | bash
+"$claude" auth status --json | grep -q '"loggedIn": true' || "$claude" auth login

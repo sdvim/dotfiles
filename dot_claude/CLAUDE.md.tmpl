@@ -1,2 +1,0 @@
-{{- $local := joinPath .chezmoi.homeDir ".config/dotfiles-local/AGENTS.md" -}}
-{{- if stat $local -}}{{ include $local }}{{- end }}

@@ -1,0 +1,56 @@
+[git]
+name = "Steve Della Valentina"
+email = "s.dellavalentina@gmail.com"
+
+[gpg]
+key = "59CCEAA377B73C77742851E4333487C4FFB88C8D"
+ref = "op://Private/GPG Secret Key/notesPlain"
+
+[ssh]
+key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDJH2Ub2J0rqXp9F+PYen8BPQFjiVt72qReIo9uC83Sa"
+
+[machines.air]
+roles = [
+    "personal",
+    "terminal",
+    "window-manager",
+    "t3-desktop",
+]
+
+[machines.mini]
+roles = [
+    "personal",
+    "ios-dev",
+    "web-dev",
+    "remote-login",
+    "t3-server",
+    "never-sleep",
+    "restore-power",
+]
+
+[machines.pro-14]
+roles = [
+    "ios-dev",
+    "android-dev",
+    "web-dev",
+    "work",
+    "remote-login",
+    "t3-server",
+    "never-sleep",
+    "battery-optimized",
+]
+
+[machines.pro-16]
+roles = [
+    "ios-dev",
+    "android-dev",
+    "web-dev",
+    "work",
+    "remote-login",
+    "t3-server",
+    "never-sleep",
+    "battery-optimized",
+]
+
+[machines.brix]
+[machines.tower]

@@ -1,0 +1,3 @@
+#!/bin/sh
+set -eu
+gh auth status >/dev/null 2>&1 || gh auth login --web --git-protocol ssh

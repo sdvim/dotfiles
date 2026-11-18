@@ -1,0 +1,10 @@
+{{- if has "remote-login" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+sudo systemsetup -getremotelogin | grep -q On && exit 0
+if ! sudo systemsetup -setremotelogin on; then
+    open "x-apple.systempreferences:com.apple.Sharing-Settings.extension"
+    printf 'Turn on Remote Login in System Settings, then press Enter. ' >/dev/tty
+    read -r _ </dev/tty
+fi
+{{ end -}}

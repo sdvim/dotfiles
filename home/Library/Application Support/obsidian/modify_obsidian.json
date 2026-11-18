@@ -1,0 +1,8 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $settings := dict -}}
+{{- if .chezmoi.stdin }}{{ $settings = fromJson .chezmoi.stdin }}{{ end -}}
+{{- if and (has "personal" (dig "machines" .host "roles" (list) .)) (not (get $settings "cli")) -}}
+{{-   setValueAtPath "cli" true $settings | toJson -}}
+{{- else -}}
+{{-   .chezmoi.stdin -}}
+{{- end -}}

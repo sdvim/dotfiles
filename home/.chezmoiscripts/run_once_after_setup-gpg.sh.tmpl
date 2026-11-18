@@ -1,0 +1,10 @@
+{{- if and (dig "gpg" "key" "" .) (dig "gpg" "ref" "" .) -}}
+#!/bin/sh
+set -eu
+key={{ .gpg.key | quote }}
+gpg --list-secret-keys "$key" >/dev/null 2>&1 && exit 0
+printf 'Sign in to 1Password, turn on Settings → Developer → Integrate with 1Password CLI, then press Enter. ' >/dev/tty
+read -r _ </dev/tty
+op read {{ .gpg.ref | quote }} | gpg --batch --import
+printf '%s:6:\n' "$key" | gpg --import-ownertrust
+{{ end -}}

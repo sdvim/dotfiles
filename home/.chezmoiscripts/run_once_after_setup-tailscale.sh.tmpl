@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+tailscale=/Applications/Tailscale.app/Contents/MacOS/Tailscale
+"$tailscale" status >/dev/null 2>&1 && exit 0
+open -a Tailscale
+printf "Approve Tailscale's VPN configuration if macOS asks, then press Enter. " >/dev/tty
+read -r _ </dev/tty
+"$tailscale" up --hostname={{ .host | quote }}

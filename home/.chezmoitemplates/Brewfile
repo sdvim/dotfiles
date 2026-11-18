@@ -1,0 +1,60 @@
+{{- $roles := dig "machines" .host "roles" (list) . -}}
+brew "atuin"
+brew "chezmoi"
+brew "fd"
+brew "ffmpeg"
+brew "fzf"
+brew "gh"
+brew "gnupg"
+brew "jq"
+brew "ripgrep"
+brew "shellcheck"
+brew "vips"
+cask "1password"
+cask "1password-cli"
+cask "tailscale-app"
+
+{{ if has "personal" $roles -}}
+cask "beeper"
+cask "obsidian"
+{{ end }}
+
+{{ if has "terminal" $roles -}}
+brew "bat"
+brew "eza"
+brew "starship"
+brew "tealdeer"
+brew "zoxide"
+cask "font-paper-mono"
+cask "ghostty"
+{{ end }}
+
+{{ if has "window-manager" $roles -}}
+tap "nikitabobko/tap"
+cask "nikitabobko/tap/aerospace"
+{{ end }}
+
+{{ if has "t3-desktop" $roles -}}
+cask "t3-code@nightly"
+{{ end }}
+
+{{ if has "ios-dev" $roles -}}
+brew "cocoapods"
+brew "mas"
+{{ end }}
+
+{{ if has "android-dev" $roles -}}
+cask "android-commandlinetools"
+cask "android-platform-tools"
+{{ end }}
+
+{{ if has "web-dev" $roles -}}
+brew "mise"
+brew "watchman"
+cask "google-chrome"
+{{ end }}
+
+{{ if or (has "ios-dev" $roles) (has "android-dev" $roles) -}}
+tap "mobile-dev-inc/tap"
+brew "mobile-dev-inc/tap/maestro"
+{{ end }}

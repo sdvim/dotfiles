@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+# AeroSpace config: {{ include "dot_config/aerospace/aerospace.toml" | sha256sum }}
+aerospace=/opt/homebrew/bin/aerospace
+if [ ! -x "$aerospace" ]; then
+    echo 'AeroSpace is not installed; skipping validation and reload.'
+    exit 0
+fi
+if ! pgrep -x AeroSpace >/dev/null; then
+    echo 'AeroSpace is not running; configuration will load on next launch.'
+    exit 0
+fi
+"$aerospace" reload-config --dry-run --no-gui --warnings-as-errors
+"$aerospace" reload-config --no-gui
+echo 'AeroSpace configuration validated and reloaded.'

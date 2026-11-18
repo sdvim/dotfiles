@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+# Ghostty config: {{ include "dot_config/ghostty/config.ghostty" | sha256sum }}
+ghostty=/Applications/Ghostty.app/Contents/MacOS/ghostty
+if [ ! -x "$ghostty" ]; then
+    echo 'Ghostty is not installed; skipping validation and reload.'
+    exit 0
+fi
+"$ghostty" +validate-config
+if pkill -USR2 -x ghostty; then
+    echo 'Ghostty configuration validated and reloaded.'
+else
+    echo 'Ghostty configuration validated; it will load on next launch.'
+fi
