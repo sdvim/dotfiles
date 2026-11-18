@@ -2,7 +2,7 @@
 set -eu
 atuin=/opt/homebrew/bin/atuin
 "$atuin" status >/dev/null 2>&1 && exit 0
-printf "Sign in to Atuin sync. The key is in \`atuin key\` on a Mac that's signed in. Press Enter. " >/dev/tty
+printf "Sign in to Atuin with the Atuin login in 1Password; the key is \`atuin key\` on a signed-in Mac. Press Enter. " >/dev/tty
 read -r _ </dev/tty
 "$atuin" login
 "$atuin" sync
