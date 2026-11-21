@@ -1,6 +1,9 @@
 Host{{ range $name, $_ := .machines }} {{ $name }}{{ end }}
     HostName %h.{{ .tailnet }}
     StrictHostKeyChecking accept-new
+    ControlMaster auto
+    ControlPath ~/.ssh/control-%C
+    ControlPersist 10m
 {{- if eq .chezmoi.os "darwin" }}
 
 Host *
