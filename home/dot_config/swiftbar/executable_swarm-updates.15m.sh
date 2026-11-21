@@ -7,8 +7,8 @@ for line in $behind; do
     print -r -- "${line%%$'\t'*}: ${line#*$'\t'} commits behind"
 done
 hosts=(${behind%%$'\t'*})
-action="Update | bash=/usr/bin/open"
-for param in -na Ghostty --args --wait-after-command=true -e $HOME/.local/bin/swarm update $hosts; do
+action="Update | bash=$HOME/.local/bin/swarm"
+for param in update $hosts; do
     action+=" param$((++i))=$param"
 done
 print -r -- "$action terminal=false refresh=true"
