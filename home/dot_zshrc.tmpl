@@ -25,6 +25,23 @@ eval "$(atuin init zsh --disable-up-arrow)"
 
 _swarm() { _arguments "1:command:(list roles ping status doctor update reboot run)" "*:machine:($(swarm list 2>/dev/null))" }
 compdef _swarm swarm
+
+alias g="git"
+alias ga="git add ."
+alias gb="git branch"
+alias gc="git commit"
+alias gca="git commit --amend"
+alias gco="git checkout"
+alias gcom="git switch main"
+gd() { git status -s && echo && git diff "$@" }
+alias gf="git fetch"
+alias gl="git log --pretty=format:'%C(yellow)%h%C(reset)%C(red)%d%C(reset)%n%C(cyan)%ar%C(reset) %C(green)<%an>%C(reset)%n%s%n' --no-merges --max-count 5"
+alias gp="git push"
+alias gr="git rebase"
+alias grom="git pull --rebase origin main"
+alias gs="git status -s"
+alias gup="git pull"
+alias undo="git reset HEAD~1"
 {{- if has "terminal" $roles }}
 
 eval "$(zoxide init zsh)"
