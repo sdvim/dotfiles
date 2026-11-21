@@ -8,7 +8,7 @@ done | jq -s 'add // [] | unique_by(.threadId) | map(select(.relationshipToParen
 for id in $(jq -r '.[] | select(.status == "running" or .status == "waiting") | .threadId' <<<$threads); do
     (( $($t3 thread show $id --json --messages 0 | jq '.thread.pendingRequestCount // 0') > 0 )) && jq -r --arg id $id '.[] | select(.threadId == $id) | "input\t\(.title)"' <<<$threads
 done
-jq -r '.[] | select((.status == "completed" and (.pendingBackgroundTasks | length) == 0) or .status == "failed") | "\(if .status == "completed" then "finished" else "failed" end)\t\(.title)"' <<<$threads
+jq -r '.[] | select(.status == "failed") | "failed\t\(.title)"' <<<$threads
 SCRIPT
 data=$(chezmoi data --format json)
 self=$(jq -r .host <<<$data)
@@ -20,7 +20,7 @@ done)"})
 (( $#lines )) || exit 0
 print "$#lines | sfimage=bubble.left.and.exclamationmark.bubble.right"
 print -- ---
-for state in input failed finished; do
+for state in input failed; do
     for line in ${(M)lines:#*$'\t'$state$'\t'*}; do
         fields=("${(@ps:\t:)line}")
         print -r -- "${fields[3]} · ${fields[2]} on ${fields[1]}"
