@@ -1,0 +1,5 @@
+typeset -U path
+path=("$HOME/.local/bin" /opt/homebrew/bin /opt/homebrew/sbin $path)
+{{- if has "web-dev" (dig "machines" .host "roles" (list) .) }}
+. "$HOME/.config/vite-plus/env"
+{{- end }}
