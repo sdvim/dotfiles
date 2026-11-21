@@ -7,7 +7,7 @@ usage() {
   list               machines that accept SSH, and this Mac
   roles              which roles each Mac has
   ping               check that each machine answers over SSH
-  status             commits each Mac's dotfiles are behind and ahead
+  status             whether each Mac's dotfiles match GitHub
   doctor             dotfiles sync, pending changes, packages and uptime
   update             pull the dotfiles and apply them
   reboot             restart, unlocking FileVault once; this Mac goes last
@@ -93,12 +93,16 @@ case $command in
     status)
         for target in $targets; do
             counts=$(query "$target" 'chezmoi git -- fetch -q 2>/dev/null; chezmoi git -- rev-list --left-right --count "@{u}...HEAD"' 2>/dev/null)
-            if [[ -n $counts ]]; then
-                print -r -- "$target"$'\t'"${counts//[[:space:]]##/$'\t'}"
-            else
-                print -r -- "$target"$'\tunreachable'
+            behind=${counts%%[[:space:]]*} ahead=${counts##*[[:space:]]} state=()
+            if [[ -z $counts ]]; then
+                state=(unreachable)
                 (( failures++ ))
+            else
+                (( behind )) && state+=("$behind behind")
+                (( ahead )) && state+=("$ahead ahead")
+                (( $#state )) || state=("up to date")
             fi
+            printf '%-8s %s\n' $target ${(j:, :)state}
         done
         ;;
     doctor | update | run)

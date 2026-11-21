@@ -1,5 +1,5 @@
 #!/bin/zsh
-behind=(${(f)"$(swarm status 2>/dev/null | awk -F'\t' '$2 ~ /^[0-9]+$/ && $2 > 0 { print $1 "\t" $2 }')"})
+behind=(${(f)"$(swarm status 2>/dev/null | awk '/ behind/ { print $1 "\t" $2 }')"})
 (( $#behind )) || exit 0
 print "$#behind | sfimage=arrow.down.circle"
 print -- ---
