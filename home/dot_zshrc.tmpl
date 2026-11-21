@@ -2,6 +2,7 @@
 setopt auto_cd interactive_comments
 setopt share_history hist_ignore_all_dups hist_ignore_space
 HISTFILE=~/.zsh_history
+[[ -n $CLAUDECODE$CODEX_THREAD_ID ]] && unset HISTFILE
 HISTSIZE=50000
 SAVEHIST=50000
 cdpath=($HOME)
@@ -45,13 +46,22 @@ alias undo="git reset HEAD~1"
 {{- if has "terminal" $roles }}
 
 eval "$(zoxide init zsh)"
+_z_dirs() { print -l -- ${(u)${(f)"$(zoxide query --list --exclude $PWD 2>/dev/null)"}:t} }
 _z_ranked() {
-    local dirs=(${(f)"$(zoxide query --list --exclude $PWD -- ${words[2,CURRENT]} 2>/dev/null)"})
-    (( $#dirs )) || { _cd; return }
     compstate[insert]=menu
-    compadd -U -V zoxide -- ${(u)dirs:t}
+    local expl
+    _description -V zoxide expl directory
+    (( CURRENT == 2 )) && compadd "$expl[@]" -- ${(f)"$(_z_dirs)"} || _cd
 }
 compdef _z_ranked z
+_zsh_autosuggest_strategy_zoxide() {
+    [[ $1 == 'z '* && $1 != 'z '*' '* ]] || return
+    setopt local_options extended_glob
+    local word=${1#z }
+    local match=${${(M)${(f)"$(_z_dirs)"}:#(#i)$word*}[1]}
+    suggestion=$1${match:$#word}
+}
+ZSH_AUTOSUGGEST_STRATEGY=(zoxide history)
 eval "$(starship init zsh)"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
