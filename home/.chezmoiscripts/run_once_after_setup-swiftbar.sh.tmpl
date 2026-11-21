@@ -2,5 +2,7 @@
 #!/bin/sh
 set -eu
 defaults write com.ameba.SwiftBar PluginDirectory -string "$HOME/.config/swiftbar"
+defaults write com.ameba.SwiftBar StealthMode -bool true
+pkill -x SwiftBar || true
 open -a SwiftBar
 {{ end -}}
