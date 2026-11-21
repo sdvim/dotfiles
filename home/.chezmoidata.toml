@@ -17,8 +17,7 @@ roles = [
     "personal",
     "home-vpn",
     "terminal",
-    "window-manager",
-    "t3-desktop",
+    "desktop",
 ]
 
 [machines.mini]
@@ -27,6 +26,7 @@ roles = [
     "personal",
     "ios-dev",
     "web-dev",
+    "web-hosting",
     "remote-login",
     "t3-server",
     "never-sleep",

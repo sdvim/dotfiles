@@ -37,16 +37,14 @@ brew "tealdeer"
 brew "zoxide"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
+{{ end }}
+
+{{ if has "desktop" $roles -}}
+tap "nikitabobko/tap", trusted: true
 cask "font-paper-mono"
 cask "ghostty"
-{{ end }}
-
-{{ if has "window-manager" $roles -}}
-tap "nikitabobko/tap", trusted: true
 cask "nikitabobko/tap/aerospace"
-{{ end }}
-
-{{ if has "t3-desktop" $roles -}}
+cask "swiftbar"
 cask "t3-code@nightly"
 {{ end }}
 
@@ -60,8 +58,12 @@ cask "android-commandlinetools"
 cask "android-platform-tools"
 {{ end }}
 
-{{ if has "web-dev" $roles -}}
+{{ if has "work" $roles -}}
 brew "mise"
+cask "gcloud-cli"
+{{ end }}
+
+{{ if has "web-dev" $roles -}}
 brew "watchman"
 cask "google-chrome"
 {{ end }}

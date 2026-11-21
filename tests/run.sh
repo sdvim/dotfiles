@@ -26,8 +26,8 @@ for host in $hosts; do
         git config -f "$dest/.config/git/config" --list >/dev/null || fail "$host: git config does not parse"
         [ "$(ssh -F "$dest/.ssh/config" -G mini </dev/null 2>/dev/null | awk '$1 == "hostname" { print $2 }')" = mini.example.ts.net ] ||
             fail "$host: ssh config does not resolve mini to its tailnet name"
-        for zshfile in .zshenv .zprofile .zshrc; do
-            zsh -n "$dest/$zshfile" || fail "$host: $zshfile has a syntax error"
+        for zshfile in "$dest/.zshenv" "$dest/.zprofile" "$dest/.zshrc" "$dest/.local/bin/swarm" "$dest"/.config/swiftbar/*.sh; do
+            zsh -n "$zshfile" || fail "$host: ${zshfile#"$dest"/} has a syntax error"
         done
         jq -e '.hooks.PostToolUse[0].hooks[0].command | test("atuin hook claude-code")' "$dest/.claude/settings.json" >/dev/null 2>&1 ||
             fail "$host: Claude Code settings lack the Atuin hooks"
@@ -42,6 +42,14 @@ for host in $hosts; do
             jq -e '.cli == true' "$obsidian" >/dev/null 2>&1 || fail "$host: obsidian.json does not enable the CLI"
         elif [ -e "$obsidian" ]; then
             fail "$host: obsidian.json installed without the personal role"
+        fi
+        if [ "$(cm execute-template '{{ has "work" (dig "machines" .host "roles" (list) .) }}')" = true ]; then
+            jq -e '.mcpServers.linear and .mcpServers.maestro' "$dest/.claude.json" >/dev/null 2>&1 ||
+                fail "$host: .claude.json lacks the work MCP servers"
+            jq -e '.enabledPlugins["slack@claude-plugins-official"]' "$dest/.claude/settings.json" >/dev/null 2>&1 ||
+                fail "$host: Claude Code settings lack the Slack plugin"
+        elif [ -e "$dest/.claude.json" ]; then
+            fail "$host: .claude.json installed without the work role"
         fi
     else
         fail "$host: chezmoi apply"
@@ -68,6 +76,13 @@ fi
 
 if git -C "$repo" grep --untracked -nIE '[a-z0-9]+-[a-z0-9]+\.ts\.net|BEGIN [A-Z ]*PRIVATE KEY' -- ':!tests/run.sh'; then
     fail "private strings in the repository"
+fi
+if git -C "$repo" grep --untracked -IhoE '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}' |
+    grep -vxF -e "$(chezmoi --source "$repo" execute-template '{{ .git.email }}')" -e git@github.com; then
+    fail "email addresses other than the git identity"
+fi
+if git -C "$repo" grep --untracked -nIE 'op://' -- ':!tests/run.sh' | grep -v 'op://Private/'; then
+    fail "1Password references outside the Private vault"
 fi
 if git -C "$repo" ls-files -co --exclude-standard | grep -iE '\.(ttf|otf|woff2?|pem|key)$'; then
     fail "font or key files in the repository"

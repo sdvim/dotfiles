@@ -1,10 +1,14 @@
 {{- /* chezmoi:modify-template */ -}}
+{{- $roles := dig "machines" .host "roles" (list) . -}}
 {{- $settings := dict -}}
 {{- if .chezmoi.stdin }}{{ $settings = fromJson .chezmoi.stdin }}{{ end -}}
 {{- $atuin := list (dict "matcher" "^Bash$" "hooks" (list (dict "type" "command" "command" "/opt/homebrew/bin/atuin hook claude-code"))) -}}
-{{- $hooks := dict "PreToolUse" $atuin "PostToolUse" $atuin "PostToolUseFailure" $atuin -}}
-{{- if eq (toJson (get $settings "hooks")) (toJson $hooks) -}}
+{{- $settings = setValueAtPath "hooks" (dict "PreToolUse" $atuin "PostToolUse" $atuin "PostToolUseFailure" $atuin) $settings -}}
+{{- if has "work" $roles -}}
+{{-   $settings = setValueAtPath (list "enabledPlugins" "slack@claude-plugins-official") true $settings -}}
+{{- end -}}
+{{- if and .chezmoi.stdin (eq (toJson $settings) (toJson (fromJson .chezmoi.stdin))) -}}
 {{-   .chezmoi.stdin -}}
 {{- else -}}
-{{-   setValueAtPath "hooks" $hooks $settings | toPrettyJson -}}
+{{-   toPrettyJson $settings -}}
 {{- end -}}

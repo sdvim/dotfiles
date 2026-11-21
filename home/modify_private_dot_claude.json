@@ -1,0 +1,12 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $config := dict -}}
+{{- if .chezmoi.stdin }}{{ $config = fromJson .chezmoi.stdin }}{{ end -}}
+{{- if has "work" (dig "machines" .host "roles" (list) .) -}}
+{{-   $config = setValueAtPath (list "mcpServers" "linear") (dict "type" "http" "url" "https://mcp.linear.app/mcp") $config -}}
+{{-   $config = setValueAtPath (list "mcpServers" "maestro") (dict "type" "stdio" "command" "/opt/homebrew/bin/maestro" "args" (list "mcp")) $config -}}
+{{- end -}}
+{{- if and .chezmoi.stdin (eq (toJson $config) (toJson (fromJson .chezmoi.stdin))) -}}
+{{-   .chezmoi.stdin -}}
+{{- else if $config -}}
+{{-   toPrettyJson $config -}}
+{{- end -}}

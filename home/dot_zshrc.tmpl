@@ -23,11 +23,20 @@ bindkey '^[OB' down-line-or-beginning-search
 
 eval "$(atuin init zsh --disable-up-arrow)"
 
-restart() { ssh -t "$1" sudo fdesetup authrestart }
+_swarm() { _arguments "1:command:(list roles ping status doctor update reboot run)" "*:machine:($(swarm list 2>/dev/null))" }
+compdef _swarm swarm
 {{- if has "terminal" $roles }}
 
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+{{- end }}
+{{- if has "web-dev" $roles }}
+
+. "$HOME/.config/vite-plus/env"
+{{- end }}
+{{- if has "work" $roles }}
+
+eval "$(mise activate zsh)"
 {{- end }}
