@@ -19,5 +19,9 @@ Workflow:
 - Add a file only when Steve asks for it
 
 Public repository:
-- No keys, tokens, passwords, licensed fonts, the tailnet name, or work material
-- No private context
+- No keys, tokens, passwords, licensed fonts, or the tailnet name
+- No employer or client names, work email addresses, internal hostnames or URLs,
+  or workspace, organization, repository or project names
+- No 1Password references outside the Private vault
+- No other private context
+- Tool names, public service URLs and roles like `work` are fine
