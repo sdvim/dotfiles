@@ -1,0 +1,9 @@
+{{- if has "web-hosting" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+wrangler=$HOME/.local/share/vite-plus/bin/wrangler
+"$wrangler" whoami 2>&1 | grep -q 'You are logged in' && exit 0
+printf 'Sign in to Cloudflare in the browser and allow Wrangler. Press Enter. ' >/dev/tty
+read -r _ </dev/tty
+"$wrangler" login
+{{ end -}}

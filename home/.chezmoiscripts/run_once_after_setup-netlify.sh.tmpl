@@ -1,0 +1,9 @@
+{{- if has "web-hosting" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+netlify=$HOME/.local/share/vite-plus/bin/netlify
+"$netlify" status 2>&1 | grep -q 'Not logged in' || exit 0
+printf 'Sign in to Netlify in the browser and authorize the CLI. Press Enter. ' >/dev/tty
+read -r _ </dev/tty
+"$netlify" login
+{{ end -}}

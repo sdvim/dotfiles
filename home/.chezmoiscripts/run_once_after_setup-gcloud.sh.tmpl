@@ -1,0 +1,15 @@
+{{- if has "work" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+gcloud=/opt/homebrew/bin/gcloud
+if [ -z "$("$gcloud" auth list --filter=status:ACTIVE --format='value(account)')" ] ||
+    [ -z "$("$gcloud" config get-value project 2>/dev/null)" ]; then
+    printf 'Sign in to Google Cloud in the browser, then pick the default project. Press Enter. ' >/dev/tty
+    read -r _ </dev/tty
+    "$gcloud" init
+fi
+"$gcloud" auth application-default print-access-token >/dev/null 2>&1 && exit 0
+printf 'Sign in once more so client libraries can use your credentials. Press Enter. ' >/dev/tty
+read -r _ </dev/tty
+"$gcloud" auth application-default login
+{{ end -}}

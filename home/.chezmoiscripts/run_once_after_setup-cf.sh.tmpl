@@ -1,0 +1,9 @@
+{{- if has "web-hosting" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+cf=$HOME/.local/share/vite-plus/bin/cf
+"$cf" auth whoami 2>/dev/null | jq -e .authenticated >/dev/null && exit 0
+printf 'Sign in to Cloudflare in the browser and allow cf. Press Enter. ' >/dev/tty
+read -r _ </dev/tty
+"$cf" auth login
+{{ end -}}
