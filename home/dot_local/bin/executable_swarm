@@ -59,7 +59,7 @@ query() {
 }
 
 doctor='
-chezmoi git -- fetch -q 2>/dev/null
+chezmoi git -- fetch -q --no-write-fetch-head 2>/dev/null
 print "source    $(chezmoi git -- status -sb | head -1 | cut -c4-)"
 readable=(${(f)"$(chezmoi managed -i files -p absolute | grep -v "/Group Containers/")"})
 print "pending   $(chezmoi status $readable | wc -l | tr -d " ") files"
@@ -92,7 +92,7 @@ case $command in
         ;;
     status)
         for target in $targets; do
-            counts=$(query "$target" 'chezmoi git -- fetch -q 2>/dev/null; chezmoi git -- rev-list --left-right --count "@{u}...HEAD"' 2>/dev/null)
+            counts=$(query "$target" 'chezmoi git -- fetch -q --no-write-fetch-head 2>/dev/null; chezmoi git -- rev-list --left-right --count "@{u}...HEAD"' 2>/dev/null)
             behind=${counts%%[[:space:]]*} ahead=${counts##*[[:space:]]} state=()
             if [[ -z $counts ]]; then
                 state=(unreachable)
