@@ -9,7 +9,7 @@ confirm-close-surface = false
 
 background = #000000
 
-keybind = global:ctrl+j=toggle_quick_terminal
+keybind = global:ctrl+'=toggle_quick_terminal
 
 quick-terminal-position = center
 quick-terminal-animation-duration = 0
