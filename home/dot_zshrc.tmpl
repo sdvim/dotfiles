@@ -45,6 +45,13 @@ alias undo="git reset HEAD~1"
 {{- if has "terminal" $roles }}
 
 eval "$(zoxide init zsh)"
+_z_ranked() {
+    local dirs=(${(f)"$(zoxide query --list --exclude $PWD -- ${words[2,CURRENT]} 2>/dev/null)"})
+    (( $#dirs )) || { _cd; return }
+    compstate[insert]=menu
+    compadd -U -V zoxide -- ${(u)dirs:t}
+}
+compdef _z_ranked z
 eval "$(starship init zsh)"
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
