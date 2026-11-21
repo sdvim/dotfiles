@@ -1,0 +1,6 @@
+{{- if has "desktop" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+defaults write com.ameba.SwiftBar PluginDirectory -string "$HOME/.config/swiftbar"
+open -a SwiftBar
+{{ end -}}
