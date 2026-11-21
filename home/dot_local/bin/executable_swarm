@@ -1,0 +1,126 @@
+#!/bin/zsh
+set -u
+
+usage() {
+    print -u2 "usage: swarm <command> [machine...]
+
+  list               machines that accept SSH, and this Mac
+  roles              which roles each Mac has
+  ping               check that each machine answers over SSH
+  status             commits each Mac's dotfiles are behind and ahead
+  doctor             dotfiles sync, pending changes, packages and uptime
+  update             pull the dotfiles and apply them
+  reboot             restart, unlocking FileVault once; this Mac goes last
+  run [...] -- <cmd> run a shell command"
+    exit 2
+}
+
+data=$(chezmoi data --format json) || exit 1
+self=$(jq -r .host <<<"$data")
+swarm=(${(f)"$(jq -r '.machines | to_entries[] | select(.value.roles // [] | index("remote-login")) | .key' <<<"$data")"})
+(( ${swarm[(Ie)$self]} )) || swarm+=($self)
+machines=(${(f)"$(jq -r '.machines | to_entries[] | select(.value.roles) | .key' <<<"$data")"})
+
+(( $# )) || usage
+command=$1
+shift
+remote=()
+if [[ $command == run ]]; then
+    (( ${@[(Ie)--]} )) || usage
+    remote=("${@[${@[(ie)--]}+1,-1]}")
+    set -- "${@[1,${@[(ie)--]}-1]}"
+    (( $#remote )) || usage
+fi
+
+[[ $command == roles ]] && reachable=($machines) || reachable=($swarm)
+targets=("${@:-${reachable[@]}}")
+for target in $targets; do
+    (( ${reachable[(Ie)$target]} )) || { print -u2 "swarm: $target is not one of: $reachable"; exit 2; }
+done
+
+on() {
+    local host=$1
+    shift
+    if [[ $host == $self ]]; then
+        zsh -c "$*"
+    elif [[ -t 0 ]]; then
+        ssh -t -o ConnectTimeout=5 "$host" "$*"
+    else
+        ssh -o ConnectTimeout=5 "$host" "$*"
+    fi
+}
+
+query() {
+    if [[ $1 == $self ]]; then
+        zsh -c "$2"
+    else
+        ssh -o BatchMode=yes -o ConnectTimeout=5 "$1" "$2"
+    fi
+}
+
+doctor='
+chezmoi git -- fetch -q 2>/dev/null
+print "source    $(chezmoi git -- status -sb | head -1 | cut -c4-)"
+readable=(${(f)"$(chezmoi managed -i files -p absolute | grep -v "/Group Containers/")"})
+print "pending   $(chezmoi status $readable | wc -l | tr -d " ") files"
+chezmoi execute-template "{{ includeTemplate \"Brewfile\" . }}" | brew bundle check --no-upgrade --file=- >/dev/null 2>&1 &&
+    print "packages  ok" || print "packages  missing"
+print "uptime    $(uptime | sed -E "s/.*up +([^,]*(, *[0-9]+:[0-9]+)?),.*/\1/")"
+'
+
+failures=0
+case $command in
+    list)
+        print -l $swarm
+        ;;
+    roles)
+        jq -r --args '.machines as $all | $ARGS.positional as $hosts
+            | ([$hosts[] | $all[.].roles[]] | unique) as $roles
+            | (["role", $hosts[]] | @tsv),
+              ($roles[] as $role | [$role, ($hosts[] | if ($all[.].roles | index($role)) then "x" else "-" end)] | @tsv)' \
+            $targets <<<"$data" | column -t -s $'\t'
+        ;;
+    ping)
+        for target in $targets; do
+            if [[ $target == $self ]] || ssh -o BatchMode=yes -o ConnectTimeout=5 "$target" true 2>/dev/null; then
+                print "up    $target"
+            else
+                print "down  $target"
+                (( failures++ ))
+            fi
+        done
+        ;;
+    status)
+        for target in $targets; do
+            counts=$(query "$target" 'chezmoi git -- fetch -q 2>/dev/null; chezmoi git -- rev-list --left-right --count "@{u}...HEAD"' 2>/dev/null)
+            if [[ -n $counts ]]; then
+                print -r -- "$target"$'\t'"${counts//[[:space:]]##/$'\t'}"
+            else
+                print -r -- "$target"$'\tunreachable'
+                (( failures++ ))
+            fi
+        done
+        ;;
+    doctor | update | run)
+        for target in $targets; do
+            print -P "%B== $target%b"
+            case $command in
+                doctor) on "$target" "$doctor" ;;
+                update) on "$target" chezmoi update ;;
+                run) on "$target" "${(j: :)remote}" ;;
+            esac || (( failures++ ))
+        done
+        ;;
+    reboot)
+        rest=(${targets:#$self})
+        for target in $rest; do
+            print -P "%B== $target%b"
+            on "$target" sudo fdesetup authrestart
+        done
+        (( ${targets[(Ie)$self]} )) && sudo fdesetup authrestart
+        ;;
+    *)
+        usage
+        ;;
+esac
+(( failures == 0 ))
