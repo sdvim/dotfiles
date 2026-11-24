@@ -1,5 +1,9 @@
-{{- if has "never-sleep" (dig "machines" .host "roles" (list) .) -}}
+{{- $roles := dig "machines" .host "roles" (list) . -}}
+{{- if has "never-sleep" $roles -}}
 #!/bin/sh
 set -eu
-sudo pmset -c sleep 0 womp 1
+sudo pmset -c sleep 0 displaysleep 0 womp 1
+{{- if has "battery-optimized" $roles }}
+sudo pmset -b displaysleep 60
+{{- end }}
 {{ end -}}
