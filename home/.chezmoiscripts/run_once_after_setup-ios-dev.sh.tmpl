@@ -5,7 +5,7 @@ if [ ! -d /Applications/Xcode.app ]; then
     open -a "App Store"
     printf 'This Mac gets Xcode: sign in to the App Store, then press Enter. ' >/dev/tty
     read -r _ </dev/tty
-    mas install 497799835
+    sudo mas install 497799835
 fi
 [ "$(xcode-select -p)" = /Applications/Xcode.app/Contents/Developer ] ||
     sudo xcode-select --switch /Applications/Xcode.app
