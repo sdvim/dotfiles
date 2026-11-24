@@ -25,3 +25,14 @@ Public repository:
 - No 1Password references outside the Private vault
 - No other private context
 - Tool names, public service URLs and roles like `work` are fine
+
+Setting up another Mac remotely:
+- Check and script over SSH (`ssh pro-16`); `op` and `gh` can't reach 1Password or the
+  login keychain from SSH, so their first use runs in a Terminal on that Mac
+- Run sign-ins headless over SSH and open their links in the local Chrome:
+  `gh auth login` (device code), `claude auth login` (paste the code), `gcloud auth login
+  --no-launch-browser`, `t3 up --headless`
+- Keep Screen Sharing for macOS prompts only (Touch ID, Local Network, Accessibility,
+  App Store); type no secrets into a visible Terminal, since its title bar shows them
+- Update macOS before Xcode; the App Store only offers the current Xcode to the current macOS
+- Atuin signs in from the Atuin item in 1Password, whose `key` field holds `atuin key`
