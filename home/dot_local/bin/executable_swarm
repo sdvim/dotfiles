@@ -10,6 +10,7 @@ usage() {
   status             whether each Mac's dotfiles match GitHub
   doctor             dotfiles sync, pending changes, packages and uptime
   update             pull the dotfiles and apply them
+  upgrade            upgrade Homebrew packages
   reboot             restart, unlocking FileVault once; this Mac goes last
   run [...] -- <cmd> run a shell command"
     exit 2
@@ -105,12 +106,13 @@ case $command in
             printf '%-8s %s\n' $target ${(j:, :)state}
         done
         ;;
-    doctor | update | run)
+    doctor | update | upgrade | run)
         for target in $targets; do
             print -P "%B== $target%b"
             case $command in
                 doctor) on "$target" "$doctor" ;;
                 update) on "$target" chezmoi update ;;
+                upgrade) on "$target" "brew update -q && brew upgrade" ;;
                 run) on "$target" "${(j: :)remote}" ;;
             esac || (( failures++ ))
         done
