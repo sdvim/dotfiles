@@ -1,0 +1,5 @@
+{{- if has "restore-power" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+sudo pmset -a autorestart 1
+{{ end -}}

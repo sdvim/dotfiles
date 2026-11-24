@@ -1,0 +1,5 @@
+{{- if has "never-sleep" (dig "machines" .host "roles" (list) .) -}}
+#!/bin/sh
+set -eu
+sudo pmset -c sleep 0 womp 1
+{{ end -}}
