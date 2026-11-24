@@ -1,5 +1,9 @@
 typeset -U path
 path=("$HOME/.local/bin" /opt/homebrew/bin /opt/homebrew/sbin $path)
-{{- if has "web-dev" (dig "machines" .host "roles" (list) .) }}
+{{- $roles := dig "machines" .host "roles" (list) . }}
+{{- if or (has "ios-dev" $roles) (has "android-dev" $roles) }}
+export JAVA_HOME=/opt/homebrew/opt/openjdk
+{{- end }}
+{{- if has "web-dev" $roles }}
 . "$HOME/.config/vite-plus/env"
 {{- end }}
