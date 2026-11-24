@@ -21,6 +21,7 @@ cask "tailscale-app"
 
 {{ if has "personal" $roles -}}
 cask "beeper"
+cask "claude"
 cask "obsidian"
 {{ end }}
 
