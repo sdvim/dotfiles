@@ -65,7 +65,9 @@ cask "gcloud-cli"
 
 {{ if has "web-dev" $roles -}}
 brew "watchman"
+{{ if not (has "work" $roles) -}}
 cask "google-chrome"
+{{ end -}}
 {{ end }}
 
 {{ if or (has "ios-dev" $roles) (has "android-dev" $roles) -}}
