@@ -4,6 +4,11 @@ Host{{ range $name, $_ := .machines }} {{ $name }}{{ end }}
     ControlMaster auto
     ControlPath ~/.ssh/control-%C
     ControlPersist 10m
+{{- range $name, $machine := .machines }}{{ with dig "user" "" $machine }}
+
+Host {{ $name }}
+    User {{ . }}
+{{- end }}{{ end }}
 {{- if eq .chezmoi.os "darwin" }}
 
 Host *
